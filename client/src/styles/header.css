@@ -1,0 +1,79 @@
+/* Header container */
+.header {
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
+/* Top section of header */
+.header-top {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100%;
+  height: 74px;
+  background-color: rgb(19, 27, 38);
+}
+
+/*  Header logo */
+.header-logo {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+/*  Header logo icon */
+.header-logo img {
+  width: 42px;
+  height: 42px;
+  padding-right: 10px;
+}
+
+/* Header logo name */
+.header-logo h1 {
+  text-align: center;
+  color: white;
+  font-family: roboto-bold-italic;
+  font-size: 19px;
+}
+
+/* List link icon */
+.list-link {
+  width: 43px;
+  height: 43px;
+  cursor: pointer;
+}
+
+/* Container for search bar */
+.search-div {
+  width: 100%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  background-color: white;
+  box-shadow: 0 0 25px 0 rgba( 0, 0, 0, 0.75 );
+}
+
+/* Search bar */
+.search {
+  box-sizing: border-box;
+  outline: none;
+  border: none;
+  width: 80%;
+  height: 40px;
+  font-family: roboto-bold;
+  font-size: 15px;
+  padding: 7px;
+}
+
+/* Magnifying glass icon */
+.search-icon {
+  width: 27px;
+  height: 27px;
+  padding-right: 6px;
+  cursor: pointer;
+}
