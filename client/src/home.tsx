@@ -30,23 +30,29 @@ function Home() {
 
   /* Displays popular new release results if array is populated */
   function displayResults(): JSX.Element {
-    return (
-      <>
-        {popularNewReleases.map((entry) => {
-          return(
-            <>
-              <div className='pnr-card'>
-                <img src={`https://images.igdb.com/igdb/image/upload/t_1080p/${entry.cover.image_id}.jpg`} alt="" />
-                
-                <div className='pnr-title'>
-                  <p>{entry.name}</p>
-                </div>
-              </div>
-            </>
-          )
-        })}
-      </>
-    );
+    if (popularNewReleases.length > 0) {
+      return (
+        <>
+          <div className='pnr-results'>
+            {popularNewReleases.map((entry) => {
+              return(
+                <>
+                  <div className='pnr-card'>
+                    <img src={`https://images.igdb.com/igdb/image/upload/t_1080p/${entry.cover.image_id}.jpg`} alt="" />
+                    
+                    <div className='pnr-title'>
+                      <p>{entry.name}</p>
+                    </div>
+                  </div>
+                </>
+              )
+            })}
+          </div>
+        </>
+      );
+    } else {
+      return(<div className='loader'></div>);
+    }
   }
 
   /* Get popular new releases on component mount */
@@ -68,9 +74,7 @@ function Home() {
           <h1>Popular New Releases</h1>
         </div>
 
-        <div>
-          {popularNewReleases.length > 0 && displayResults()}
-        </div>
+        {displayResults()}
       </div>
     </>
   )

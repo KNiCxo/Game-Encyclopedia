@@ -27,3 +27,36 @@ body {
   margin: 0;
   background-color: rgb(30, 41, 56);
 }
+
+/* Loading spinner */
+.loader {
+  display: flex;
+}
+
+.loader--hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loader::after {
+  content: "";
+  width: 65px;
+  height: 65px;
+  margin-top: 10px;
+  border: 9px solid #ffffff;
+  border-top-color: #3a9bf6;
+  border-radius: 50%;
+  animation: loading 0.75s ease infinite;
+}
+
+/* Loading animation */
+@keyframes loading {
+  from {transform: rotate(0turn)}
+  to {transform: rotate(1turn)}
+}
+
+/* Fade In animation */
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
