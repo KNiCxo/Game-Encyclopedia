@@ -10,13 +10,19 @@
   font-family: roboto-bold;
 }
 
-/* Roboto Bold Font */
+/* Roboto Bold Italic Font */
 @font-face {
   src: url(fonts/Roboto/Roboto-BoldItalic.ttf);
   font-family: roboto-bold-italic;
 }
 
-/* Roboto Bold Font */
+/* Roboto Light Italic Font */
+@font-face {
+  src: url(fonts/Roboto/Roboto-LightItalic.ttf);
+  font-family: roboto-light-italic;
+}
+
+/* Roboto Thin Italic Font */
 @font-face {
   src: url(fonts/Roboto/Roboto-ThinItalic.ttf);
   font-family: roboto-thin-italic;

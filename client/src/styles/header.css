@@ -78,3 +78,35 @@
   padding-right: 6px;
   cursor: pointer;
 }
+
+/* Search results lite container */
+.search-results-lite {
+  margin: 6px auto 0;
+  width: 95%;
+  background-color: white;
+  border-radius: 6px;
+}
+
+/* Search result lite item */
+.search-lite-item {
+  display: flex;
+  align-items: center;
+  padding: 0 0 9px 8px;
+  height: 70px;
+}
+
+.search-lite-item:first-child {
+  padding-top: 9px;
+}
+
+/* Search results lite game cover */
+.search-lite-cover {
+  width: 52px;
+  height: 70px;
+}
+
+/* Search results lite game name */
+.search-lite-name {
+  padding-left: 10px;
+  font-family: roboto-light-italic;
+}

@@ -4,11 +4,12 @@ import './styles/home.css'
 
 // Import page components */
 import Header from './header.tsx'
+import {getPopularNewReleases} from './searchUtils.ts'
 
 /* Home page */
 function Home() {
-  /* Declare type for IGDB API results */
-  type Result = {
+  /* Type for IGDB popular new releases query */
+  type pnrResult = {
     cover: {
       id: number,
       image_id: string
@@ -18,15 +19,7 @@ function Home() {
   }
 
   /* Array of search results for popular new releases */
-  const [popularNewReleases, setPopularNewReleases] = useState<Result[]>([]);
-
-  /* Gets popular new release search results */
-  const getPopularNewReleases = async () => {
-    const response = await fetch('http://localhost:4001/popularNewReleases');
-    const json = await response.json();
-    console.log(json);
-    setPopularNewReleases(json);
-  }
+  const [popularNewReleases, setPopularNewReleases] = useState<pnrResult[]>([]);
 
   /* Displays popular new release results if array is populated */
   function displayResults(): JSX.Element {
@@ -57,7 +50,9 @@ function Home() {
 
   /* Get popular new releases on component mount */
   useEffect(() => {
-    getPopularNewReleases();
+    getPopularNewReleases().then((data) => {
+    setPopularNewReleases(data);
+  });
   }, []);
 
   return(
