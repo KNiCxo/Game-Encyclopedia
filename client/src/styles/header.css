@@ -39,13 +39,13 @@
   text-align: center;
   color: white;
   font-family: roboto-bold-italic;
-  font-size: 19px;
+  font-size: 20px;
 }
 
-/* List link icon */
-.list-link {
-  width: 43px;
-  height: 43px;
+/* menu icon */
+.menu {
+  width: 38px;
+  height: 32px;
   cursor: pointer;
 }
 
@@ -84,19 +84,31 @@
   margin: 6px auto 0;
   width: 95%;
   background-color: white;
-  border-radius: 6px;
+  border-radius: 6px 6px 7px 7px;
+}
+
+/* Not found message */
+.not-found {
+  font-family: roboto-light-italic;
+  font-size: 22px;
+  text-align: center;
 }
 
 /* Search result lite item */
 .search-lite-item {
   display: flex;
   align-items: center;
-  padding: 0 0 9px 8px;
+  padding: 6px 8px;
   height: 70px;
 }
 
-.search-lite-item:first-child {
-  padding-top: 9px;
+.search-lite-item:hover {
+  background-color: rgba(185, 185, 185, 0.216);
+  cursor: pointer;
+}
+
+.search-lite-item:hover:first-child {
+  border-radius: 6px 6px 0 0;
 }
 
 /* Search results lite game cover */
@@ -109,4 +121,25 @@
 .search-lite-name {
   padding-left: 10px;
   font-family: roboto-light-italic;
+  color: black;
+}
+
+/* Container for "See all results" button */
+.all-results-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(19, 27, 38);
+  height: 42px;
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
+  cursor: pointer;
+}
+
+/* "See all results" text */
+.all-results-div span {
+  color: white;
+  font-family: roboto-bold-italic;
+  text-decoration: underline;
+  font-size: 18px;
 }

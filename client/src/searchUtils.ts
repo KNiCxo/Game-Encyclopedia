@@ -56,14 +56,14 @@ type searchResult = {
   first_release_date: number,
   id: number,
   name: string
-  platforms: object[]
+  platforms: {id: number, name: string}[]
 }
 
 // Get more search results and with more fields
-export const searchGame = async (gameName: string): Promise<searchResult[]> => {
+export const searchGame = async (gameName: string | undefined, offset: string): Promise<searchResult[]> => {
   if (gameName) {
     try {
-      const response = await fetch(`http://localhost:4001/searchGame/${gameName}`);
+      const response = await fetch(`http://localhost:4001/searchGame/${gameName}/${offset}`);
       const json = await response.json();
       return json;
     } catch (error) {

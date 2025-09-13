@@ -1,14 +1,16 @@
 import { useState, useEffect, type JSX } from 'react'
+import {Link} from 'react-router-dom'
+import slugify from 'slugify'
 
 import './styles/home.css'
 
-// Import page components */
+// Import page components and functions */
 import Header from './header.tsx'
 import {getPopularNewReleases} from './searchUtils.ts'
 
 /* Home page */
 function Home() {
-  /* Type for IGDB popular new releases query */
+  // Type for IGDB popular new releases query 
   type pnrResult = {
     cover: {
       id: number,
@@ -18,25 +20,34 @@ function Home() {
     name: string
   }
 
-  /* Array of search results for popular new releases */
+  // Array of search results for popular new releases
   const [popularNewReleases, setPopularNewReleases] = useState<pnrResult[]>([]);
 
-  /* Displays popular new release results if array is populated */
+  // Displays popular new release results if array is populated
   function displayResults(): JSX.Element {
     if (popularNewReleases.length > 0) {
       return (
         <>
           <div className='pnr-results'>
             {popularNewReleases.map((entry) => {
+              // Make game name URL friendly
+              const navParam = slugify(entry.name, {
+                lower: true,
+                replacement: '_',
+                strict: true
+              });
+              
               return(
                 <>
-                  <div className='pnr-card'>
-                    <img src={`https://images.igdb.com/igdb/image/upload/t_1080p/${entry.cover.image_id}.jpg`} alt="" />
-                    
-                    <div className='pnr-title'>
-                      <p>{entry.name}</p>
+                  <Link to={`/games/${navParam}`} className='link'>
+                    <div className='pnr-card'>
+                      <img src={`https://images.igdb.com/igdb/image/upload/t_1080p/${entry.cover.image_id}.jpg`} alt="" />
+                      
+                      <div className='pnr-title'>
+                        <p>{entry.name}</p>
+                      </div>
                     </div>
-                  </div>
+                  </Link>
                 </>
               )
             })}
@@ -48,7 +59,7 @@ function Home() {
     }
   }
 
-  /* Get popular new releases on component mount */
+  // Get popular new releases on component mount
   useEffect(() => {
     getPopularNewReleases().then((data) => {
     setPopularNewReleases(data);

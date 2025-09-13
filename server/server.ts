@@ -35,9 +35,9 @@ app.get('/searchGameLite/:gameName', async (req: Request, res: Response) => {
 });
 
 // GET request for gathering more search results with more fields
-app.get('/searchGame/:gameName', async (req: Request, res: Response) => {
+app.get('/searchGame/:gameName/:offset', async (req: Request, res: Response) => {
   try {
-    const data = await tpaService.searchGame(req.params.gameName);
+    const data = await tpaService.searchGame(req.params.gameName, req.params.offset);
     res.status(200).json(data);
   } catch (error) {
     res.status(500).json({message: 'Internal server error'});

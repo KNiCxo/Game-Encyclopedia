@@ -25,4 +25,3 @@ dist-ssr
 
 server/.env
 server/node_modules
-client/src/search-results.tsx

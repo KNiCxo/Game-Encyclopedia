@@ -1,0 +1,72 @@
+/* Results list */
+.search-entry-list {
+  margin-top: 140px;
+}
+
+/* Entry */
+.search-entry {
+  display: flex;
+  flex-direction: row;
+  padding: 10px 12px;
+  cursor: pointer;
+}
+
+.search-entry:hover {
+  background-color: rgba(255, 255, 255, 0.146);
+}
+
+/* Entry game cover */
+.search-entry-cover {
+  display: flex;
+  align-items: center;
+}
+
+/* Entry image */
+.search-entry-img {
+  width: 93px;
+  height: 125px;
+}
+
+/* Entry info */
+.search-entry-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  color: white;
+  margin-left: 10px;
+}
+
+/* Entry name */
+.search-entry-name {
+  font-family: oswald-bold;
+  font-size: 18px;
+  margin-bottom: 3px;
+}
+
+.search-entry-name:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Entry year */
+.search-entry-year {
+  font-family: roboto-light-italic;
+  font-size: 17px;
+  margin-bottom: 7px;
+}
+
+/* Entry platforms */
+.search-entry-platforms {
+  font-family: roboto-light-italic;
+  font-size: 14px;
+}
+
+/* Error message */
+.error-message {
+  margin: 260px auto 0;
+  padding: 0 15px;
+  text-align: center;
+  font-family: roboto-bold;
+  font-size: 40px;
+  color: white;
+}
