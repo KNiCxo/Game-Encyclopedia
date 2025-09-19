@@ -1,0 +1,68 @@
+/* Styling for all page content */
+.game-data {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  margin: 124px auto 0;
+}
+
+/* Age ratings header */
+.age-ratings-header {
+  color: white;
+  font-family: roboto-bold-italic;
+  margin-bottom: 10px;
+
+}
+
+/* Age ratings container */
+.age-ratings {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+/* Individual Age rating container */
+.age-rating {
+  width: 72px;
+  height: 85px;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+}
+
+/* Age rating images */
+.ESRB {
+  width: 42px;
+  height: 64px;
+}
+
+.GRAC {
+  width: 55px;
+  height: 64px;
+}
+
+.PEGI {
+  width: 52px;
+  height: 64px;
+}
+
+.CERO {
+  width: 57px;
+  height: 70px;
+}
+
+.CLASS_IND, .USK, .ACB {
+  width: 64px;
+  height: 64px;
+}
+
+/* Game not found error message */
+.game-not-found {
+  color: white;
+  font-family: roboto-bold;
+  text-align: center;
+  margin-top: 200px;
+  font-size: 37px;
+}

@@ -63,17 +63,10 @@ function Header() {
         <>
           {/* Iterate through results */}
           {searchResultsLite.map((entry) => {
-            // Make result URL friendly
-            const resultSlug = slugify(entry.name, {
-              lower: true,
-              replacement: '_',
-              strict: true
-            });
-
             return(
               <>
                 {/* Entry */}
-                <Link to={`/games/${resultSlug}`} className='link'>
+                <Link to={`/games/${entry.id}`} className='link' onClick={() => setSearchInput('')}>
                   <div className='search-lite-item'>
                     {/* Game Cover */}
                     {entry.cover && (<img className='search-lite-cover' src={`https://images.igdb.com/igdb/image/upload/t_1080p/${entry.cover.image_id}.jpg`} alt="" />)}
@@ -87,7 +80,7 @@ function Header() {
           })}
           
           {/* Links to all results */}
-          <Link to={`/search/${searchTermSlug}`} className='link'>
+          <Link to={`/search/${searchTermSlug}`} className='link' onClick={() => setSearchInput('')}>
             <div className='all-results-div'>
               <span>See all results</span>
             </div>
@@ -100,8 +93,8 @@ function Header() {
           {/* Error message */}
           <h1 className='not-found'>No results found</h1>
 
-          {/* Link to al results */}
-          <Link to={`/search/${searchTermSlug}`}>
+          {/* Link to all results */}
+          <Link to={`/search/${searchTermSlug}`} className='link' onClick={() => setSearchInput('')}>
             <div className='all-results-div'>
               <span>See all results</span>
             </div>

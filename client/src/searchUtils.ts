@@ -74,3 +74,23 @@ export const searchGame = async (gameName: string | undefined, offset: string): 
     return [];
   }
 }
+
+// Gets info for a single game
+export const gatherGameData = async (gameId: string | undefined) => {
+  if (gameId) {
+    try {
+      const response = await fetch(`http://localhost:4001/gatherGameData/${gameId}`);
+
+      if (!response.ok) {
+          throw new Error();
+      }
+
+      const json = await response.json();
+      return json;
+    } catch (error) {
+      throw error;
+    }
+  } else {
+    return [];
+  }
+}

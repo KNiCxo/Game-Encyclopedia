@@ -1,4 +1,4 @@
-import { createRoot } from 'react-dom/client'
+import {createRoot} from 'react-dom/client'
 import {createBrowserRouter, RouterProvider} from 'react-router-dom'
 
 import './styles/main.css';
@@ -6,6 +6,7 @@ import './styles/main.css';
 // Import pages
 import Home from './home.tsx'
 import SearchResults from './search-results.tsx'
+import Game from './game.tsx'
 
 const router = createBrowserRouter([
  {
@@ -19,9 +20,11 @@ const router = createBrowserRouter([
   element: <SearchResults></SearchResults>
  },
 
- /* Game Profile Page
- path: '/game/:gameName',
- element*/
+ // Game Profile Page
+ {
+  path: '/games/:gameId',
+  element: <Game></Game>
+ }
 ]);
 
 createRoot(document.getElementById('root')!).render(

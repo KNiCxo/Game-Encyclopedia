@@ -49,7 +49,7 @@ export const searchGameLite = async (gameName: string) => {
           'Client-ID': `${process.env.CLIENT_ID}`,
           'Authorization': `Bearer ${process.env.AUTH}`,
         },
-        body: `search "${gameName}"; fields cover.image_id, name; limit 4;`
+        body: `search "${gameName}"; fields cover.image_id,name; limit 4;`
     });
 
     return await response.json();
@@ -77,6 +77,30 @@ export const searchGame = async (gameName: string, offset: string) => {
     });
 
     return await response.json();
+  } catch (error) {
+    throw error;
+  }
+}
+
+// Gets info for a single game
+export const gatherGameData = async (gameId: string) => {
+  try {
+    const response = await fetch(
+      "https://api.igdb.com/v4/games", { 
+        method: 'POST',
+        headers: {
+        'Accept': 'application/json',
+          'Client-ID': `${process.env.CLIENT_ID}`,
+          'Authorization': `Bearer ${process.env.AUTH}`,
+        },
+        body: `fields age_ratings.organization.name,age_ratings.rating_category.rating; where id = ${gameId};`
+      }); 
+
+      if (!response.ok) {
+        throw new Error();
+      }
+      
+      return await response.json();
   } catch (error) {
     throw error;
   }

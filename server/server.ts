@@ -44,6 +44,16 @@ app.get('/searchGame/:gameName/:offset', async (req: Request, res: Response) => 
   }
 });
 
+// GET request for information on a particular game based on it's ID
+app.get('/gatherGameData/:gameId/', async (req: Request, res: Response) => {
+  try {
+    const data = await tpaService.gatherGameData(req.params.gameId);
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(500).end();
+  }
+});
+
 // Start server
 app.listen(process.env.PORT, () => {
   console.log(`Now listening on port ${process.env.PORT}`);

@@ -1,6 +1,5 @@
-import { useState, useEffect, useRef, useCallback, type JSX } from 'react'
+import {useState, useEffect, useRef, useCallback, type JSX} from 'react'
 import {useParams, Link} from 'react-router-dom'
-import slugify from 'slugify'
 
 import './styles/search-results.css'
 
@@ -85,7 +84,7 @@ function SearchResults() {
   }
   
   // Displays list of games based on returned search results
-  const displayResults = (): JSX.Element => {
+  function displayResults(): JSX.Element {
     // Return JSX only if there are results
     if (searchResults.length > 0) {
       return(
@@ -111,13 +110,6 @@ function SearchResults() {
               });
             }
 
-            // Make game name URL friendly
-            const navParam = slugify(entry.name, {
-              lower: true,
-              replacement: '_',
-              strict: true
-            });
-
             // Search entry jsx
             const entryContent = 
               <div className='search-entry'>
@@ -141,7 +133,7 @@ function SearchResults() {
               return(
                 <>
                   {/* Redirect to game's page*/}
-                  <Link to={`/games/${navParam}`} className='link'>
+                  <Link to={`/games/${entry.id}`} className='link'>
                     <div ref={lastGameElementRef}>
                       {entryContent}
                     </div>
@@ -152,7 +144,7 @@ function SearchResults() {
               return (
                 <>
                   {/* Redirect to game's page*/}
-                  <Link to={`/games/${navParam}`} className='link'>
+                  <Link to={`/games/${entry.id}`} className='link'>
                     {entryContent}
                   </Link>
                 </>
@@ -168,10 +160,18 @@ function SearchResults() {
 
   // Fetch results when game name is returned from the parameter or if offset number changes
   useEffect(() => {
-    if (gameName) {
-      setResults();
-    }
+    setResults()
   }, [gameName, resultsOffset]);
+
+  // Reset state when new search is triggered
+  useEffect(() => {
+    if (gameName) {
+      setSearchResults([]);
+      setResultsOffset(0);
+      setHasMore(true);
+      setNotFound(false);
+    }
+  }, [gameName]);
 
   return (
     <>

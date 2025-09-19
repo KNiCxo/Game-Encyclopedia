@@ -1,6 +1,5 @@
-import { useState, useEffect, type JSX } from 'react'
+import {useState, useEffect, type JSX} from 'react'
 import {Link} from 'react-router-dom'
-import slugify from 'slugify'
 
 import './styles/home.css'
 
@@ -30,16 +29,9 @@ function Home() {
         <>
           <div className='pnr-results'>
             {popularNewReleases.map((entry) => {
-              // Make game name URL friendly
-              const navParam = slugify(entry.name, {
-                lower: true,
-                replacement: '_',
-                strict: true
-              });
-              
               return(
                 <>
-                  <Link to={`/games/${navParam}`} className='link'>
+                  <Link to={`/games/${entry.id}`} className='link'>
                     <div className='pnr-card'>
                       <img src={`https://images.igdb.com/igdb/image/upload/t_1080p/${entry.cover.image_id}.jpg`} alt="" />
                       
