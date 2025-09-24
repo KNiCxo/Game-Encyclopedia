@@ -2,20 +2,53 @@
 .game-data {
   display: flex;
   flex-direction: column;
+  margin: 115px auto 0;
   width: 90%;
-  margin: 124px auto 0;
+  position: relative;
+}
+
+/* Banner content */
+.banner-content {
+  display: flex;
+  flex-direction: column-reverse;
+  position: absolute;
+  width: 100%;
+  height: 180px;
+}
+
+/* Styling for game artwork banner */
+.banner {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 180px;
+  width: 100vw;
+}
+
+/* Game name */
+.game-name {
+  color: white;
+  font-family: roboto-bold-italic;
+  font-size: 30px;
+  z-index: 100;
+  text-shadow: 2px 2px 2px black;
+  margin: 0 0 10px;
+}
+
+/* Main page content */
+.main-content {
+  margin-top: 190px;
 }
 
 /* Age ratings header */
 .age-ratings-header {
   color: white;
   font-family: roboto-bold-italic;
-  margin-bottom: 10px;
-
 }
 
 /* Age ratings container */
 .age-ratings {
+  margin: 10px auto 0;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 10px;

@@ -122,7 +122,7 @@ function SearchResults() {
 
                 {/* Name, year, and platforms list */}
                 <div className='search-entry-info'>
-                  <span className='search-entry-name'>{entry.name}</span>
+                  <Link to={`/games/${entry.id}`} className='link'><span className='search-entry-name'>{entry.name}</span></Link>
                   {!Number.isNaN(gameYear) && <span className='search-entry-year'>{gameYear}</span>}
                   {entry.platforms && <span className='search-entry-platforms'>{platformsList}</span>}
                 </div>
@@ -133,20 +133,16 @@ function SearchResults() {
               return(
                 <>
                   {/* Redirect to game's page*/}
-                  <Link to={`/games/${entry.id}`} className='link'>
-                    <div ref={lastGameElementRef}>
-                      {entryContent}
-                    </div>
-                  </Link>
+                  <div ref={lastGameElementRef}>
+                    {entryContent}
+                  </div>
                 </>
               )
             } else {
               return (
                 <>
                   {/* Redirect to game's page*/}
-                  <Link to={`/games/${entry.id}`} className='link'>
-                    {entryContent}
-                  </Link>
+                  {entryContent}
                 </>
               )
             }

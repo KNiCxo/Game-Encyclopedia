@@ -93,7 +93,7 @@ export const gatherGameData = async (gameId: string) => {
           'Client-ID': `${process.env.CLIENT_ID}`,
           'Authorization': `Bearer ${process.env.AUTH}`,
         },
-        body: `fields age_ratings.organization.name,age_ratings.rating_category.rating; where id = ${gameId};`
+        body: `fields age_ratings.organization.name, age_ratings.rating_category.rating, artworks.image_id, name, screenshots.image_id; where id = ${gameId};`
       }); 
 
       if (!response.ok) {

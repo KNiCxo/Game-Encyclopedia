@@ -1,4 +1,4 @@
-import {useState, useEffect, type JSX} from 'react'
+import {useState, useRef, useEffect, type JSX} from 'react'
 import {Link} from 'react-router-dom'
 import slugify from 'slugify'
 
@@ -8,6 +8,9 @@ import {searchGameLite} from './searchUtils.ts'
 
 // Project header 
 function Header() {
+  // Overlay
+  const overlayRef = useRef<HTMLDivElement | null>(null);
+
   // Stores search results
   const [searchResultsLite, setSearchResultsLite] = useState<searchResultLite[]>([]);
 
@@ -59,6 +62,10 @@ function Header() {
     // If there are results, then display the first 4
     // Else if search was made but no results were found, display error message
     if (searchResultsLite.length > 0) {
+      if (overlayRef.current) {
+        overlayRef.current.style.display = 'block';
+      }
+
       return(
         <>
           {/* Iterate through results */}
@@ -66,7 +73,7 @@ function Header() {
             return(
               <>
                 {/* Entry */}
-                <Link to={`/games/${entry.id}`} className='link' onClick={() => setSearchInput('')}>
+                <Link to={`/games/${entry.id}`} className='link'>
                   <div className='search-lite-item'>
                     {/* Game Cover */}
                     {entry.cover && (<img className='search-lite-cover' src={`https://images.igdb.com/igdb/image/upload/t_1080p/${entry.cover.image_id}.jpg`} alt="" />)}
@@ -80,7 +87,7 @@ function Header() {
           })}
           
           {/* Links to all results */}
-          <Link to={`/search/${searchTermSlug}`} className='link' onClick={() => setSearchInput('')}>
+          <Link to={`/search/${searchTermSlug}`} className='link'>
             <div className='all-results-div'>
               <span>See all results</span>
             </div>
@@ -94,7 +101,7 @@ function Header() {
           <h1 className='not-found'>No results found</h1>
 
           {/* Link to all results */}
-          <Link to={`/search/${searchTermSlug}`} className='link' onClick={() => setSearchInput('')}>
+          <Link to={`/search/${searchTermSlug}`} className='link'>
             <div className='all-results-div'>
               <span>See all results</span>
             </div>
@@ -102,11 +109,15 @@ function Header() {
         </>
       );
     } else {
+      if (overlayRef.current) {
+        overlayRef.current.style.display = 'none';
+      }
+
       return(<></>);
     }
   }
 
-  // Delays search by 500ms
+  // Delays search by 300ms
   useEffect(() => {
     const searchHandler = setTimeout(() => {
       setDebouncedInput(searchInput);
@@ -130,6 +141,9 @@ function Header() {
 
   return(
     <>
+      {/* Overlay */}
+      <div ref={overlayRef} className='results-overlay'></div>
+
       {/* Header */}
       <div className='header'>
         <div className='header-top'>
@@ -145,7 +159,14 @@ function Header() {
 
         {/* Search Bar */}
         <div className='search-div'>
-          <input className='search' type="text" placeholder='Search' onChange={e => setSearchInput(e.target.value)}/>
+          <input className='search' type="text" placeholder='Search' 
+                 onChange={e => setSearchInput(e.target.value)} 
+                 onBlur={() => {
+                  setTimeout(() => {
+                    setSearchResultsLite([]);
+                    setSearchInput('');
+                  }, 200)
+                 }}/>
           <img className='search-icon' src="/public/search.png" alt="" />
         </div>
 

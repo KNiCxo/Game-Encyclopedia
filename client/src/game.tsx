@@ -20,7 +20,16 @@ function Game() {
       id: number, 
       organization: {id: number, name: string}, 
       rating_category: {id: number, rating: string}
-    }[]
+    }[],
+    artworks: {
+      id: number,
+      image_id: string
+    }[],
+    screenshots: {
+      id: number,
+      image_id: string
+    }[],
+    name: string
   }
 
   // Stores all game data
@@ -39,27 +48,64 @@ function Game() {
 
   // Displays game data
   function displayData(): JSX.Element {
+    // Only display if gameData exists
     if (gameData) {
       console.log(gameData);
+
+      // Stores URL for banner image on page
+      let bannerURL: string = '';
+
+      // If artworks does not exist, use screenshots
+      // Else, use black banner
+      if (!gameData[0].artworks) {
+        if (!gameData[0].screenshots) {
+          bannerURL = `/black.png`
+        } else {
+          // Picks random number to decide image from screenshots array
+          const randomNum = Math.floor(Math.random() * gameData[0].screenshots.length);
+          
+          bannerURL = `https://images.igdb.com/igdb/image/upload/t_1080p/${gameData[0].screenshots[randomNum].image_id}.jpg`;
+        }
+      } else {
+        // Picks random number to decide image from artworks array
+        const randomNum = Math.floor(Math.random() * gameData[0].artworks.length);
+
+        bannerURL = `https://images.igdb.com/igdb/image/upload/t_1080p/${gameData[0].artworks[randomNum].image_id}.jpg`;
+      }
+
       return(
         <>
-          {/* Age ratings header */}
-          <span className='age-ratings-header'>Age Ratings</span>
+          {/* Banner content */}
+          <div className='banner-content'>
+            {/* Game banner */}
+            <img src={bannerURL} alt="" className='banner'/>
 
-          {/* Age ratings container */}
-          <div className='age-ratings'>
-            {/* Iterate through age ratings array */}
-            {gameData[0].age_ratings.map((entry, _) => {
-              return(
-                <>
-                  {/* Indiviual age rating */}
-                  <div className='age-rating'>
-                    {/* Age rating image */}
-                    <img src={`/age-rating/${entry.organization.name}/${entry.rating_category.rating}.png`} alt="" className={`${entry.organization.name}`}/>
-                  </div>
-                </>
-              );
-          })}
+            {/* Game name */}
+            <h1 className='game-name'>{gameData[0].name}</h1>
+          </div>
+          
+          <div className='main-content'>
+            {/* Age ratings header */}
+            <span className='age-ratings-header'>Age Ratings</span>
+
+            {/* Displays if age_ratings doesn't exist */}
+            {!gameData[0].age_ratings && <span className='data-not-found'>-</span>}
+
+            {/* Age ratings container */}
+            <div className='age-ratings'>
+              {/* Iterate through age ratings array if it exists */}
+              {gameData[0].age_ratings?.map((entry, _) => {
+                return(
+                  <>
+                    {/* Indiviual age rating */}
+                    <div className='age-rating'>
+                      {/* Age rating image */}
+                      <img src={`/age-rating/${entry.organization.name}/${entry.rating_category.rating}.png`} alt="" className={`${entry.organization.name}`}/>
+                    </div>
+                  </>
+                );
+              })}
+            </div>
           </div>
         </>
       )
