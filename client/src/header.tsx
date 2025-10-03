@@ -1,5 +1,5 @@
 import {useState, useRef, useEffect, type JSX} from 'react'
-import {Link} from 'react-router-dom'
+import {Link, useNavigate} from 'react-router-dom'
 import slugify from 'slugify'
 
 import './styles/header.css'
@@ -8,14 +8,20 @@ import {searchGameLite} from './searchUtils.ts'
 
 // Project header 
 function Header() {
+  // Enable navigate hook
+  const navigate = useNavigate();
+
   // Overlay
   const overlayRef = useRef<HTMLDivElement | null>(null);
 
   // Stores search results
   const [searchResultsLite, setSearchResultsLite] = useState<searchResultLite[]>([]);
 
-  // Value from search bar input
+  // Value from search bar input when user types
   const [searchInput, setSearchInput] = useState<string>('');
+
+  // Reference to input field to get its current value at any time
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   // Debounced search bar input
   const [debouncedInput, setDebouncedInput] = useState<string>('');
@@ -52,12 +58,8 @@ function Header() {
 
   // Displays search results if loaded
   function displayResults(): JSX.Element {
-    // Make game name input URL friendly
-    const searchTermSlug = slugify(debouncedInput, {
-      lower: true,
-      replacement: '_',
-      strict: true
-    });
+    // Slug game name
+    const searchTermSlug = slug(debouncedInput);
 
     // If there are results, then display the first 4
     // Else if search was made but no results were found, display error message
@@ -117,6 +119,17 @@ function Header() {
     }
   }
 
+  // Makes string URL friendly
+  function slug(gameName: string): string {
+    const slugString = slugify(gameName, {
+      lower: true,
+      replacement: '_',
+      strict: true
+    });
+
+    return slugString;
+  }
+
   // Delays search by 300ms
   useEffect(() => {
     const searchHandler = setTimeout(() => {
@@ -148,10 +161,12 @@ function Header() {
       <div className='header'>
         <div className='header-top'>
           {/* Logo */}
-          <div className='header-logo'>
-            <img className='header-logo' src="/public/gamepad.png" alt="" />
-            <h1>GAME ENCYCLOPEDIA</h1>
-          </div>
+          <Link to='/' className='link'>
+            <div className='header-logo'>
+              <img className='header-logo' src="/public/gamepad.png" alt="" />
+              <h1>GAME ENCYCLOPEDIA</h1>
+            </div>
+          </Link>
 
           {/* List Link */}
           <img className='menu' src="/public/menu.png" alt="" />
@@ -160,14 +175,21 @@ function Header() {
         {/* Search Bar */}
         <div className='search-div'>
           <input className='search' type="text" placeholder='Search' 
+                 ref={inputRef}
                  onChange={e => setSearchInput(e.target.value)} 
                  onBlur={() => {
                   setTimeout(() => {
                     setSearchResultsLite([]);
                     setSearchInput('');
                   }, 200)
-                 }}/>
-          <img className='search-icon' src="/public/search.png" alt="" />
+                 }}
+          />
+          <img className='search-icon' src="/public/search.png" alt="" 
+                onClick={() => {
+                if (inputRef.current?.value) {
+                  navigate(`/search/${slug(inputRef.current.value)}/`)
+                }}}
+          />
         </div>
 
         {/* Displays search results */}

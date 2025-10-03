@@ -9,7 +9,7 @@ export const popularNewReleases = async () => {
   const currentDate = (Math.floor(Date.now() / 1000));
 
   // 30 days from current date
-  const earliestReleaseDate = currentDate - 2629743;
+  const earliestReleaseDate = currentDate - 2592000;
 
   try {
     // Run 300ms delay for increased loading spinner visibility
@@ -25,9 +25,9 @@ export const popularNewReleases = async () => {
           'Client-ID': `${process.env.CLIENT_ID}`,
           'Authorization': `Bearer ${process.env.AUTH}`,
         },
-        body: `fields cover.image_id,name,genres.name; 
+        body: `fields cover.image_id,name,genres.name;
                where (first_release_date > ${earliestReleaseDate}) & (first_release_date < ${currentDate}) & (rating_count >= 5);
-               sort first_release_date desc;
+               sort rating_count desc;
                limit 10;`
     });
 

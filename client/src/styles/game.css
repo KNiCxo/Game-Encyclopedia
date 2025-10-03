@@ -1,3 +1,9 @@
+/* Data not found '-' element */
+.data-not-found {
+  color: white;
+  font-size: 35px;
+}
+
 /* Styling for all page content */
 .game-data {
   display: flex;
@@ -38,6 +44,8 @@
 /* Main page content */
 .main-content {
   margin-top: 190px;
+  display: flex;
+  flex-direction: column;
 }
 
 /* Age ratings header */
@@ -51,13 +59,13 @@
   margin: 10px auto 0;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 10px;
+  gap: 20px;
 }
 
 /* Individual Age rating container */
 .age-rating {
-  width: 72px;
-  height: 85px;
+  width: 64px;
+  height: 75px;
   background-color: white;
   display: flex;
   align-items: center;
@@ -67,28 +75,28 @@
 
 /* Age rating images */
 .ESRB {
-  width: 42px;
-  height: 64px;
+  width: 37px;
+  height: 55px;
 }
 
 .GRAC {
-  width: 55px;
-  height: 64px;
+  width: 46px;
+  height: 55px;
 }
 
 .PEGI {
-  width: 52px;
-  height: 64px;
+  width: 44px;
+  height: 55px;
 }
 
 .CERO {
-  width: 57px;
-  height: 70px;
+  width: 49px;
+  height: 62px;
 }
 
 .CLASS_IND, .USK, .ACB {
-  width: 64px;
-  height: 64px;
+  width: 55px;
+  height: 55px;
 }
 
 /* Game not found error message */
