@@ -5,7 +5,7 @@ import './styles/search-results.css'
 
 // Import page components and functions */
 import Header from './header.tsx'
-import {searchGame} from './searchUtils'
+import {searchGame} from './search-utils.ts'
 
 // Component for search results page
 function SearchResults() {

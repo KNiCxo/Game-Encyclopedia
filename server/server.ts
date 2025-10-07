@@ -5,7 +5,7 @@ import cors from 'cors';
 
 // Import services
 // import { DbService }  from './dbService';
-import * as tpaService from './tpaService';
+import * as tpaService from './tpa-service';
 
 // Create server instance
 const app: Express = express();

@@ -5,7 +5,7 @@ import './styles/home.css'
 
 // Import page components and functions */
 import Header from './header.tsx'
-import {getPopularNewReleases} from './searchUtils.ts'
+import {getPopularNewReleases} from './search-utils.ts'
 
 /* Home page */
 function Home() {

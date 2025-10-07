@@ -4,7 +4,7 @@ import slugify from 'slugify'
 
 import './styles/header.css'
 
-import {searchGameLite} from './searchUtils.ts'
+import {searchGameLite} from './search-utils.ts'
 
 // Project header 
 function Header() {

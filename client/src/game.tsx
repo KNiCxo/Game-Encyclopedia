@@ -4,7 +4,8 @@ import {useParams} from 'react-router-dom'
 import './styles/game.css'
 
 import Header from './header.tsx'
-import {gatherGameData} from './searchUtils.ts'
+import VideoSlider from './video-slider.tsx'
+import {gatherGameData} from './search-utils.ts'
 
 function Game() {
   // Get game id from URL parameter
@@ -16,11 +17,6 @@ function Game() {
   // Type for game data received from server
   type gameDataType = {
     id: number,
-    age_ratings: {
-      id: number, 
-      organization: {id: number, name: string}, 
-      rating_category: {id: number, rating: string}
-    }[],
     artworks: {
       id: number,
       image_id: string
@@ -29,7 +25,16 @@ function Game() {
       id: number,
       image_id: string
     }[],
-    name: string
+    name: string,
+    videos: {
+      id: number,
+      video_id: string
+    }[],
+    age_ratings: {
+      id: number, 
+      organization: {id: number, name: string}, 
+      rating_category: {id: number, rating: string}
+    }[]
   }
 
   // Stores all game data
@@ -55,7 +60,7 @@ function Game() {
       // Stores URL for banner image on page
       let bannerURL: string = '';
 
-      // If artworks does not exist, use screenshots
+      // If artworks do not exist, use screenshots
       // Else, use black banner
       if (!gameData[0].artworks) {
         if (!gameData[0].screenshots) {
@@ -72,7 +77,7 @@ function Game() {
 
         bannerURL = `https://images.igdb.com/igdb/image/upload/t_1080p/${gameData[0].artworks[randomNum].image_id}.jpg`;
       }
-
+      
       return(
         <>
           {/* Banner content */}
@@ -85,6 +90,9 @@ function Game() {
           </div>
           
           <div className='main-content'>
+            {/* Video Slider */}
+            {gameData[0].videos && <VideoSlider videos={gameData[0].videos}></VideoSlider>}
+
             {/* Age ratings header */}
             <span className='age-ratings-header'>Age Ratings</span>
 

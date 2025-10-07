@@ -93,7 +93,17 @@ export const gatherGameData = async (gameId: string) => {
           'Client-ID': `${process.env.CLIENT_ID}`,
           'Authorization': `Bearer ${process.env.AUTH}`,
         },
-        body: `fields age_ratings.organization.name, age_ratings.rating_category.rating, artworks.image_id, name, screenshots.image_id; where id = ${gameId};`
+        body: `fields
+              artworks.image_id,
+              screenshots.image_id,
+              name,
+              videos.video_id,
+              involved_companies.developer,
+              involved_companies.publisher,
+              involved_companies.company.name,
+              age_ratings.organization.name,
+              age_ratings.rating_category.rating;
+              where id = ${gameId};`
       }); 
 
       if (!response.ok) {
