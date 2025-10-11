@@ -1,5 +1,6 @@
 import {useState, useEffect, type JSX} from 'react'
 import {useParams} from 'react-router-dom'
+import {format} from 'date-fns';
 
 import './styles/game.css'
 
@@ -29,6 +30,20 @@ function Game() {
     videos: {
       id: number,
       video_id: string
+    }[],
+    cover: {
+      id: number,
+      image_id: string
+    },
+    first_release_date: number,
+    involved_companies: {
+      id: number,
+      company: {
+        id: number,
+        name: string
+      },
+      developer: boolean,
+      publisher: boolean
     }[],
     age_ratings: {
       id: number, 
@@ -77,6 +92,16 @@ function Game() {
 
         bannerURL = `https://images.igdb.com/igdb/image/upload/t_1080p/${gameData[0].artworks[randomNum].image_id}.jpg`;
       }
+
+      // Formatted release date for game if release date exists
+      let formattedReleaseDate:string;
+
+      if (gameData[0].first_release_date) {
+        let releaseDate:Date = new Date(gameData[0].first_release_date * 1000);
+        formattedReleaseDate = format(releaseDate, 'MM/dd/yyyy');
+      } else {
+        formattedReleaseDate = 'Unreleased';
+      }
       
       return(
         <>
@@ -90,11 +115,49 @@ function Game() {
           </div>
           
           <div className='main-content'>
-            {/* Video Slider */}
+            {/* Video slider */}
             {gameData[0].videos && <VideoSlider videos={gameData[0].videos}></VideoSlider>}
 
+            {/* Cover container */}
+            <div className='cover-container'>
+              {!gameData[0].cover && <img src='/public/no-cover.png' alt='' className='cover'></img>}
+              {gameData[0].cover && <img src={`https://images.igdb.com/igdb/image/upload/t_1080p/${gameData[0].cover.image_id}.jpg`} alt='' className='cover'></img>}
+
+              <div className='cover-container-info'>
+                  {/* Release Date*/}
+                  <span className='game-info-header'>Release Date</span>
+                  <span className='game-info'>{formattedReleaseDate}</span>
+
+                  {/* Main Developers */}
+                  <span className='game-info-header'>Main Developers</span>
+                  {!gameData[0].involved_companies && <span className='data-not-found'>-</span>}
+                  {gameData[0].involved_companies && gameData[0].involved_companies.map((entry) => {
+                    if (entry.developer) {
+                      return(
+                        <>
+                          <span className='game-info'>{entry.company.name}</span>
+                        </>
+                      )
+                    }
+                  })}
+
+                  {/* Publishers */}
+                  <span className='game-info-header'>Publishers</span>
+                  {!gameData[0].involved_companies && <span className='data-not-found'>-</span>}
+                  {gameData[0].involved_companies && gameData[0].involved_companies.map((entry) => {
+                    if (entry.publisher) {
+                      return(
+                        <>
+                          <span className='game-info'>{entry.company.name}</span>
+                        </>
+                      )
+                    }
+                  })}
+              </div>
+            </div>
+
             {/* Age ratings header */}
-            <span className='age-ratings-header'>Age Ratings</span>
+            <span className='age-ratings-header game-info-header'>Age Ratings</span>
 
             {/* Displays if age_ratings doesn't exist */}
             {!gameData[0].age_ratings && <span className='data-not-found'>-</span>}

@@ -22,9 +22,11 @@ function VideoSlider(props: sliderProps) {
   // Displays next image in array
   function showNextImg() {
     const arrayLength = props.videos.length;
+    console.log(arrayLength);
+    console.log(imgIndex + 1);
 
     // If within bounds, go to next image
-    if (imgIndex < arrayLength) {
+    if (imgIndex < arrayLength - 1) {
       setImgIndex(s => s + 1);
     }
 
@@ -32,13 +34,15 @@ function VideoSlider(props: sliderProps) {
     // or hide right arrow if at the end of gallery
     if (imgIndex == 0) {
       if (leftArrow.current) leftArrow.current.style.display = 'block';
-    } else if (imgIndex == 3) {
+    } else if (imgIndex == arrayLength - 2) {
       if (rightArrow.current) rightArrow.current.style.display = 'none';
     }
   }
 
   // Displays previous image in array
   function showPrevImg() {
+    const arrayLength = props.videos.length;
+
     // If within bounds, go to previous image
     if (imgIndex > 0) {
       setImgIndex(s => s - 1);
@@ -50,7 +54,7 @@ function VideoSlider(props: sliderProps) {
       if (leftArrow.current) {
         leftArrow.current.style.display = 'none';
       }
-    } else if (imgIndex == 4) {
+    } else if (imgIndex == arrayLength - 1) {
       if (rightArrow.current) {
         rightArrow.current.style.display = 'block';
       }

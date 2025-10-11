@@ -98,6 +98,8 @@ export const gatherGameData = async (gameId: string) => {
               screenshots.image_id,
               name,
               videos.video_id,
+              cover.image_id,
+              first_release_date,
               involved_companies.developer,
               involved_companies.publisher,
               involved_companies.company.name,
