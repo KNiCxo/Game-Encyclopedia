@@ -103,6 +103,7 @@ export const gatherGameData = async (gameId: string) => {
               involved_companies.developer,
               involved_companies.publisher,
               involved_companies.company.name,
+              summary,
               age_ratings.organization.name,
               age_ratings.rating_category.rating;
               where id = ${gameId};`

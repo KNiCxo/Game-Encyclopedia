@@ -15,6 +15,9 @@ function Game() {
   // Track if game exists
   const [gameExists, setGameExists] = useState<boolean>(true);
 
+  // Track if summary is extended
+  const [isExtended, setIsExtended] = useState<boolean>(false);
+
   // Type for game data received from server
   type gameDataType = {
     id: number,
@@ -45,6 +48,7 @@ function Game() {
       developer: boolean,
       publisher: boolean
     }[],
+    summary: string,
     age_ratings: {
       id: number, 
       organization: {id: number, name: string}, 
@@ -96,13 +100,18 @@ function Game() {
       // Formatted release date for game if release date exists
       let formattedReleaseDate:string;
 
+      // If first release date exists, then set format to MM/DD/YYYY
+      // Else, set to 'Unreleased'
       if (gameData[0].first_release_date) {
         let releaseDate:Date = new Date(gameData[0].first_release_date * 1000);
         formattedReleaseDate = format(releaseDate, 'MM/dd/yyyy');
       } else {
         formattedReleaseDate = 'Unreleased';
       }
-      
+
+      let initialSummary = gameData[0].summary.substring(0, 200);
+      let extendedSummary = gameData[0].summary.substring(200);
+
       return(
         <>
           {/* Banner content */}
@@ -119,42 +128,60 @@ function Game() {
             {gameData[0].videos && <VideoSlider videos={gameData[0].videos}></VideoSlider>}
 
             {/* Cover container */}
-            <div className='cover-container'>
+            <div className='cover-container info-container'>
               {!gameData[0].cover && <img src='/public/no-cover.png' alt='' className='cover'></img>}
               {gameData[0].cover && <img src={`https://images.igdb.com/igdb/image/upload/t_1080p/${gameData[0].cover.image_id}.jpg`} alt='' className='cover'></img>}
 
               <div className='cover-container-info'>
                   {/* Release Date*/}
-                  <span className='game-info-header'>Release Date</span>
-                  <span className='game-info'>{formattedReleaseDate}</span>
+                  <div className='game-info-container'>
+                    <span className='game-info-header'>Release Date</span>
+                    <span className='game-info'>{formattedReleaseDate}</span>
+                  </div>
 
                   {/* Main Developers */}
-                  <span className='game-info-header'>Main Developers</span>
-                  {!gameData[0].involved_companies && <span className='data-not-found'>-</span>}
-                  {gameData[0].involved_companies && gameData[0].involved_companies.map((entry) => {
-                    if (entry.developer) {
-                      return(
-                        <>
-                          <span className='game-info'>{entry.company.name}</span>
-                        </>
-                      )
-                    }
-                  })}
+                  <div className='game-info-container'>
+                    <span className='game-info-header'>Main Developers</span>
+                    {!gameData[0].involved_companies && <span className='data-not-found'>-</span>}
+                    {gameData[0].involved_companies && gameData[0].involved_companies.map((entry) => {
+                      if (entry.developer) {
+                        return(
+                          <>
+                            <span className='game-info'>{entry.company.name}</span>
+                          </>
+                        )
+                      }
+                    })}
+                  </div>
 
                   {/* Publishers */}
-                  <span className='game-info-header'>Publishers</span>
-                  {!gameData[0].involved_companies && <span className='data-not-found'>-</span>}
-                  {gameData[0].involved_companies && gameData[0].involved_companies.map((entry) => {
-                    if (entry.publisher) {
-                      return(
-                        <>
-                          <span className='game-info'>{entry.company.name}</span>
-                        </>
-                      )
-                    }
-                  })}
+                  <div className='game-info-container'>
+                    <span className='game-info-header'>Publishers</span>
+                    {!gameData[0].involved_companies && <span className='data-not-found'>-</span>}
+                    {gameData[0].involved_companies && gameData[0].involved_companies.map((entry) => {
+                      if (entry.publisher) {
+                        return(
+                          <>
+                            <span className='game-info'>{entry.company.name}</span>
+                          </>
+                        )
+                      }
+                    })}
+                  </div>
               </div>
             </div>
+
+            {/* Summary */}
+            {gameData[0].summary && <div className='summary-container info-container'>
+              <span className='summary-header'>Summary</span>
+
+              <div className='summary'>
+                <span>{initialSummary}</span>
+                {(gameData[0].summary.length > 200 && !isExtended) && <span className='dots'>... </span>}
+                {isExtended && <span>{extendedSummary}</span>}
+                {gameData[0].summary.length > 200 && <span className='more-button' onClick={() => setIsExtended(prev => !prev)}>{isExtended ? ' Less' : ' More'}</span>}
+              </div>
+            </div>}
 
             {/* Age ratings header */}
             <span className='age-ratings-header game-info-header'>Age Ratings</span>

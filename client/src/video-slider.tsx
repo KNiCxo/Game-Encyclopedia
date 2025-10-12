@@ -22,20 +22,18 @@ function VideoSlider(props: sliderProps) {
   // Displays next image in array
   function showNextImg() {
     const arrayLength = props.videos.length;
-    console.log(arrayLength);
-    console.log(imgIndex + 1);
 
     // If within bounds, go to next image
     if (imgIndex < arrayLength - 1) {
       setImgIndex(s => s + 1);
-    }
 
-    // Show left arrow if not on the first image
-    // or hide right arrow if at the end of gallery
-    if (imgIndex == 0) {
-      if (leftArrow.current) leftArrow.current.style.display = 'block';
-    } else if (imgIndex == arrayLength - 2) {
-      if (rightArrow.current) rightArrow.current.style.display = 'none';
+      // Show left arrow if not on the first image
+      // or hide right arrow if at the end of gallery
+      if (imgIndex == 0) {
+        if (leftArrow.current) leftArrow.current.style.display = 'block';
+      } else if (imgIndex == arrayLength - 2) {
+        if (rightArrow.current) rightArrow.current.style.display = 'none';
+      }
     }
   }
 
@@ -46,17 +44,13 @@ function VideoSlider(props: sliderProps) {
     // If within bounds, go to previous image
     if (imgIndex > 0) {
       setImgIndex(s => s - 1);
-    }
 
-    // Hide left arrow if at the first image
-    // or show right arrow if not at end of gallery
-    if (imgIndex == 1) {
-      if (leftArrow.current) {
-        leftArrow.current.style.display = 'none';
-      }
-    } else if (imgIndex == arrayLength - 1) {
-      if (rightArrow.current) {
-        rightArrow.current.style.display = 'block';
+      // Hide left arrow if at the first image
+      // or show right arrow if not at end of gallery
+      if (imgIndex == 1) {
+        if (leftArrow.current) leftArrow.current.style.display = 'none';
+      } else if (imgIndex == arrayLength - 1) {
+        if (rightArrow.current) rightArrow.current.style.display = 'block';
       }
     }
   }
@@ -82,8 +76,8 @@ function VideoSlider(props: sliderProps) {
         </div>
 
         {/* Arrow Buttons */}
-        <img onClick={showPrevImg} className='arrow-button' ref={leftArrow} src="/public/arrow.png" alt="" style={{left: 10, display: 'none'}}/>
-        <img onClick={showNextImg} className='arrow-button right-arrow' ref={rightArrow} src="/public/arrow.png" alt="" style={{right: 10}}/>
+        {props.videos.length > 1 && <img onClick={showPrevImg} className='arrow-button' ref={leftArrow} src="/public/arrow.png" alt="" style={{left: 10, display: 'none'}}/>}
+        {props.videos.length > 1 && <img onClick={showNextImg} className='arrow-button right-arrow' ref={rightArrow} src="/public/arrow.png" alt="" style={{right: 10}}/>}
       </div>
     </>
   )
