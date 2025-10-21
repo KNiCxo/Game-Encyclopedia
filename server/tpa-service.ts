@@ -118,3 +118,18 @@ export const gatherGameData = async (gameId: string) => {
     throw error;
   }
 }
+
+// Gets game player count from Steam Charts
+export const getPlayerCount = async (gameName: string) => {
+  try {
+    const response = await fetch(`https://steamcharts.com/search/?q=${gameName}`);
+
+    if (!response.ok) {
+      throw new Error();
+    }
+
+    return await response.text();
+  } catch (error) {
+    throw error;
+  }
+}

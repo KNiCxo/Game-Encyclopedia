@@ -75,8 +75,46 @@ export const searchGame = async (gameName: string | undefined, offset: string): 
   }
 }
 
+  // Type for game data received from server
+  type gameDataType = {
+    id: number,
+    artworks: {
+      id: number,
+      image_id: string
+    }[],
+    screenshots: {
+      id: number,
+      image_id: string
+    }[],
+    name: string,
+    videos: {
+      id: number,
+      video_id: string
+    }[],
+    cover: {
+      id: number,
+      image_id: string
+    },
+    first_release_date: number,
+    involved_companies: {
+      id: number,
+      company: {
+        id: number,
+        name: string
+      },
+      developer: boolean,
+      publisher: boolean
+    }[],
+    summary: string,
+    age_ratings: {
+      id: number, 
+      organization: {id: number, name: string}, 
+      rating_category: {id: number, rating: string}
+    }[]
+  }
+
 // Gets info for a single game
-export const gatherGameData = async (gameId: string | undefined) => {
+export const gatherGameData = async (gameId: string | undefined): Promise<gameDataType[] | []> => {
   if (gameId) {
     try {
       const response = await fetch(`http://localhost:4001/gatherGameData/${gameId}`);
@@ -92,5 +130,25 @@ export const gatherGameData = async (gameId: string | undefined) => {
     }
   } else {
     return [];
+  }
+}
+
+// Gets game's player count from Steam Charts
+export const getPlayerCount = async (gameName: string | undefined): Promise<string> => {
+  if (gameName) {
+    try {
+      const response = await fetch(`http://localhost:4001/getPlayerCount/${gameName}`);
+
+      if (!response.ok) {
+          throw new Error();
+      }
+
+      return await response.text();
+
+    } catch (error){
+      throw error;
+    }
+  } else {
+    return '';
   }
 }

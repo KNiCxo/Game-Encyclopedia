@@ -5,12 +5,21 @@
   margin-top: -5px;
 }
 
+/* Additional stylings for loader element */
+.game-page-loader:after {
+  margin-top: 220px;
+  border-width: 13px;
+  width: 90px;
+  height: 90px;
+}
+
 /* Styling for all page content */
 .game-data {
   display: flex;
   margin: 104px auto 0;
   width: 90%;
   position: relative;
+  animation: fadeIn 0.8s linear forwards;
 }
 
 /* Banner content */
@@ -127,6 +136,17 @@
 
 .more-button:hover {
   color: rgb(0, 147, 221);
+}
+
+/* Player count container */
+.player-count-container {
+  justify-content: center;
+}
+
+/* Player count header */
+.player-count {
+  font-family: roboto-bold-italic;
+  font-size: 20px;
 }
 
 /* Age ratings header */

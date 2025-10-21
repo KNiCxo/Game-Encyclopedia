@@ -47,10 +47,10 @@ body {
 
 .loader::after {
   content: "";
-  width: 65px;
-  height: 65px;
+  width: 80px;
+  height: 80px;
   margin-top: 10px;
-  border: 9px solid #ffffff;
+  border: 12px solid #ffffff;
   border-top-color: #3a9bf6;
   border-radius: 50%;
   animation: loading 0.75s ease infinite;

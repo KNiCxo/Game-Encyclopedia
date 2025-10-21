@@ -6,14 +6,20 @@ import './styles/game.css'
 
 import Header from './header.tsx'
 import VideoSlider from './video-slider.tsx'
-import {gatherGameData} from './search-utils.ts'
+import {gatherGameData, getPlayerCount} from './search-utils.ts'
 
 function Game() {
   // Get game id from URL parameter
   const {gameId} = useParams<{gameId: string}>();
 
+  // Get game name from URL parameter
+  const {gameName} = useParams<{gameName: string}>();
+
   // Track if game exists
   const [gameExists, setGameExists] = useState<boolean>(true);
+
+  // Track if videos have loaded
+  const [videosLoaded, setVideosLoaded] = useState<boolean>(false);
 
   // Track if summary is extended
   const [isExtended, setIsExtended] = useState<boolean>(false);
@@ -56,18 +62,32 @@ function Game() {
     }[]
   }
 
-  // Stores all game data
+  // Stores all game data from IGDB
   const [gameData, setGameData] = useState<gameDataType[] | null>(null);
+
+  // Stores player count from Steam Charts
+  const [playerCount, setPlayerCount] = useState<number | null>(null);
   
   // Fetches game data from server and updates variable
   function storeGameData() {
     gatherGameData(gameId)
-      .then((gameDataRes: gameDataType[]) => {
+      .then((gameDataRes: gameDataType[] | null) => {
         setGameData(gameDataRes);
       })
       .catch(() => {
         setGameExists(false);
       });
+    
+    getPlayerCount(gameName)
+      .then((playerCountRes: string) => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(playerCountRes, 'text/html');
+        const tbody = doc.querySelector('tbody');
+        setPlayerCount(Number(tbody?.rows[0].cells[2].innerHTML));
+      })
+      .catch(() => {
+        setPlayerCount(null);
+      })
   }
 
   // Displays game data
@@ -125,7 +145,7 @@ function Game() {
           
           <div className='main-content'>
             {/* Video slider */}
-            {gameData[0].videos && <VideoSlider videos={gameData[0].videos}></VideoSlider>}
+            {gameData[0].videos && <VideoSlider videos={gameData[0].videos} setIsLoaded={setVideosLoaded}></VideoSlider>}
 
             {/* Cover container */}
             <div className='cover-container info-container'>
@@ -171,17 +191,25 @@ function Game() {
               </div>
             </div>
 
+            {/* Player Count */}
+            {playerCount && <div className='player-count-container info-container'>
+              <span className='player-count'>Current players on Steam:&nbsp;{playerCount}</span>
+            </div>}
+
             {/* Summary */}
             {gameData[0].summary && <div className='summary-container info-container'>
               <span className='summary-header'>Summary</span>
 
               <div className='summary'>
-                <span>{initialSummary}</span>
-                {(gameData[0].summary.length > 200 && !isExtended) && <span className='dots'>... </span>}
-                {isExtended && <span>{extendedSummary}</span>}
-                {gameData[0].summary.length > 200 && <span className='more-button' onClick={() => setIsExtended(prev => !prev)}>{isExtended ? ' Less' : ' More'}</span>}
+                <span>{initialSummary + ' '}</span>
+                {(gameData[0].summary.length > 200 && !isExtended) && <span className='dots'>...</span>}
+                {isExtended && <span>{extendedSummary + ' '}</span>}
+                {gameData[0].summary.length > 200 && <span className='more-button' onClick={() => setIsExtended(prev => !prev)}>{isExtended ? 'Less' : 'More'}</span>}
               </div>
             </div>}
+
+            {/* Additional */}
+            <div></div>
 
             {/* Age ratings header */}
             <span className='age-ratings-header game-info-header'>Age Ratings</span>
@@ -222,8 +250,11 @@ function Game() {
       {/* Header */}
       <Header></Header>
 
+      {/* Loader*/}
+      {!videosLoaded && <div className='loader game-page-loader'></div>}
+
       {/* Game Data */}
-      <div className='game-data'>{displayData()}</div>
+      {<div className='game-data' style={{display: videosLoaded ? 'flex' : 'none' }}>{displayData()}</div>}
 
       {/* Error message */}
       {!gameExists && <h1 className='game-not-found'>No results found</h1>}

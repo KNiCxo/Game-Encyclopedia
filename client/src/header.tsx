@@ -75,7 +75,7 @@ function Header() {
             return(
               <>
                 {/* Entry */}
-                <Link to={`/games/${entry.id}`} className='link'>
+                <Link to={`/games/${entry.id}/${slug(entry.name)}`} className='link'>
                   <div className='search-lite-item'>
                     {/* Game Cover */}
                     {entry.cover && (<img className='search-lite-cover' src={`https://images.igdb.com/igdb/image/upload/t_1080p/${entry.cover.image_id}.jpg`} alt="" />)}

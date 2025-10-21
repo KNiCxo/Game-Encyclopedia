@@ -22,7 +22,7 @@ const router = createBrowserRouter([
 
  // Game Profile Page
  {
-  path: '/games/:gameId',
+  path: '/games/:gameId/:gameName',
   element: <Game></Game>
  }
 ]);

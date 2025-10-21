@@ -1,4 +1,4 @@
-import {useState, useRef} from 'react'
+import {useState, useRef, useEffect, type Dispatch, type SetStateAction} from 'react'
 
 import './styles/video-slider.css'
 
@@ -8,10 +8,14 @@ type video = {
 }
 
 interface sliderProps {
-  videos: video[]
+  videos: video[],
+  setIsLoaded: Dispatch<SetStateAction<boolean>>
 }
 
 function VideoSlider(props: sliderProps) {
+  // Tracks videos that are loaded
+  const [loadCount, setLoadCount] = useState(0);
+
   // Tracks position in image array
   const [imgIndex, setImgIndex] = useState(0);
 
@@ -55,6 +59,10 @@ function VideoSlider(props: sliderProps) {
     }
   }
 
+  useEffect(() => {
+    if (loadCount == props.videos.length) props.setIsLoaded(true);
+  }, [loadCount])
+
   return (
     <> 
       {/* Slider Container */}
@@ -70,6 +78,7 @@ function VideoSlider(props: sliderProps) {
                 }}
                 width='100%'
                 height="185"
+                onLoad={() => setLoadCount(c => c + 1)}
               ></iframe>
             )
           })}

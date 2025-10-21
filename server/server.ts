@@ -54,6 +54,16 @@ app.get('/gatherGameData/:gameId/', async (req: Request, res: Response) => {
   }
 });
 
+// GET request for player count based on game name
+app.get('/getPlayerCount/:gameName/', async (req: Request, res: Response) => {
+  try {
+    const data = await tpaService.getPlayerCount(req.params.gameName);
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(500).end();
+  }
+})
+
 // Start server
 app.listen(process.env.PORT, () => {
   console.log(`Now listening on port ${process.env.PORT}`);

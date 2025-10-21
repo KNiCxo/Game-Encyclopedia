@@ -1,5 +1,6 @@
 import {useState, useEffect, useRef, useCallback, type JSX} from 'react'
 import {useParams, Link} from 'react-router-dom'
+import slugify from 'slugify';
 
 import './styles/search-results.css'
 
@@ -91,6 +92,12 @@ function SearchResults() {
         <>
           {/* Iterate through results to display them individually */}
           {searchResults.map((entry, index) => {
+            const slugGameName = slugify(entry.name, {
+              lower: true,
+              replacement: '_',
+              strict: true
+            });
+
             // Get year from date
             const gameDate = new Date(entry.first_release_date * 1000)
             const gameYear = gameDate.getFullYear();
@@ -122,7 +129,7 @@ function SearchResults() {
 
                 {/* Name, year, and platforms list */}
                 <div className='search-entry-info'>
-                  <Link to={`/games/${entry.id}`} className='link'><span className='search-entry-name'>{entry.name}</span></Link>
+                  <Link to={`/games/${entry.id}/${slugGameName}`} className='link'><span className='search-entry-name'>{entry.name}</span></Link>
                   {!Number.isNaN(gameYear) && <span className='search-entry-year'>{gameYear}</span>}
                   {entry.platforms && <span className='search-entry-platforms'>{platformsList}</span>}
                 </div>
