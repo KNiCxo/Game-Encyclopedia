@@ -1,9 +1,15 @@
+// Import packages
 import {useState, useRef, useEffect, type JSX} from 'react'
 import {Link, useNavigate} from 'react-router-dom'
 import slugify from 'slugify'
 
+// Import styling
 import './styles/header.css'
 
+// Import types
+import type {SearchResultsLite} from '../../project-types.ts';
+
+// Import components and functions
 import {searchGameLite} from './search-utils.ts'
 
 // Project header 
@@ -15,7 +21,7 @@ function Header() {
   const overlayRef = useRef<HTMLDivElement | null>(null);
 
   // Stores search results
-  const [searchResultsLite, setSearchResultsLite] = useState<searchResultLite[]>([]);
+  const [searchResultsLite, setSearchResultsLite] = useState<SearchResultsLite[]>([]);
 
   // Value from search bar input when user types
   const [searchInput, setSearchInput] = useState<string>('');
@@ -29,19 +35,9 @@ function Header() {
   // Track if results were found
   const [notFound, setNotFound] = useState<boolean>(false);
 
-  // Type for IGDB results based on game name search parameter 
-  type searchResultLite = {
-    cover: {
-      id: number,
-      image_id: string
-    },
-    id: number,
-    name: string
-  }
-
   // Get search results from server and update state variable
   function setResults(gameName: string) {
-    searchGameLite(gameName).then((newResults: searchResultLite[]) => {
+    searchGameLite(gameName).then((newResults: SearchResultsLite[]) => {
       if (newResults.length >= 0) {
         setSearchResultsLite(newResults);
       }

@@ -2,17 +2,15 @@ import {useState, useRef, useEffect, type Dispatch, type SetStateAction} from 'r
 
 import './styles/video-slider.css'
 
-type video = {
-  id: number,
-  video_id: string
-}
-
-interface sliderProps {
-  videos: video[],
+type SliderProps = {
+  videos: {
+    id: number,
+    video_id: string
+  }[],
   setIsLoaded: Dispatch<SetStateAction<boolean>>
 }
 
-function VideoSlider(props: sliderProps) {
+function VideoSlider(props: SliderProps) {
   // Tracks videos that are loaded
   const [loadCount, setLoadCount] = useState(0);
 

@@ -1,8 +1,13 @@
+// Import packages
 import {useState, useEffect, useRef, useCallback, type JSX} from 'react'
 import {useParams, Link} from 'react-router-dom'
-import slugify from 'slugify';
+import slugify from 'slugify'
 
+// Import styling
 import './styles/search-results.css'
+
+// Import types
+import type {SearchResults} from '../../project-types.ts'
 
 // Import page components and functions */
 import Header from './header.tsx'
@@ -41,20 +46,9 @@ function SearchResults() {
     if (node) observer.current.observe(node)
   }, [hasMore]);
 
-  // Type for IGDB search results query
-  type searchResult = {
-    cover: {
-      id: number,
-      image_id: string
-    },
-    first_release_date: number,
-    id: number,
-    name: string
-    platforms: {id: number, name: string}[]
-  }
 
   // Stores search results
-  const [searchResults, setSearchResults] = useState<searchResult[]>([]);
+  const [searchResults, setSearchResults] = useState<SearchResults[]>([]);
 
   // Gets search results and stores them. Also handles no results case and loading spinner state.
   function setResults() {
@@ -63,7 +57,7 @@ function SearchResults() {
 
     // Get search results
     searchGame(gameName, resultsOffset.toString())
-      .then((newResults: searchResult[]) => {
+      .then((newResults: SearchResults[]) => {
         // If results were returned, store them and flag that results were found
         if (newResults.length > 0) {
           setSearchResults(prevResults => [...prevResults, ...newResults]);

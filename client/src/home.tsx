@@ -1,7 +1,13 @@
+// Import packages
 import {useState, useEffect, type JSX} from 'react'
 import {Link} from 'react-router-dom'
+import slugify from 'slugify'
 
+// Import styles
 import './styles/home.css'
+
+// Import types
+import type {PopularNewReleasesResults} from '../../project-types.ts'
 
 // Import page components and functions */
 import Header from './header.tsx'
@@ -9,18 +15,9 @@ import {getPopularNewReleases} from './search-utils.ts'
 
 /* Home page */
 function Home() {
-  // Type for IGDB popular new releases query 
-  type pnrResult = {
-    cover: {
-      id: number,
-      image_id: string
-    },
-    id: number,
-    name: string
-  }
 
   // Array of search results for popular new releases
-  const [popularNewReleases, setPopularNewReleases] = useState<pnrResult[]>([]);
+  const [popularNewReleases, setPopularNewReleases] = useState<PopularNewReleasesResults[]>([]);
 
   // Displays popular new release results if array is populated
   function displayResults(): JSX.Element {
@@ -29,9 +26,14 @@ function Home() {
         <>
           <div className='pnr-results'>
             {popularNewReleases.map((entry) => {
+              const slugGameName = slugify(entry.name, {
+                lower: true,
+                replacement: '_',
+                strict: true
+              });
               return(
                 <>
-                  <Link to={`/games/${entry.id}`} className='link'>
+                  <Link to={`/games/${entry.id}/${slugGameName}`} className='link'>
                     <div className='pnr-card'>
                       <img src={`https://images.igdb.com/igdb/image/upload/t_1080p/${entry.cover.image_id}.jpg`} alt="" />
                       

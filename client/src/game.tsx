@@ -1,9 +1,15 @@
+// Import packages
 import {useState, useEffect, type JSX} from 'react'
 import {useParams} from 'react-router-dom'
 import {format} from 'date-fns';
 
+// Import styling
 import './styles/game.css'
 
+// Import types
+import type {GameData} from '../../project-types.ts'
+
+// Import components and functions
 import Header from './header.tsx'
 import VideoSlider from './video-slider.tsx'
 import {gatherGameData, getPlayerCount} from './search-utils.ts'
@@ -24,46 +30,8 @@ function Game() {
   // Track if summary is extended
   const [isExtended, setIsExtended] = useState<boolean>(false);
 
-  // Type for game data received from server
-  type gameDataType = {
-    id: number,
-    artworks: {
-      id: number,
-      image_id: string
-    }[],
-    screenshots: {
-      id: number,
-      image_id: string
-    }[],
-    name: string,
-    videos: {
-      id: number,
-      video_id: string
-    }[],
-    cover: {
-      id: number,
-      image_id: string
-    },
-    first_release_date: number,
-    involved_companies: {
-      id: number,
-      company: {
-        id: number,
-        name: string
-      },
-      developer: boolean,
-      publisher: boolean
-    }[],
-    summary: string,
-    age_ratings: {
-      id: number, 
-      organization: {id: number, name: string}, 
-      rating_category: {id: number, rating: string}
-    }[]
-  }
-
   // Stores all game data from IGDB
-  const [gameData, setGameData] = useState<gameDataType[] | null>(null);
+  const [gameData, setGameData] = useState<GameData[] | null>(null);
 
   // Stores player count from Steam Charts
   const [playerCount, setPlayerCount] = useState<number | null>(null);
@@ -71,7 +39,7 @@ function Game() {
   // Fetches game data from server and updates variable
   function storeGameData() {
     gatherGameData(gameId)
-      .then((gameDataRes: gameDataType[] | null) => {
+      .then((gameDataRes: GameData[] | null) => {
         setGameData(gameDataRes);
       })
       .catch(() => {
@@ -83,7 +51,10 @@ function Game() {
         const parser = new DOMParser();
         const doc = parser.parseFromString(playerCountRes, 'text/html');
         const tbody = doc.querySelector('tbody');
-        setPlayerCount(Number(tbody?.rows[0].cells[2].innerHTML));
+
+        if (tbody) {
+          setPlayerCount(Number(tbody?.rows[0].cells[2].innerHTML));
+        }
       })
       .catch(() => {
         setPlayerCount(null);

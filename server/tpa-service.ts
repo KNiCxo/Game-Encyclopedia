@@ -1,10 +1,13 @@
+// Import types
+import type {PopularNewReleasesResults, SearchResultsLite, SearchResults, GameData} from '../project-types.ts';
+
 /* Creates delay for so that loading spinner is on the screen longer */
 function delay(ms: number): Promise<void>{
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 // Returns results based on recent games that have a high rating count in descending order
-export const popularNewReleases = async () => {
+export const popularNewReleases = async ():Promise<PopularNewReleasesResults> => {
   // Current date
   const currentDate = (Math.floor(Date.now() / 1000));
 
@@ -25,7 +28,7 @@ export const popularNewReleases = async () => {
           'Client-ID': `${process.env.CLIENT_ID}`,
           'Authorization': `Bearer ${process.env.AUTH}`,
         },
-        body: `fields cover.image_id,name,genres.name;
+        body: `fields cover.image_id, name, genres.name;
                where (first_release_date > ${earliestReleaseDate}) & (first_release_date < ${currentDate}) & (rating_count >= 5);
                sort rating_count desc;
                limit 10;`
@@ -38,7 +41,7 @@ export const popularNewReleases = async () => {
 }
 
 // Gets 4 results based on game name
-export const searchGameLite = async (gameName: string) => {
+export const searchGameLite = async (gameName: string): Promise<SearchResultsLite> => {
   try {
     // Returns game cover and name fields
     const response = await fetch(
@@ -49,7 +52,7 @@ export const searchGameLite = async (gameName: string) => {
           'Client-ID': `${process.env.CLIENT_ID}`,
           'Authorization': `Bearer ${process.env.AUTH}`,
         },
-        body: `search "${gameName}"; fields cover.image_id,name; limit 4;`
+        body: `search "${gameName}"; fields cover.image_id, name; limit 4;`
     });
 
     return await response.json();
@@ -59,7 +62,7 @@ export const searchGameLite = async (gameName: string) => {
 }
 
 // Gets 10 paginated results based on game name
-export const searchGame = async (gameName: string, offset: string) => {
+export const searchGame = async (gameName: string, offset: string):Promise<SearchResults> => {
   try {
     // Run 300ms delay for increased loading spinner visibility
     await delay(1000);
@@ -73,7 +76,8 @@ export const searchGame = async (gameName: string, offset: string) => {
           'Client-ID': `${process.env.CLIENT_ID}`,
           'Authorization': `Bearer ${process.env.AUTH}`,
         },
-        body: `search "${gameName}"; fields first_release_date,cover.image_id,name,platforms.name; offset: ${offset}; limit 10;`
+        body: `search "${gameName}"; fields first_release_date, cover.image_id, name, platforms.name; 
+              offset: ${offset}; limit 10;`
     });
 
     return await response.json();
@@ -83,7 +87,7 @@ export const searchGame = async (gameName: string, offset: string) => {
 }
 
 // Gets info for a single game
-export const gatherGameData = async (gameId: string) => {
+export const gatherGameData = async (gameId: string): Promise<GameData> => {
   try {
     const response = await fetch(
       "https://api.igdb.com/v4/games", { 
@@ -120,7 +124,7 @@ export const gatherGameData = async (gameId: string) => {
 }
 
 // Gets game player count from Steam Charts
-export const getPlayerCount = async (gameName: string) => {
+export const getPlayerCount = async (gameName: string):Promise<string> => {
   try {
     const response = await fetch(`https://steamcharts.com/search/?q=${gameName}`);
 

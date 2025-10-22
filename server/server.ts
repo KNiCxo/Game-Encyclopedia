@@ -1,7 +1,9 @@
-// Required modules for server
+// Import packages
 import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
+
+import type {PopularNewReleasesResults, SearchResultsLite, SearchResults, GameData} from '../project-types.ts';
 
 // Import services
 // import { DbService }  from './dbService';
@@ -17,7 +19,7 @@ dotenv.config();
 // GET request for gathering a list of popular new game releases
 app.get('/popularNewReleases', async (req: Request, res: Response) => {
   try {
-    const data = await tpaService.popularNewReleases();
+    const data:PopularNewReleasesResults = await tpaService.popularNewReleases();
     res.status(200).json(data);
   } catch (error) {
     res.status(500).json({message: 'Internal server error'});
@@ -27,7 +29,7 @@ app.get('/popularNewReleases', async (req: Request, res: Response) => {
 // GET request for gathering search results based on a game name parameter
 app.get('/searchGameLite/:gameName', async (req: Request, res: Response) => {
   try {
-    const data = await tpaService.searchGameLite(req.params.gameName);
+    const data:SearchResultsLite = await tpaService.searchGameLite(req.params.gameName);
     res.status(200).json(data);
   } catch (error) {
     res.status(500).json({message: 'Internal server error'});
@@ -37,7 +39,7 @@ app.get('/searchGameLite/:gameName', async (req: Request, res: Response) => {
 // GET request for gathering more search results with more fields
 app.get('/searchGame/:gameName/:offset', async (req: Request, res: Response) => {
   try {
-    const data = await tpaService.searchGame(req.params.gameName, req.params.offset);
+    const data:SearchResults = await tpaService.searchGame(req.params.gameName, req.params.offset);
     res.status(200).json(data);
   } catch (error) {
     res.status(500).json({message: 'Internal server error'});
@@ -45,9 +47,9 @@ app.get('/searchGame/:gameName/:offset', async (req: Request, res: Response) => 
 });
 
 // GET request for information on a particular game based on it's ID
-app.get('/gatherGameData/:gameId/', async (req: Request, res: Response) => {
+app.get('/gatherGameData/:gameId', async (req: Request, res: Response) => {
   try {
-    const data = await tpaService.gatherGameData(req.params.gameId);
+    const data:GameData = await tpaService.gatherGameData(req.params.gameId);
     res.status(200).json(data);
   } catch (error) {
     res.status(500).end();
@@ -55,9 +57,9 @@ app.get('/gatherGameData/:gameId/', async (req: Request, res: Response) => {
 });
 
 // GET request for player count based on game name
-app.get('/getPlayerCount/:gameName/', async (req: Request, res: Response) => {
+app.get('/getPlayerCount/:gameName', async (req: Request, res: Response) => {
   try {
-    const data = await tpaService.getPlayerCount(req.params.gameName);
+    const data:string = await tpaService.getPlayerCount(req.params.gameName);
     res.status(200).json(data);
   } catch (error) {
     res.status(500).end();
