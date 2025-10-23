@@ -162,7 +162,7 @@ function Game() {
               </div>
             </div>
 
-            {/* Player Count */}
+            {/* Player count */}
             {playerCount && <div className='player-count-container info-container'>
               <span className='player-count'>Current players on Steam:&nbsp;{playerCount}</span>
             </div>}
@@ -179,8 +179,36 @@ function Game() {
               </div>
             </div>}
 
-            {/* Additional */}
-            <div></div>
+            {/* Additional info*/}
+            {gameData[0].genres && <div className='additional-info-container info-container'>
+              {/* Genres */}
+              <div className='game-info-container'>
+                <span className='game-info-header'>Genres</span>
+
+                {/* Iterate through genres array if it exists */}
+                {gameData[0].genres?.map((entry, _) => {
+                  return(
+                    <>
+                      <span className='game-info'>{entry.name}</span>
+                    </>
+                  )
+                })}
+              </div>
+
+              {/* Themes */}
+              <div className='game-info-container'>
+                <span className='game-info-header'>Themes</span>
+
+                {/* Iterate through themes ratings array if it exists */}
+                {gameData[0].themes?.map((entry, _) => {
+                  return(
+                    <>
+                      <span className='game-info'>{entry.name}</span>
+                    </>
+                  )
+                })}
+              </div>
+            </div>}
 
             {/* Age ratings header */}
             <span className='age-ratings-header game-info-header'>Age Ratings</span>

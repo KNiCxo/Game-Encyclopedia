@@ -108,15 +108,17 @@ export const gatherGameData = async (gameId: string): Promise<GameData> => {
               involved_companies.publisher,
               involved_companies.company.name,
               summary,
+              genres.name,
+              themes.name,
               age_ratings.organization.name,
               age_ratings.rating_category.rating;
               where id = ${gameId};`
       }); 
-
+      
       if (!response.ok) {
         throw new Error();
       }
-      
+
       return await response.json();
   } catch (error) {
     throw error;

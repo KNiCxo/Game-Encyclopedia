@@ -68,6 +68,7 @@
 .game-info-header {
   font-family: roboto-bold-italic;
   font-size: 17px;
+  margin-bottom: 3px;
 }
 
 /* Game information */
@@ -106,6 +107,17 @@
   flex-direction: column;
 }
 
+/* Player count container */
+.player-count-container {
+  justify-content: center;
+}
+
+/* Player count header */
+.player-count {
+  font-family: roboto-bold-italic;
+  font-size: 20px;
+}
+
 /* Summary container */
 .summary-container {
   flex-direction: column;
@@ -138,15 +150,10 @@
   color: rgb(0, 147, 221);
 }
 
-/* Player count container */
-.player-count-container {
-  justify-content: center;
-}
-
-/* Player count header */
-.player-count {
-  font-family: roboto-bold-italic;
-  font-size: 20px;
+/* Additional info container */
+.additional-info-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
 }
 
 /* Age ratings header */
