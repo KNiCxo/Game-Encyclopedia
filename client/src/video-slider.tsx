@@ -1,7 +1,10 @@
+// Import packages
 import {useState, useRef, useEffect, type Dispatch, type SetStateAction} from 'react'
 
+// Import styling
 import './styles/video-slider.css'
 
+// Typesetting for props
 type SliderProps = {
   videos: {
     id: number,
@@ -10,6 +13,7 @@ type SliderProps = {
   setIsLoaded: Dispatch<SetStateAction<boolean>>
 }
 
+// Video slider component for game page Youtube videos
 function VideoSlider(props: SliderProps) {
   // Tracks videos that are loaded
   const [loadCount, setLoadCount] = useState(0);
@@ -57,6 +61,7 @@ function VideoSlider(props: SliderProps) {
     }
   }
 
+  // If all videos have loaded, set isLoaded to true
   useEffect(() => {
     if (loadCount == props.videos.length) props.setIsLoaded(true);
   }, [loadCount])

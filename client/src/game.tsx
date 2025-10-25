@@ -14,6 +14,7 @@ import Header from './header.tsx'
 import VideoSlider from './video-slider.tsx'
 import {gatherGameData, getPlayerCount} from './search-utils.ts'
 
+// Game page
 function Game() {
   // Get game id from URL parameter
   const {gameId} = useParams<{gameId: string}>();
@@ -41,6 +42,11 @@ function Game() {
     gatherGameData(gameId)
       .then((gameDataRes: GameData[] | null) => {
         setGameData(gameDataRes);
+
+        // If there are no videos, set videosLoaded to true so that page content loads
+        if(!gameDataRes?.[0].videos) {
+          setVideosLoaded(true);
+        }
       })
       .catch(() => {
         setGameExists(false);
@@ -65,7 +71,7 @@ function Game() {
   function displayData(): JSX.Element {
     // Only display if gameData exists
     if (gameData) {
-      console.log(gameData);
+      //console.log(gameData);
 
       // Stores URL for banner image on page
       let bannerURL: string = '';
@@ -114,6 +120,7 @@ function Game() {
             <h1 className='game-name'>{gameData[0].name}</h1>
           </div>
           
+          {/* Main content */}
           <div className='main-content'>
             {/* Video slider */}
             {gameData[0].videos && <VideoSlider videos={gameData[0].videos} setIsLoaded={setVideosLoaded}></VideoSlider>}
@@ -132,8 +139,12 @@ function Game() {
 
                   {/* Main Developers */}
                   <div className='game-info-container'>
+                    {/* Header */}
                     <span className='game-info-header'>Main Developers</span>
+
+                    {/* If content doesn't exist */}
                     {!gameData[0].involved_companies && <span className='data-not-found'>-</span>}
+
                     {gameData[0].involved_companies && gameData[0].involved_companies.map((entry) => {
                       if (entry.developer) {
                         return(
@@ -147,7 +158,10 @@ function Game() {
 
                   {/* Publishers */}
                   <div className='game-info-container'>
+                    {/* Header */}
                     <span className='game-info-header'>Publishers</span>
+
+                    {/* If content doesn't exist */}
                     {!gameData[0].involved_companies && <span className='data-not-found'>-</span>}
                     {gameData[0].involved_companies && gameData[0].involved_companies.map((entry) => {
                       if (entry.publisher) {
@@ -161,9 +175,9 @@ function Game() {
                   </div>
               </div>
             </div>
-
-            {/* Player count */}
-            {playerCount && <div className='player-count-container info-container'>
+              
+            {/* Player Count */}
+            {typeof playerCount === 'number' && <div className='player-count-container info-container'>
               <span className='player-count'>Current players on Steam:&nbsp;{playerCount}</span>
             </div>}
 
@@ -172,18 +186,22 @@ function Game() {
               <span className='summary-header'>Summary</span>
 
               <div className='summary'>
-                <span>{initialSummary + ' '}</span>
-                {(gameData[0].summary.length > 200 && !isExtended) && <span className='dots'>...</span>}
+                <span>{initialSummary}</span>
+                {(gameData[0].summary.length > 200 && !isExtended) && <span className='dots'>...&nbsp;</span>}
                 {isExtended && <span>{extendedSummary + ' '}</span>}
                 {gameData[0].summary.length > 200 && <span className='more-button' onClick={() => setIsExtended(prev => !prev)}>{isExtended ? 'Less' : 'More'}</span>}
               </div>
             </div>}
 
-            {/* Additional info*/}
-            {gameData[0].genres && <div className='additional-info-container info-container'>
+            {/* Additional Info*/}
+            {<div className='additional-info-container info-container'>
               {/* Genres */}
               <div className='game-info-container'>
+                {/*  Header */}
                 <span className='game-info-header'>Genres</span>
+
+                {/* Displays if content doesn't exist */}
+                {!gameData[0].genres && <span className='data-not-found'>-</span>}
 
                 {/* Iterate through genres array if it exists */}
                 {gameData[0].genres?.map((entry, _) => {
@@ -197,7 +215,11 @@ function Game() {
 
               {/* Themes */}
               <div className='game-info-container'>
+                {/* Header */}
                 <span className='game-info-header'>Themes</span>
+
+                {/* Displays if content doesn't exist */}
+                {!gameData[0].themes && <span className='data-not-found'>-</span>}
 
                 {/* Iterate through themes ratings array if it exists */}
                 {gameData[0].themes?.map((entry, _) => {
@@ -208,15 +230,17 @@ function Game() {
                   )
                 })}
               </div>
+
+              {/* Game Modes */}
             </div>}
 
-            {/* Age ratings header */}
+            {/* Age Ratings header */}
             <span className='age-ratings-header game-info-header'>Age Ratings</span>
 
-            {/* Displays if age_ratings doesn't exist */}
+            {/* Displays if content doesn't exist */}
             {!gameData[0].age_ratings && <span className='data-not-found'>-</span>}
 
-            {/* Age ratings container */}
+            {/* Age Ratings container */}
             <div className='age-ratings'>
               {/* Iterate through age ratings array if it exists */}
               {gameData[0].age_ratings?.map((entry, _) => {
@@ -241,8 +265,14 @@ function Game() {
 
   /* Fetch game data when gameId updates */
   useEffect(() => {
-    storeGameData()
-  }, [gameId]);
+  setVideosLoaded(false);
+  setGameExists(true);
+  setIsExtended(false);
+  setGameData(null);
+  setPlayerCount(null);
+
+  storeGameData();
+}, [gameId]);
 
   return(
     <>

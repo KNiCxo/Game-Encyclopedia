@@ -68,7 +68,11 @@ export type GameData = {
   themes: {
     id: number,
     name: string
-  }[]
+  }[],
+  game_modes: {
+    id: number,
+    name: string
+  }[],
   age_ratings: {
     id: number, 
     organization: {id: number, name: string}, 
