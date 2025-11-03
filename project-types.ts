@@ -73,6 +73,22 @@ export type GameData = {
     id: number,
     name: string
   }[],
+  player_perspectives: {
+    id: number,
+    name: string
+  }[],
+  game_engines: {
+    id: number,
+    name: string
+  }[],
+  dlcs: {
+    id: number,
+    cover: {
+      id: number,
+      image_id: string
+    },
+    name: string
+  }[]
   age_ratings: {
     id: number, 
     organization: {id: number, name: string}, 

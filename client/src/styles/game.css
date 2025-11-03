@@ -100,11 +100,16 @@
   border-radius: 7px;
 }
 
-/* Container for information affiliated with game cover */
-.cover-container-info {
+/* Container for information belonging with game cover */
+.cover-info {
   padding-left: 13px;
   display: flex;
   flex-direction: column;
+}
+
+/* Remove padding from publisher element */
+.publishers {
+  margin-bottom: 0;
 }
 
 /* Player count container */
@@ -115,7 +120,7 @@
 /* Player count header */
 .player-count {
   font-family: roboto-bold-italic;
-  font-size: 20px;
+  font-size: 19px;
 }
 
 /* Summary container */
@@ -154,6 +159,57 @@
 .additional-info-container {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  padding-bottom: 0;
+}
+
+/* Adds spacing for DLCs */
+.dlc-div {
+  margin-bottom: 300px;
+}
+
+/* DLCs container */
+.dlcs-container {
+  display: flex;
+  flex-direction: column;
+  width: 93%;
+  position: absolute;
+}
+
+/* DLC entry container */
+.dlc-entry-container {
+  display: flex;
+  flex-direction: row;
+  overflow: auto;
+  gap: 10px;
+}
+
+/* DLC header */
+.dlc-header {
+  font-family: roboto-bold-italic;
+  font-size: 24px;
+  margin-bottom: 6px;
+}
+
+/* DLC entry */
+.dlc-entry {
+  background-color: rgb(19, 27, 38);
+  padding-bottom: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* DLC cover art */
+.dlc-cover {
+  width: 130px;
+  height: 173px;
+  border-radius: 5px;
+}
+
+/* DLC name */
+.dlc-name {
+  font-family: oswald-bold;
+  font-size: 15px;
+  padding-left: 5px;
 }
 
 /* Age ratings header */

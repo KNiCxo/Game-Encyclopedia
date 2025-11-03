@@ -1,7 +1,9 @@
 // Import packages
 import {useState, useEffect, type JSX} from 'react'
 import {useParams} from 'react-router-dom'
-import {format} from 'date-fns';
+import {format} from 'date-fns'
+import slugify from 'slugify'
+import {Link} from 'react-router-dom'
 
 // Import styling
 import './styles/game.css'
@@ -39,6 +41,7 @@ function Game() {
   
   // Fetches game data from server and updates variable
   function storeGameData() {
+    // Make call to IGDB for game data
     gatherGameData(gameId)
       .then((gameDataRes: GameData[] | null) => {
         setGameData(gameDataRes);
@@ -52,14 +55,38 @@ function Game() {
         setGameExists(false);
       });
     
+    // Make call to Steam Charts for player count
     getPlayerCount(gameName)
       .then((playerCountRes: string) => {
+        // Get tbody from Steam Charts
         const parser = new DOMParser();
         const doc = parser.parseFromString(playerCountRes, 'text/html');
         const tbody = doc.querySelector('tbody');
 
+        // If tbody exists, find the correct game from Steam Chart's search results
         if (tbody) {
-          setPlayerCount(Number(tbody?.rows[0].cells[2].innerHTML));
+          // Start at first row
+          let rows = 0;
+
+          // Iterate through table rows
+          while (rows < tbody.rows.length) {
+            // Slugify Steam Chart entry
+            const steamChartGame = slugify(tbody.rows[rows].cells[1].querySelector('a')?.innerHTML || '', {
+              lower: true,
+              replacement: '_',
+              strict: true
+            });
+
+            // If Steam Chart entry matches game name then break out of loop
+            if (steamChartGame !== gameName) {
+              rows++;
+            } else {
+              break;
+            }
+          }
+
+          // Sets player count with proper Steam chart entry
+          setPlayerCount(Number(tbody?.rows[rows].cells[2].innerHTML));
         }
       })
       .catch(() => {
@@ -71,7 +98,7 @@ function Game() {
   function displayData(): JSX.Element {
     // Only display if gameData exists
     if (gameData) {
-      //console.log(gameData);
+      console.log(gameData);
 
       // Stores URL for banner image on page
       let bannerURL: string = '';
@@ -106,6 +133,7 @@ function Game() {
         formattedReleaseDate = 'Unreleased';
       }
 
+      // Divies summary into two parts
       let initialSummary = gameData[0].summary.substring(0, 200);
       let extendedSummary = gameData[0].summary.substring(200);
 
@@ -130,7 +158,7 @@ function Game() {
               {!gameData[0].cover && <img src='/public/no-cover.png' alt='' className='cover'></img>}
               {gameData[0].cover && <img src={`https://images.igdb.com/igdb/image/upload/t_1080p/${gameData[0].cover.image_id}.jpg`} alt='' className='cover'></img>}
 
-              <div className='cover-container-info'>
+              <div className='cover-info'>
                   {/* Release Date*/}
                   <div className='game-info-container'>
                     <span className='game-info-header'>Release Date</span>
@@ -145,7 +173,9 @@ function Game() {
                     {/* If content doesn't exist */}
                     {!gameData[0].involved_companies && <span className='data-not-found'>-</span>}
 
-                    {gameData[0].involved_companies && gameData[0].involved_companies.map((entry) => {
+                    {/* Developers */}
+                    {gameData[0].involved_companies && gameData[0].involved_companies.filter(entry => entry.developer)
+                    .slice(0,2).map((entry) => {
                       if (entry.developer) {
                         return(
                           <>
@@ -163,7 +193,10 @@ function Game() {
 
                     {/* If content doesn't exist */}
                     {!gameData[0].involved_companies && <span className='data-not-found'>-</span>}
-                    {gameData[0].involved_companies && gameData[0].involved_companies.map((entry) => {
+
+                    {/* Publishers */}
+                    {gameData[0].involved_companies && gameData[0].involved_companies.filter(entry => entry.publisher)
+                    .slice(0,2).map((entry) => {
                       if (entry.publisher) {
                         return(
                           <>
@@ -195,43 +228,127 @@ function Game() {
 
             {/* Additional Info*/}
             {<div className='additional-info-container info-container'>
-              {/* Genres */}
-              <div className='game-info-container'>
-                {/*  Header */}
-                <span className='game-info-header'>Genres</span>
+              {/* Left side */}
+              <div>
+                 {/* Genres */}
+                <div className='game-info-container'>
+                  {/*  Header */}
+                  <span className='game-info-header'>Genres</span>
 
-                {/* Displays if content doesn't exist */}
-                {!gameData[0].genres && <span className='data-not-found'>-</span>}
+                  {/* Displays if content doesn't exist */}
+                  {!gameData[0].genres && <span className='data-not-found'>-</span>}
 
-                {/* Iterate through genres array if it exists */}
-                {gameData[0].genres?.map((entry, _) => {
-                  return(
-                    <>
-                      <span className='game-info'>{entry.name}</span>
-                    </>
-                  )
-                })}
+                  {/* Iterate through genres array if it exists */}
+                  {gameData[0].genres?.map((entry, _) => {
+                    return(
+                      <>
+                        <span className='game-info'>{entry.name}</span>
+                      </>
+                    )
+                  })}
+                </div>
+
+                {/* Themes */}
+                <div className='game-info-container'>
+                  {/* Header */}
+                  <span className='game-info-header'>Themes</span>
+
+                  {/* Displays if content doesn't exist */}
+                  {!gameData[0].themes && <span className='data-not-found'>-</span>}
+
+                  {/* Iterate through themes ratings array if it exists */}
+                  {gameData[0].themes?.map((entry, _) => {
+                    return(
+                      <>
+                        <span className='game-info'>{entry.name}</span>
+                      </>
+                    )
+                  })}
+                </div>
               </div>
+              
+              {/* Right side */}
+              <div>
+                {/* Game Modes */}
+                <div className='game-info-container'>
+                  {/* Header */}
+                  <span className='game-info-header'>Game Modes</span>
 
-              {/* Themes */}
-              <div className='game-info-container'>
+                  {/* Displays if content doesn't exist */}
+                  {!gameData[0].game_modes && <span className='data-not-found'>-</span>}
+
+                  {/* Iterate through themes ratings array if it exists */}
+                  {gameData[0].game_modes?.map((entry, _) => {
+                    return(
+                      <>
+                        <span className='game-info'>{entry.name}</span>
+                      </>
+                    )
+                  })}
+                </div>
+
+                {/* Player perspectives */}
+                <div className='game-info-container'>
+                  {/* Header */}
+                  <span className='game-info-header'>Player Perspectives</span>
+
+                  {/* Displays if content doesn't exist */}
+                  {!gameData[0].player_perspectives && <span className='data-not-found'>-</span>}
+
+                  {/* Iterate through themes ratings array if it exists */}
+                  {gameData[0].player_perspectives?.map((entry, _) => {
+                    return(
+                      <>
+                        <span className='game-info'>{entry.name}</span>
+                      </>
+                    )
+                  })}
+                </div>
+
+                {/* Game engines */}
+                <div className='game-info-container'>
+                  {/* Header */}
+                  <span className='game-info-header'>Game Engines</span>
+
+                  {/* Displays if content doesn't exist */}
+                  {!gameData[0].game_engines && <span className='data-not-found'>-</span>}
+
+                  {/* Iterate through themes ratings array if it exists */}
+                  {gameData[0].game_engines?.map((entry, _) => {
+                    return(
+                      <>
+                        <span className='game-info'>{entry.name}</span>
+                      </>
+                    )
+                  })}
+                </div>
+              </div>
+            </div>}
+
+            {/* DLCs */}
+            {gameData[0].dlcs && <div className='dlc-div'>
+              <div className='dlcs-container info-container'>
                 {/* Header */}
-                <span className='game-info-header'>Themes</span>
+                <span className='dlc-header'>DLCs</span>
+                
+                {gameData[0].dlcs && <div className='dlc-entry-container'>
+                  {gameData[0].dlcs.map((entry, _) => {
+                    return(
+                      <>
+                        <Link to={`/games/${entry.id}/${gameName}`} className='link'>
+                          <div className='dlc-entry'>
+                            {entry.cover && <img src={`https://images.igdb.com/igdb/image/upload/t_1080p/${entry.cover.image_id}.jpg`} alt="" className='dlc-cover'/>}
 
-                {/* Displays if content doesn't exist */}
-                {!gameData[0].themes && <span className='data-not-found'>-</span>}
-
-                {/* Iterate through themes ratings array if it exists */}
-                {gameData[0].themes?.map((entry, _) => {
-                  return(
-                    <>
-                      <span className='game-info'>{entry.name}</span>
-                    </>
-                  )
-                })}
+                            <div className='dlc-name'>
+                              <span>{entry.name}</span>
+                            </div>
+                          </div>
+                        </Link>
+                      </>
+                    )
+                  })}
+                </div>}
               </div>
-
-              {/* Game Modes */}
             </div>}
 
             {/* Age Ratings header */}
@@ -263,7 +380,7 @@ function Game() {
     }
   }
 
-  /* Fetch game data when gameId updates */
+  /* Reset state variables and fetch game data when gameId updates */
   useEffect(() => {
   setVideosLoaded(false);
   setGameExists(true);

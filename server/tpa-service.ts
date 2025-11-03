@@ -111,6 +111,10 @@ export const gatherGameData = async (gameId: string): Promise<GameData> => {
               genres.name,
               themes.name,
               game_modes.name,
+              player_perspectives.name,
+              game_engines.name,
+              dlcs.name,
+              dlcs.cover.image_id,
               age_ratings.organization.name,
               age_ratings.rating_category.rating;
               where id = ${gameId};`
