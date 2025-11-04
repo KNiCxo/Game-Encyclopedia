@@ -137,6 +137,21 @@ function Game() {
       let initialSummary = gameData[0].summary.substring(0, 200);
       let extendedSummary = gameData[0].summary.substring(200);
 
+      // Group support types with their respective language
+      const groupLanguages = gameData[0].language_supports.reduce<Record<string, string[]>>((acc, item) => {
+        // Get language name
+        const language = item.language.name;
+
+        // If language isn't in object, then add language
+        if (!acc[language]) acc[language] = [];
+
+        // Push language support type into respective array
+        acc[language].push(item.language_support_type.name);
+        return acc;
+      }, {});
+      
+      console.log(groupLanguages);
+
       return(
         <>
           {/* Banner content */}
@@ -216,7 +231,7 @@ function Game() {
 
             {/* Summary */}
             {gameData[0].summary && <div className='summary-container info-container'>
-              <span className='summary-header'>Summary</span>
+              <span className='container-header'>Summary</span>
 
               <div className='summary'>
                 <span>{initialSummary}</span>
@@ -329,16 +344,22 @@ function Game() {
             {gameData[0].dlcs && <div className='dlc-div'>
               <div className='dlcs-container info-container'>
                 {/* Header */}
-                <span className='dlc-header'>DLCs</span>
+                <span className='container-header'>DLCs</span>
                 
-                {gameData[0].dlcs && <div className='dlc-entry-container'>
+                {/* DLC entries */}
+                <div className='dlc-entry-container'>
+                  {/* Iterate through entries */}
                   {gameData[0].dlcs.map((entry, _) => {
                     return(
                       <>
                         <Link to={`/games/${entry.id}/${gameName}`} className='link'>
+                          {/* Entry */}
                           <div className='dlc-entry'>
-                            {entry.cover && <img src={`https://images.igdb.com/igdb/image/upload/t_1080p/${entry.cover.image_id}.jpg`} alt="" className='dlc-cover'/>}
+                            {/* Cover */}
+                            {!entry.cover && <img src='/public/no-cover.png' alt='' className='dlc-cover'></img>}
+                            {entry.cover && <img src={`https://images.igdb.com/igdb/image/upload/t_1080p/${entry.cover.image_id }.jpg`} alt="" className='dlc-cover'/>}
 
+                            {/* Name */}
                             <div className='dlc-name'>
                               <span>{entry.name}</span>
                             </div>
@@ -347,8 +368,27 @@ function Game() {
                       </>
                     )
                   })}
-                </div>}
+                </div>
               </div>
+            </div>}
+
+            {/* Languages */}
+            {gameData[0].language_supports && <div className='languages-container info-container'>
+              {/* Header */}
+              <span className='container-header'>Supported Languages</span>
+
+              {/* Iterate through languages */}
+              {Object.entries(groupLanguages).map(([language, type]) => {
+                return(
+                  <>
+                    {/* Entry */}
+                    <div className='language-entry'>
+                      <span>{language}:</span>
+                      <span className='support-type'> {type.join(', ')}</span>
+                    </div>
+                  </>
+                )
+              })}
             </div>}
 
             {/* Age Ratings header */}

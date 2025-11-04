@@ -88,7 +88,18 @@ export type GameData = {
       image_id: string
     },
     name: string
-  }[]
+  }[],
+  language_supports: {
+    id: number,
+    language: {
+      id: number,
+      name: string
+    },
+    language_support_type: {
+      id: number,
+      name: string
+    }
+  }[],
   age_ratings: {
     id: number, 
     organization: {id: number, name: string}, 
