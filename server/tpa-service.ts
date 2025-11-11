@@ -117,6 +117,9 @@ export const gatherGameData = async (gameId: string): Promise<GameData> => {
               dlcs.cover.image_id,
               language_supports.language.name,
               language_supports.language_support_type.name,
+              release_dates.human,
+              release_dates.platform.name,
+              release_dates.date,
               age_ratings.organization.name,
               age_ratings.rating_category.rating;
               where id = ${gameId};`

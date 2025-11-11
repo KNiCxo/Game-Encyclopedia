@@ -1,9 +1,6 @@
 // Import packages
 import {useState, useRef, useEffect, type Dispatch, type SetStateAction} from 'react'
 
-// Import styling
-import './styles/video-slider.css'
-
 // Typesetting for props
 type SliderProps = {
   videos: {
@@ -69,7 +66,7 @@ function VideoSlider(props: SliderProps) {
   return (
     <> 
       {/* Slider Container */}
-      <div className='slider-container'>
+      {props.videos && <div className='slider-container'>
         <div className='gallery-container'>
           {props.videos.map((video) => {
             return(
@@ -90,7 +87,7 @@ function VideoSlider(props: SliderProps) {
         {/* Arrow Buttons */}
         {props.videos.length > 1 && <img onClick={showPrevImg} className='arrow-button' ref={leftArrow} src="/public/arrow.png" alt="" style={{left: 10, display: 'none'}}/>}
         {props.videos.length > 1 && <img onClick={showNextImg} className='arrow-button right-arrow' ref={rightArrow} src="/public/arrow.png" alt="" style={{right: 10}}/>}
-      </div>
+      </div>}
     </>
   )
 }

@@ -57,6 +57,49 @@
   flex-direction: column;
 }
 
+/* Video slider container */
+.slider-container {
+  position: relative;
+  margin: 0;
+  border-radius: 10px;
+}
+
+/* Gallery container */
+.gallery-container {
+  display: flex;
+  overflow: hidden;
+  border-radius: 10px;
+}
+
+/* Youtube embed */
+.gallery-container iframe {
+  flex-shrink: 0;
+  transition: translate 300ms ease-in-out;
+}
+
+/* Arrow buttons */
+.arrow-button {
+  width: 38px;
+  height: 38px;
+  display: block;
+  position: absolute;
+  top: 43%;
+  bottom: 0;
+  cursor: pointer;
+  transition: opacity 0.3s ease-in-out;
+  visibility: hidden;
+}
+
+/* Right arrow */
+.right-arrow {
+  transform: scale(-1);
+}
+
+/* Make arrows visible when hovering gallery container */
+.slider-container:hover .arrow-button {
+  visibility: visible;
+}
+
 /* Game info container */
 .game-info-container {
   display: flex;
@@ -181,7 +224,6 @@
   flex-direction: row;
   overflow: auto;
   gap: 10px;
-  justify-content: center;
 }
 
 /* DLC header */
@@ -220,32 +262,33 @@
   -webkit-box-orient: vertical; 
 }
 
-/* Languages container */
-.languages-container {
+/* Languages & release dates container */
+.languages-container, .release-dates-container {
   flex-direction: column;
 }
 
-/* Language entry */
-.language-entry {
+/* Language and release dates entry */
+.language-entry, .release-dates-entry {
   font-family: oswald-bold;
   font-size: 17px;
   margin-bottom: 4px;
 }
 
-/* Language support type */
-.support-type {
+/* Language support type and human release date */
+.support-type, .release-dates-human {
   color: rgb(0, 213, 255);
 }
 
 /* Age ratings header */
 .age-ratings-header {
   color: white;
-  margin-top: 12px;
+  margin-top: 18px;
+  font-size: 24px;
 }
 
 /* Age ratings container */
 .age-ratings {
-  margin: 10px auto 0;
+  margin: 10px auto 20px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;

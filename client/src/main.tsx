@@ -6,7 +6,7 @@ import './styles/main.css';
 // Import pages
 import Home from './home.tsx'
 import SearchResults from './search-results.tsx'
-import Game from './game.tsx'
+import Game from './game/game.tsx'
 
 const router = createBrowserRouter([
  {

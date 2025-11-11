@@ -100,6 +100,15 @@ export type GameData = {
       name: string
     }
   }[],
+  release_dates: {
+    id: number,
+    date: number,
+    human: string,
+    platform: {
+      id: number,
+      name: string,
+    }
+  }[],
   age_ratings: {
     id: number, 
     organization: {id: number, name: string}, 
