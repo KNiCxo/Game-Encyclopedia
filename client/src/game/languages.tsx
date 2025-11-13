@@ -15,7 +15,7 @@ type LanguagesProps = {
 
 function Languages(props: LanguagesProps) {
   // Group support types with their respective language
-  const groupLanguages = props.language_supports.reduce<Record<string, string[]>>((acc, item) => {
+  const groupLanguages = props.language_supports?.reduce<Record<string, string[]>>((acc, item) => {
     // Get language name
     const language = item.language.name;
 

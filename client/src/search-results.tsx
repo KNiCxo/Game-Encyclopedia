@@ -7,10 +7,10 @@ import slugify from 'slugify'
 import './styles/search-results.css'
 
 // Import types
-import type {SearchResults} from '../../project-types.ts'
+import type {SearchResultsMain} from '../../project-types.ts'
 
 // Import page components and functions */
-import Header from './header.tsx'
+import Header from './header/header.tsx'
 import {searchGame} from './search-utils.ts'
 
 // Component for search results page
@@ -48,7 +48,7 @@ function SearchResults() {
 
 
   // Stores search results
-  const [searchResults, setSearchResults] = useState<SearchResults[]>([]);
+  const [searchResults, setSearchResults] = useState<SearchResultsMain[]>([]);
 
   // Gets search results and stores them. Also handles no results case and loading spinner state.
   function setResults() {
@@ -57,7 +57,7 @@ function SearchResults() {
 
     // Get search results
     searchGame(gameName, resultsOffset.toString())
-      .then((newResults: SearchResults[]) => {
+      .then((newResults: SearchResultsMain[]) => {
         // If results were returned, store them and flag that results were found
         if (newResults.length > 0) {
           setSearchResults(prevResults => [...prevResults, ...newResults]);

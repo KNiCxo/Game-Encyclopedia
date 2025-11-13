@@ -10,7 +10,7 @@ import './styles/home.css'
 import type {PopularNewReleasesResults} from '../../project-types.ts'
 
 // Import page components and functions */
-import Header from './header.tsx'
+import Header from './header/header.tsx'
 import {getPopularNewReleases} from './search-utils.ts'
 
 /* Home page */

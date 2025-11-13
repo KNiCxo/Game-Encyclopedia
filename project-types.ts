@@ -19,7 +19,7 @@ export type PopularNewReleasesResults = {
   }
 
 // Type for IGDB search results query
-export type SearchResults = {
+export type SearchResultsMain = {
   cover: {
     id: number,
     image_id: string

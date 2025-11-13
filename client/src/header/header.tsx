@@ -4,18 +4,23 @@ import {Link, useNavigate} from 'react-router-dom'
 import slugify from 'slugify'
 
 // Import styling
-import './styles/header.css'
+import '../styles/header.css'
+import '../styles/dropdown.css'
 
 // Import types
-import type {SearchResultsLite} from '../../project-types.ts';
+import type {SearchResultsLite} from '../../../project-types.ts';
 
 // Import components and functions
-import {searchGameLite} from './search-utils.ts'
+import Dropdown from './dropdown.tsx'
+import {searchGameLite} from '../search-utils.ts'
 
 // Project header 
 function Header() {
   // Enable navigate hook
   const navigate = useNavigate();
+
+  // State variable for showing/hiding elements
+  const [showDropdown, setShowDropdown] = useState(false);
 
   // Overlay
   const overlayRef = useRef<HTMLDivElement | null>(null);
@@ -35,6 +40,16 @@ function Header() {
   // Track if results were found
   const [notFound, setNotFound] = useState<boolean>(false);
 
+  // Displays or hides dropdown menu
+  function displayDropdown() {
+    // Toggle overlay
+    if (overlayRef.current) {
+      overlayRef.current.style.display = overlayRef.current.style.display === 'block' ? 'none' : 'block';
+    }
+
+    setShowDropdown(prevState => !prevState);
+  }
+
   // Get search results from server and update state variable
   function setResults(gameName: string) {
     searchGameLite(gameName).then((newResults: SearchResultsLite[]) => {
@@ -50,6 +65,17 @@ function Header() {
         setNotFound(false);
       }
     });
+  }
+
+  // Makes string URL friendly
+  function slug(gameName: string): string {
+    const slugString = slugify(gameName, {
+      lower: true,
+      replacement: '_',
+      strict: true
+    });
+
+    return slugString;
   }
 
   // Displays search results if loaded
@@ -115,17 +141,6 @@ function Header() {
     }
   }
 
-  // Makes string URL friendly
-  function slug(gameName: string): string {
-    const slugString = slugify(gameName, {
-      lower: true,
-      replacement: '_',
-      strict: true
-    });
-
-    return slugString;
-  }
-
   // Delays search by 300ms
   useEffect(() => {
     const searchHandler = setTimeout(() => {
@@ -165,7 +180,7 @@ function Header() {
           </Link>
 
           {/* List Link */}
-          <img className='menu' src="/public/menu.png" alt="" />
+          <img className='menu' src="/public/menu.png" alt="" onClick={displayDropdown} />
         </div>
 
         {/* Search Bar */}
@@ -193,6 +208,9 @@ function Header() {
           {displayResults()}
         </div>
       </div>
+
+      {/* Dropdown */}
+      <Dropdown open={showDropdown} onClose={displayDropdown}></Dropdown>
     </>
   )
 }

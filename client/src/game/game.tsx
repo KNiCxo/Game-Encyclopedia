@@ -10,7 +10,7 @@ import '../styles/game.css'
 import type {GameData} from '../../../project-types.ts'
 
 // Import components
-import Header from '../header.tsx'
+import Header from '../header/header.tsx'
 import BannerContent from './banner-content.tsx'
 import MainContent from './main-content.tsx'
 

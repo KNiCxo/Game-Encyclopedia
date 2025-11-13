@@ -5,23 +5,40 @@ import './styles/main.css';
 
 // Import pages
 import Home from './home.tsx'
+import Top100 from './top100.tsx'
+import ComingSoon from './coming-soon.tsx'
+import MyLists from './my-lists.tsx'
 import SearchResults from './search-results.tsx'
 import Game from './game/game.tsx'
 
 const router = createBrowserRouter([
  {
-    // Home Page
-    path: '/',
-    element: <Home></Home>
+  // Home Page
+  path: '/',
+  element: <Home></Home>
+ },
+{
+  // Top 100
+  path: '/top100',
+  element: <Top100></Top100>
  },
  {
-  // Search Results Page
+  // Coming Soon
+  path: '/coming_soon',
+  element: <ComingSoon></ComingSoon>
+ },
+ {
+  // My Lists
+  path: 'my_lists',
+  element: <MyLists></MyLists>
+ },
+ {
+  // Search Results
   path: '/search/:gameName',
   element: <SearchResults></SearchResults>
  },
-
- // Game Profile Page
  {
+   // Game Profile
   path: '/games/:gameId/:gameName',
   element: <Game></Game>
  }
