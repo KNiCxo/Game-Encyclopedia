@@ -34,7 +34,14 @@ function BannerContent(props: BannerContentProps) {
       <img src={bannerURL} alt="" className='banner'/>
 
       {/* Game name */}
-      <h1 className='game-name'>{props.gameData.name}</h1>
+      <div className='game-name-div'>
+        <h1 className='game-name'>{props.gameData.name}</h1>
+      </div>
+
+      <div className='rating-div'>
+              <img src="/public/star.png" alt="" className='rating-img'/>
+              <span className='rating'>{Math.ceil(props.gameData.rating) / 10}</span>
+      </div>
     </div>
   )
 }

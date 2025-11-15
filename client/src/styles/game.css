@@ -16,7 +16,7 @@
 /* Styling for all page content */
 .game-data {
   display: flex;
-  margin: 104px auto 0;
+  margin: 114px auto 0;
   width: 90%;
   position: relative;
   animation: fadeIn 0.8s linear forwards;
@@ -25,7 +25,6 @@
 /* Banner content */
 .banner-content {
   display: flex;
-  flex-direction: column-reverse;
   position: absolute;
   width: 100%;
   height: 180px;
@@ -40,6 +39,13 @@
   width: 100vw;
 }
 
+/* Game name div */
+.game-name-div {
+  display: flex;
+  flex-direction: column-reverse;
+  width: 89%;
+}
+
 /* Game name */
 .game-name {
   color: white;
@@ -47,7 +53,31 @@
   font-size: 25px;
   z-index: 100;
   text-shadow: 2px 2px 2px black;
-  margin: 0 0 10px;
+  margin: 0 0 15px;
+}
+
+/* Rating div */
+.rating-div {
+  display: flex;
+  position: absolute;
+  z-index: 100;
+  right: -7px;
+  bottom: 15px;
+}
+
+/* Rating img */
+.rating-img {
+  width: 22px;
+  height: 22px;
+}
+
+/* Rating */
+.rating {
+  padding: 0px 4px;
+  font-family: roboto-bold-italic;
+  font-size: 22px;
+  color: white;
+  text-shadow: 2px 2px 2px black;
 }
 
 /* Main page content */
@@ -128,7 +158,7 @@
   color: white;
   margin-top: 12px;
   display: flex;
-  padding: 9px 12px;
+  padding: 12px;
 }
 
 /* Cover container */
@@ -138,8 +168,8 @@
 
 /* Cover */
 .cover {
-  width: 140px;
-  height: 186px;
+  width: 130px;
+  height: 173px;
   border-radius: 7px;
 }
 
@@ -155,15 +185,18 @@
   margin-bottom: 0;
 }
 
-/* Player count container */
-.player-count-container {
+/* Player count & rating container */
+.player-count-rating-container {
+  flex-direction: column;
   justify-content: center;
+  align-items: center;
 }
 
 /* Player count header */
 .player-count {
   font-family: roboto-bold-italic;
   font-size: 19px;
+  margin-bottom: 5px;
 }
 
 /* Summary container */
@@ -288,7 +321,7 @@
 
 /* Age ratings container */
 .age-ratings {
-  margin: 10px auto 20px;
+  margin: 10px auto 30px;
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 20px;

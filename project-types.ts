@@ -60,6 +60,7 @@ export type GameData = {
     developer: boolean,
     publisher: boolean
   }[],
+  rating: number,
   summary: string,
   genres: {
     id: number,

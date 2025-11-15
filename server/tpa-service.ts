@@ -1,5 +1,5 @@
 // Import types
-import type {PopularNewReleasesResults, SearchResultsLite, SearchResults, GameData} from '../project-types.ts';
+import type {PopularNewReleasesResults, SearchResultsLite, SearchResultsMain, GameData} from '../project-types.ts';
 
 /* Creates delay for so that loading spinner is on the screen longer */
 function delay(ms: number): Promise<void>{
@@ -62,7 +62,7 @@ export const searchGameLite = async (gameName: string): Promise<SearchResultsLit
 }
 
 // Gets 10 paginated results based on game name
-export const searchGame = async (gameName: string, offset: string):Promise<SearchResults> => {
+export const searchGame = async (gameName: string, offset: string):Promise<SearchResultsMain> => {
   try {
     // Run 300ms delay for increased loading spinner visibility
     await delay(1000);
@@ -107,6 +107,7 @@ export const gatherGameData = async (gameId: string): Promise<GameData> => {
               involved_companies.developer,
               involved_companies.publisher,
               involved_companies.company.name,
+              rating,
               summary,
               genres.name,
               themes.name,

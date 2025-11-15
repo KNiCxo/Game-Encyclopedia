@@ -34,15 +34,15 @@ function MainContent(props: MainContentProps) {
             involved_companies={props.gameData.involved_companies}>
       </Cover>
 
-      {/* Player Count */}
-      {typeof props.playerCount === 'number' && <div className='player-count-container info-container'>
+      {/* Player Count & Rating*/}
+      {typeof props.playerCount === 'number' && <div className='player-count-rating-container info-container'>
         <span className='player-count'>Current players on Steam:&nbsp;{props.playerCount}</span>
       </div>}
       
       {/* Summary */}
       <Summary summary={props.gameData.summary}></Summary>
 
-      {/* Additional Info*/}
+      {/* Additional Info */}
       <AdditionalInfo genres={props.gameData.genres}
                       themes={props.gameData.themes}
                       game_modes={props.gameData.game_modes}

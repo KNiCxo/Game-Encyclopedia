@@ -13,6 +13,7 @@ import type {SearchResultsLite} from '../../../project-types.ts';
 // Import components and functions
 import Dropdown from './dropdown.tsx'
 import {searchGameLite} from '../search-utils.ts'
+import { previousDay } from 'date-fns'
 
 // Project header 
 function Header() {
@@ -23,7 +24,7 @@ function Header() {
   const [showDropdown, setShowDropdown] = useState(false);
 
   // Overlay
-  const overlayRef = useRef<HTMLDivElement | null>(null);
+  const [showOverlay, setShowOverlay] = useState(false);
 
   // Stores search results
   const [searchResultsLite, setSearchResultsLite] = useState<SearchResultsLite[]>([]);
@@ -42,11 +43,8 @@ function Header() {
 
   // Displays or hides dropdown menu
   function displayDropdown() {
-    // Toggle overlay
-    if (overlayRef.current) {
-      overlayRef.current.style.display = overlayRef.current.style.display === 'block' ? 'none' : 'block';
-    }
-
+    if (!showDropdown && !showOverlay) setShowOverlay(true);
+    else if (showDropdown && showOverlay) setShowOverlay(false);
     setShowDropdown(prevState => !prevState);
   }
 
@@ -86,9 +84,7 @@ function Header() {
     // If there are results, then display the first 4
     // Else if search was made but no results were found, display error message
     if (searchResultsLite.length > 0) {
-      if (overlayRef.current) {
-        overlayRef.current.style.display = 'block';
-      }
+      if (!showOverlay) setShowOverlay(true);
 
       return(
         <>
@@ -133,9 +129,7 @@ function Header() {
         </>
       );
     } else {
-      if (overlayRef.current) {
-        overlayRef.current.style.display = 'none';
-      }
+      if (showOverlay && !showDropdown) setShowOverlay(false);
 
       return(<></>);
     }
@@ -166,7 +160,7 @@ function Header() {
   return(
     <>
       {/* Overlay */}
-      <div ref={overlayRef} className='results-overlay'></div>
+      <div className='results-overlay' style={{display: showOverlay ? 'block' : 'none'}}></div>
 
       {/* Header */}
       <div className='header'>
