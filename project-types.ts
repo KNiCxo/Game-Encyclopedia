@@ -116,3 +116,16 @@ export type GameData = {
     rating_category: {id: number, rating: string}
   }[]
 }
+
+// Type for IGDB Top 100
+export type Top100Results = {
+  id: number,
+  cover: {
+    id: number,
+    image_id: string
+  },
+  name: string,
+  rating: number,
+  first_release_date: number,
+  platforms: {id: number, name: string}
+}

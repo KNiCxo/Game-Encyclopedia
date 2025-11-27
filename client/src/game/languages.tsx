@@ -13,6 +13,7 @@ type LanguagesProps = {
   }[],
 }
 
+// Component that contains the game's language supports
 function Languages(props: LanguagesProps) {
   // Group support types with their respective language
   const groupLanguages = props.language_supports?.reduce<Record<string, string[]>>((acc, item) => {

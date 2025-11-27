@@ -7,6 +7,7 @@ type DropdownProps = {
   onClose: () => void
 }
 
+// Mobile dropdown menu
 function Dropdown(props: DropdownProps) {
   return(
     <>

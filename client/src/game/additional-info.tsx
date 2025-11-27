@@ -22,6 +22,7 @@ type AdditionalInfoProps = {
   }[]
 }
 
+// Component that includes genres, themes, game modes, POVs, and game engines
 function AdditionalInfo(props: AdditionalInfoProps) {
   return(
     <div className='additional-info-container info-container'>

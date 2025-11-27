@@ -7,7 +7,7 @@
 
 /* Additional stylings for loader element */
 .game-page-loader:after {
-  margin-top: 50px;
+  margin-top: 150px;
   border-width: 13px;
   width: 90px;
   height: 90px;

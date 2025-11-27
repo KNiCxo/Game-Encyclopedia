@@ -1,8 +1,8 @@
 // Import types
-import type {PopularNewReleasesResults, SearchResultsLite, SearchResultsMain, GameData} from '../project-types.ts';
+import type {PopularNewReleasesResults, SearchResultsLite, SearchResultsMain, GameData, Top100Results} from '../project-types.ts';
 
 /* Creates delay for so that loading spinner is on the screen longer */
-function delay(ms: number): Promise<void>{
+function delay(ms: number):Promise<void>{
   return new Promise(resolve => setTimeout(resolve, ms));
 }
 
@@ -28,7 +28,7 @@ export const popularNewReleases = async ():Promise<PopularNewReleasesResults> =>
           'Client-ID': `${process.env.CLIENT_ID}`,
           'Authorization': `Bearer ${process.env.AUTH}`,
         },
-        body: `fields cover.image_id, name, genres.name;
+        body: `fields cover.image_id, name;
                where (first_release_date > ${earliestReleaseDate}) & (first_release_date < ${currentDate}) & (rating_count >= 5);
                sort rating_count desc;
                limit 10;`
@@ -41,7 +41,7 @@ export const popularNewReleases = async ():Promise<PopularNewReleasesResults> =>
 }
 
 // Gets 4 results based on game name
-export const searchGameLite = async (gameName: string): Promise<SearchResultsLite> => {
+export const searchGameLite = async (gameName: string):Promise<SearchResultsLite> => {
   try {
     // Returns game cover and name fields
     const response = await fetch(
@@ -64,7 +64,7 @@ export const searchGameLite = async (gameName: string): Promise<SearchResultsLit
 // Gets 10 paginated results based on game name
 export const searchGame = async (gameName: string, offset: string):Promise<SearchResultsMain> => {
   try {
-    // Run 300ms delay for increased loading spinner visibility
+    // Run 1000ms delay for increased loading spinner visibility
     await delay(1000);
     
     // Returns game first release date, cover, name, and platforms fields
@@ -87,7 +87,7 @@ export const searchGame = async (gameName: string, offset: string):Promise<Searc
 }
 
 // Gets info for a single game
-export const gatherGameData = async (gameId: string): Promise<GameData> => {
+export const gatherGameData = async (gameId: string):Promise<GameData> => {
   try {
     const response = await fetch(
       "https://api.igdb.com/v4/games", { 
@@ -124,7 +124,7 @@ export const gatherGameData = async (gameId: string): Promise<GameData> => {
               age_ratings.organization.name,
               age_ratings.rating_category.rating;
               where id = ${gameId};`
-      }); 
+    }); 
       
       if (!response.ok) {
         throw new Error();
@@ -146,6 +146,36 @@ export const getPlayerCount = async (gameName: string):Promise<string> => {
     }
 
     return await response.text();
+  } catch (error) {
+    throw error;
+  }
+}
+
+// Gets Top 100 highest rated games on IGDB
+export const top100 = async ():Promise<Top100Results[]> => {
+  try {
+    // Run 300ms delay for increased loading spinner visibility
+    await delay(300);
+
+    const response = await fetch(
+      "https://api.igdb.com/v4/games", { 
+        method: 'POST',
+        headers: {
+        'Accept': 'application/json',
+          'Client-ID': `${process.env.CLIENT_ID}`,
+          'Authorization': `Bearer ${process.env.AUTH}`,
+        },
+        body: `fields first_release_date, cover.image_id, name, platforms.name, rating;
+              where rating >= 86 & rating_count >= 1000; 
+              limit 100; 
+              sort rating desc;`
+    }); 
+
+    if (!response.ok) {
+      throw new Error();
+    }
+
+    return await response.json();
   } catch (error) {
     throw error;
   }

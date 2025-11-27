@@ -22,6 +22,7 @@ type MainContentProps = {
   gameName: string | undefined
 }
 
+// Component that contains most of the game data
 function MainContent(props: MainContentProps) {
   return(
     <div className='main-content'>

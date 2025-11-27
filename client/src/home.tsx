@@ -9,13 +9,12 @@ import './styles/home.css'
 // Import types
 import type {PopularNewReleasesResults} from '../../project-types.ts'
 
-// Import page components and functions */
+// Import page components and functions
 import Header from './header/header.tsx'
 import {getPopularNewReleases} from './search-utils.ts'
 
-/* Home page */
+// Home page 
 function Home() {
-
   // Array of search results for popular new releases
   const [popularNewReleases, setPopularNewReleases] = useState<PopularNewReleasesResults[]>([]);
 
@@ -31,6 +30,7 @@ function Home() {
                 replacement: '_',
                 strict: true
               });
+
               return(
                 <>
                   <Link to={`/games/${entry.id}/${slugGameName}`} className='link'>
@@ -56,8 +56,8 @@ function Home() {
   // Get popular new releases on component mount
   useEffect(() => {
     getPopularNewReleases().then((data) => {
-    setPopularNewReleases(data);
-  });
+      setPopularNewReleases(data);
+    });
   }, []);
 
   return(

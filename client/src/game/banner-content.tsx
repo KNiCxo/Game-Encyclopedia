@@ -6,14 +6,15 @@ type BannerContentProps = {
   gameData: GameData
 }
 
+// Component that contains page banner, game name, and rating
 function BannerContent(props: BannerContentProps) {
   // Stores URL for banner image on page
   let bannerURL: string = '';
 
   // If artworks do not exist, use screenshots
   // Else, use black banner
-  if (!props.gameData.artworks) {
-    if (!props.gameData.screenshots) {
+  if (!props.gameData?.artworks) {
+    if (!props.gameData?.screenshots) {
       bannerURL = `/black.png`
     } else {
       // Picks random number to decide image from screenshots array
@@ -35,12 +36,13 @@ function BannerContent(props: BannerContentProps) {
 
       {/* Game name */}
       <div className='game-name-div'>
-        <h1 className='game-name'>{props.gameData.name}</h1>
+        <h1 className='game-name'>{props.gameData?.name}</h1>
       </div>
 
+      {/* Rating */}
       <div className='rating-div'>
               <img src="/public/star.png" alt="" className='rating-img'/>
-              <span className='rating'>{Math.ceil(props.gameData.rating) / 10}</span>
+              <span className='rating'>{Math.ceil(props.gameData?.rating) / 10}</span>
       </div>
     </div>
   )

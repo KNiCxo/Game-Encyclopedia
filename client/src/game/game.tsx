@@ -96,15 +96,13 @@ function Game() {
   function displayData(): JSX.Element {
     // Only display if gameData exists
     if (gameData) {
-      console.log(gameData);
-
       return(
         <>
           {/* Banner content */}
-          <BannerContent gameData={gameData[0]}></BannerContent>
+          <BannerContent gameData={gameData[0] || ''}></BannerContent>
 
           {/* Main content */}
-          <MainContent gameData={gameData[0]} 
+          <MainContent gameData={gameData[0] || ''} 
                        setVideosLoaded={setVideosLoaded} 
                        playerCount={playerCount}
                        gameName={gameName}>
@@ -131,7 +129,7 @@ function Game() {
       <Header></Header>
 
       {/* Loader*/}
-      {!videosLoaded && <div className='loader game-page-loader'></div>}
+      {(!videosLoaded && gameExists) && <div className='loader game-page-loader'></div>}
 
       {/* Game Data */}
       {<div className='game-data' style={{display: videosLoaded ? 'flex' : 'none' }}>{displayData()}</div>}

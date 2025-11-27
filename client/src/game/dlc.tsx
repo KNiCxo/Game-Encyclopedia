@@ -14,6 +14,7 @@ type DLCProps = {
   gameName: string | undefined
 }
 
+// Components that contains the game DLCs
 function DLC(props: DLCProps) {
   return(
     <>

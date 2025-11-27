@@ -7,6 +7,7 @@ type AgeRatingsProps = {
   }[]
 }
 
+// Component that contains age ratings
 function AgeRatings(props: AgeRatingsProps) {
   return(
     <>

@@ -6,13 +6,14 @@ type SummaryProps = {
   summary: string
 }
 
+// Component that contains the game summary
 function Summary(props: SummaryProps) {
   // Track if summary is extended
   const [isExtended, setIsExtended] = useState<boolean>(false);
 
   // Divies summary into two parts
-  let initialSummary = props.summary.substring(0, 200);
-  let extendedSummary = props.summary.substring(200);
+  let initialSummary = props.summary?.substring(0, 200);
+  let extendedSummary = props.summary?.substring(200);
 
   return(
     <>

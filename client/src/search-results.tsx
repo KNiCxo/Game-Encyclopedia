@@ -57,25 +57,25 @@ function SearchResults() {
 
     // Get search results
     searchGame(gameName, resultsOffset.toString())
-      .then((newResults: SearchResultsMain[]) => {
-        // If results were returned, store them and flag that results were found
-        if (newResults.length > 0) {
-          setSearchResults(prevResults => [...prevResults, ...newResults]);
-          setNotFound(false);
-        }
-        else {
-          // If intial results are empty, flag that no results were found
-          if (searchResults.length === 0) {
-            setNotFound(true);
-          }
-
-          // No more results to fetch
-          setHasMore(false);
+    .then((newResults: SearchResultsMain[]) => {
+      // If results were returned, store them and flag that results were found
+      if (newResults.length > 0) {
+        setSearchResults(prevResults => [...prevResults, ...newResults]);
+        setNotFound(false);
+      }
+      else {
+        // If intial results are empty, flag that no results were found
+        if (searchResults.length === 0) {
+          setNotFound(true);
         }
 
-        // Disable loading spinner
-        setIsLoading(false);
-      });
+        // No more results to fetch
+        setHasMore(false);
+      }
+
+      // Disable loading spinner
+      setIsLoading(false);
+    });
   }
   
   // Displays list of games based on returned search results
@@ -113,27 +113,29 @@ function SearchResults() {
 
             // Search entry jsx
             const entryContent = 
-              <div className='search-entry'>
-                {/* Game cover */}
-                {entry.cover && (
-                  <div key={entry.cover.image_id} className='search-entry-cover'>
-                    <img className='search-entry-img' src={`https://images.igdb.com/igdb/image/upload/t_1080p/${entry.cover.image_id}.jpg`} alt="" />
+              <Link to={`/games/${entry.id}/${slugGameName}`} className='link'>
+                <div className='search-entry'>
+                  {/* Game cover */}
+                  {entry.cover && (
+                    <div key={entry.cover.image_id} className='search-entry-cover'>
+                      <img className='search-entry-img' src={`https://images.igdb.com/igdb/image/upload/t_1080p/${entry.cover.image_id}.jpg`} alt="" />
+                    </div>
+                  )}
+
+                  {/* Name, year, and platforms list */}
+                  <div className='search-entry-info'>
+                    <span className='search-entry-name'>{entry.name}</span>
+                    {!Number.isNaN(gameYear) && <span className='search-entry-year'>{gameYear}</span>}
+                    {entry.platforms && <span className='search-entry-platforms'>{platformsList}</span>}
                   </div>
-                )}
-
-                {/* Name, year, and platforms list */}
-                <div className='search-entry-info'>
-                  <Link to={`/games/${entry.id}/${slugGameName}`} className='link'><span className='search-entry-name'>{entry.name}</span></Link>
-                  {!Number.isNaN(gameYear) && <span className='search-entry-year'>{gameYear}</span>}
-                  {entry.platforms && <span className='search-entry-platforms'>{platformsList}</span>}
                 </div>
-              </div>
+              </Link>;
 
-            // Return entry but add observation hook if the result is the last in the list
+            // If at the end of the search results, return entry content with observation hook
+            // Otherwise, return entry content normally
             if (searchResults.length === index + 1) {
               return(
                 <>
-                  {/* Redirect to game's page*/}
                   <div ref={lastGameElementRef}>
                     {entryContent}
                   </div>
@@ -142,7 +144,6 @@ function SearchResults() {
             } else {
               return (
                 <>
-                  {/* Redirect to game's page*/}
                   {entryContent}
                 </>
               )

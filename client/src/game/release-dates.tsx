@@ -11,6 +11,7 @@ type ReleaseDatesProps = {
   }[]
 }
 
+// Component that contains the release dates
 function ReleaseDates(props: ReleaseDatesProps) {
   // Gather earliest release dates per platform
   const reducedReleaseDates = props.release_dates?.reduce<Record<string, {human: string, date: number}>>((acc, item) => {
@@ -31,8 +32,7 @@ function ReleaseDates(props: ReleaseDatesProps) {
 
     return acc;
   }, {});
-
-  console.log(reducedReleaseDates)
+  
   return(
     <>
       {props.release_dates && <div className='release-dates-container info-container'>

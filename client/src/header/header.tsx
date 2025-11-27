@@ -13,7 +13,6 @@ import type {SearchResultsLite} from '../../../project-types.ts';
 // Import components and functions
 import Dropdown from './dropdown.tsx'
 import {searchGameLite} from '../search-utils.ts'
-import { previousDay } from 'date-fns'
 
 // Project header 
 function Header() {

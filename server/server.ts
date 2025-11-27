@@ -3,7 +3,7 @@ import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
-import type {PopularNewReleasesResults, SearchResultsLite, SearchResults, GameData} from '../project-types.ts';
+import type {PopularNewReleasesResults, SearchResultsLite, SearchResultsMain, GameData, Top100} from '../project-types.ts';
 
 // Import services
 // import { DbService }  from './dbService';
@@ -39,7 +39,7 @@ app.get('/searchGameLite/:gameName', async (req: Request, res: Response) => {
 // GET request for gathering more search results with more fields
 app.get('/searchGame/:gameName/:offset', async (req: Request, res: Response) => {
   try {
-    const data:SearchResults = await tpaService.searchGame(req.params.gameName, req.params.offset);
+    const data:SearchResultsMain = await tpaService.searchGame(req.params.gameName, req.params.offset);
     res.status(200).json(data);
   } catch (error) {
     res.status(500).json({message: 'Internal server error'});
@@ -64,7 +64,17 @@ app.get('/getPlayerCount/:gameName', async (req: Request, res: Response) => {
   } catch (error) {
     res.status(500).end();
   }
-})
+});
+
+// GET request for Top 100 highest rated games on IGDB
+app.get('/top100', async (req: Request, res: Response) => {
+  try {
+    const data:Top100[] = await tpaService.top100();
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(500).end();
+  }
+});
 
 // Start server
 app.listen(process.env.PORT, () => {

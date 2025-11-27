@@ -19,6 +19,7 @@ type CoverProps = {
   }[]
 }
 
+// Component that contains game cover, initial release date, main devs, and publishers
 function Cover(props: CoverProps) {
   // Formatted release date for game if release date exists
   let formattedReleaseDate:string;
