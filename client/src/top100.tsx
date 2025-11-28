@@ -23,8 +23,11 @@ function Top100() {
       if (top100Data.length > 0) {
         return (
           <>
+            {/* List of Top 100 games */}
             <div className='top100-results'>
-              {top100Data.map((entry) => {
+              {/* Iterate though data */}
+              {top100Data.map((entry, index) => {
+                // Slugify game name for link
                 const slugGameName = slugify(entry.name, {
                   lower: true,
                   replacement: '_',
@@ -53,19 +56,34 @@ function Top100() {
                 return(
                   <>
                     <Link to={`/games/${entry.id}/${slugGameName}`} className='link'>
-                      <div className='search-entry'>
-                        {/* Game cover */}
-                        {entry.cover && (
-                          <div key={entry.cover.image_id} className='search-entry-cover'>
-                            <img className='search-entry-img' src={`https://images.igdb.com/igdb/image/upload/t_1080p/${entry.cover.image_id}.jpg`} alt="" />
-                          </div>
-                        )}
+                      {/* Entry */}
+                      <div className='top100-entry'>
+                        {/* Entry placement */}
+                        <div className='top100-number'>
+                          {index + 1}
+                        </div>
 
-                        {/* Name, year, and platforms list */}
-                        <div className='search-entry-info'>
-                          <span className='search-entry-name'>{entry.name}</span>
-                          {!Number.isNaN(gameYear) && <span className='search-entry-year'>{gameYear}</span>}
-                          {entry.platforms && <span className='search-entry-platforms'>{platformsList}</span>}
+                        {/* Game */}
+                        <div className='top100-game'>
+                          {/* Game cover */}
+                          {entry.cover && (
+                            <div key={entry.cover.image_id} className='top100-game-cover'>
+                              <img className='top100-game-img' src={`https://images.igdb.com/igdb/image/upload/t_1080p/${entry.cover.image_id}.jpg`} alt="" />
+                            </div>
+                          )}
+
+                          {/* Name, year, rating, and platforms list */}
+                          <div className='top100-game-info'>
+                            <span className='top100-game-name'>{entry.name}</span>
+
+                            <div className='top100-rating-div'>
+                              <img src="/public/star.png" alt="" className='rating-img top100-star'/>
+                              <span className='game-rating'>{Math.ceil(entry.rating) / 10}</span>
+                            </div>
+
+                            {!Number.isNaN(gameYear) && <span className='top100-game-year'>{gameYear}</span>}
+                            {entry.platforms && <span className='top100-game-platforms'>{platformsList}</span>}
+                          </div>
                         </div>
                       </div>
                     </Link>

@@ -62,6 +62,12 @@ body {
   text-decoration: none;
 }
 
+/* Rating img */
+.rating-img {
+  width: 22px;
+  height: 22px;
+}
+
 /* Loading animation */
 @keyframes loading {
   from {transform: rotate(0turn)}

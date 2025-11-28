@@ -127,5 +127,5 @@ export type Top100Results = {
   name: string,
   rating: number,
   first_release_date: number,
-  platforms: {id: number, name: string}
+  platforms: {id: number, name: string}[]
 }

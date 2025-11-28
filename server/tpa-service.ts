@@ -166,7 +166,7 @@ export const top100 = async ():Promise<Top100Results[]> => {
           'Authorization': `Bearer ${process.env.AUTH}`,
         },
         body: `fields first_release_date, cover.image_id, name, platforms.name, rating;
-              where rating >= 86 & rating_count >= 1000; 
+              where rating >= 86 & rating_count >= 581; 
               limit 100; 
               sort rating desc;`
     }); 

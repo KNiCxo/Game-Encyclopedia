@@ -3,7 +3,7 @@ import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
-import type {PopularNewReleasesResults, SearchResultsLite, SearchResultsMain, GameData, Top100} from '../project-types.ts';
+import type {PopularNewReleasesResults, SearchResultsLite, SearchResultsMain, GameData, Top100Results} from '../project-types.ts';
 
 // Import services
 // import { DbService }  from './dbService';
@@ -69,7 +69,7 @@ app.get('/getPlayerCount/:gameName', async (req: Request, res: Response) => {
 // GET request for Top 100 highest rated games on IGDB
 app.get('/top100', async (req: Request, res: Response) => {
   try {
-    const data:Top100[] = await tpaService.top100();
+    const data:Top100Results[] = await tpaService.top100();
     res.status(200).json(data);
   } catch (error) {
     res.status(500).end();
@@ -77,6 +77,6 @@ app.get('/top100', async (req: Request, res: Response) => {
 });
 
 // Start server
-app.listen(process.env.PORT, () => {
-  console.log(`Now listening on port ${process.env.PORT}`);
+app.listen(4001, () => {
+  console.log(`Now listening on port 4001`);
 });

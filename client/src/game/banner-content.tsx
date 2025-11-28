@@ -40,10 +40,10 @@ function BannerContent(props: BannerContentProps) {
       </div>
 
       {/* Rating */}
-      <div className='rating-div'>
+      {props.gameData?.rating && <div className='rating-div'>
               <img src="/public/star.png" alt="" className='rating-img'/>
               <span className='rating'>{Math.ceil(props.gameData?.rating) / 10}</span>
-      </div>
+      </div>}
     </div>
   )
 }

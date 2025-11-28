@@ -5,8 +5,8 @@
   "main": "dist/server/server.js",
   "scripts": {
     "build": "npx tsc",
-    "start": "node dist/server.js",
-    "dev": "tsc -w & nodemon"
+    "start": "node dist/server/server.js",
+    "dev": "concurrently \"tsc -w\" \"nodemon dist/server/server.js\""
   },
   "keywords": [],
   "author": "",
@@ -20,6 +20,7 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
     "@types/node": "^24.0.1",
+    "concurrently": "^9.2.1",
     "nodemon": "^3.1.10",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"
