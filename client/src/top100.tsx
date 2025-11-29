@@ -13,7 +13,6 @@ import type {Top100Results} from '../../project-types.ts'
 import Header from './header/header.tsx'
 import {getTop100} from './search-utils.ts'
 
-// Top 100
 function Top100() {
   // Array of Top 100 games
   const [top100Data, setTop100Data] = useState<Top100Results[]>([]);
@@ -104,6 +103,7 @@ function Top100() {
       setTop100Data(data);
     });
   }, []);
+
   return(
     <>
       {/* Header */}

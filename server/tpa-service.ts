@@ -1,5 +1,5 @@
 // Import types
-import type {PopularNewReleasesResults, SearchResultsLite, SearchResultsMain, GameData, Top100Results} from '../project-types.ts';
+import type {PopularNewReleasesResults, SearchResultsLite, SearchResultsMain, GameData, Top100Results, ComingSoonResults} from '../project-types.ts';
 
 /* Creates delay for so that loading spinner is on the screen longer */
 function delay(ms: number):Promise<void>{
@@ -169,6 +169,42 @@ export const top100 = async ():Promise<Top100Results[]> => {
               where rating >= 86 & rating_count >= 581; 
               limit 100; 
               sort rating desc;`
+    }); 
+
+    if (!response.ok) {
+      throw new Error();
+    }
+
+    return await response.json();
+  } catch (error) {
+    throw error;
+  }
+}
+
+// Gets anticipated games that are coming soon
+export const comingSoon = async ():Promise<ComingSoonResults[]> => {
+  try {
+    // Current date
+    const currentDate = (Math.floor(Date.now() / 1000));
+
+    // 30 days from current date
+    const latestReleaseDate = currentDate + 2592000;
+
+    // Run 300ms delay for increased loading spinner visibility
+    await delay(300);
+
+    const response = await fetch(
+      "https://api.igdb.com/v4/games", { 
+        method: 'POST',
+        headers: {
+        'Accept': 'application/json',
+          'Client-ID': `${process.env.CLIENT_ID}`,
+          'Authorization': `Bearer ${process.env.AUTH}`,
+        },
+        body: `fields cover.image_id, name;
+               where (first_release_date > ${currentDate}) & (first_release_date < ${latestReleaseDate}) & (hypes >= 15);
+               sort hypes desc;
+               limit 10;`
     }); 
 
     if (!response.ok) {

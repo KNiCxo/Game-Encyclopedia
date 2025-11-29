@@ -129,3 +129,13 @@ export type Top100Results = {
   first_release_date: number,
   platforms: {id: number, name: string}[]
 }
+
+// Type for IGDB Coming Soon
+export type ComingSoonResults = {
+  id: number,
+  cover: {
+    id: number;
+    image_id: string
+  },
+  name: string
+}

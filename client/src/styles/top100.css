@@ -9,6 +9,11 @@
   line-height: 37px;
 }
 
+/* Results container */
+.top100-results {
+  animation: fadeIn 0.8s linear forwards;
+}
+
 /* Entry */
 .top100-entry {
   display: flex;

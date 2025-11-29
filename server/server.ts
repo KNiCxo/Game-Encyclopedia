@@ -3,7 +3,7 @@ import express, { Express, Request, Response } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 
-import type {PopularNewReleasesResults, SearchResultsLite, SearchResultsMain, GameData, Top100Results} from '../project-types.ts';
+import type {PopularNewReleasesResults, SearchResultsLite, SearchResultsMain, GameData, Top100Results, ComingSoonResults} from '../project-types.ts';
 
 // Import services
 // import { DbService }  from './dbService';
@@ -70,6 +70,16 @@ app.get('/getPlayerCount/:gameName', async (req: Request, res: Response) => {
 app.get('/top100', async (req: Request, res: Response) => {
   try {
     const data:Top100Results[] = await tpaService.top100();
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(500).end();
+  }
+});
+
+// GET request for anticipated coming soon games on IGDB
+app.get('/comingSoon', async (req: Request, res: Response) => {
+  try {
+    const data:ComingSoonResults[] = await tpaService.comingSoon();
     res.status(200).json(data);
   } catch (error) {
     res.status(500).end();

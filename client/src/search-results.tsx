@@ -84,71 +84,73 @@ function SearchResults() {
     if (searchResults.length > 0) {
       return(
         <>
-          {/* Iterate through results to display them individually */}
-          {searchResults.map((entry, index) => {
-            const slugGameName = slugify(entry.name, {
-              lower: true,
-              replacement: '_',
-              strict: true
-            });
-
-            // Get year from date
-            const gameDate = new Date(entry.first_release_date * 1000)
-            const gameYear = gameDate.getFullYear();
-
-            // Stores list of platforms that the game exists on
-            let platformsList = '';
-
-            // If key exists then create platform list string
-            if(entry.platforms) {
-              entry.platforms.map((platform, index) => {
-                platformsList += platform.name;
-
-                // Add comma to all elements except the last
-                if (index < entry.platforms.length - 1) {
-                  platformsList += ', ';
-                }
+          <div className='search-entry-list'>
+            {/* Iterate through results to display them individually */}
+            {searchResults.map((entry, index) => {
+              const slugGameName = slugify(entry.name, {
+                lower: true,
+                replacement: '_',
+                strict: true
               });
-            }
 
-            // Search entry jsx
-            const entryContent = 
-              <Link to={`/games/${entry.id}/${slugGameName}`} className='link'>
-                <div className='search-entry'>
-                  {/* Game cover */}
-                  {entry.cover && (
-                    <div key={entry.cover.image_id} className='search-entry-cover'>
-                      <img className='search-entry-img' src={`https://images.igdb.com/igdb/image/upload/t_1080p/${entry.cover.image_id}.jpg`} alt="" />
+              // Get year from date
+              const gameDate = new Date(entry.first_release_date * 1000)
+              const gameYear = gameDate.getFullYear();
+
+              // Stores list of platforms that the game exists on
+              let platformsList = '';
+
+              // If key exists then create platform list string
+              if(entry.platforms) {
+                entry.platforms.map((platform, index) => {
+                  platformsList += platform.name;
+
+                  // Add comma to all elements except the last
+                  if (index < entry.platforms.length - 1) {
+                    platformsList += ', ';
+                  }
+                });
+              }
+
+              // Search entry jsx
+              const entryContent = 
+                <Link to={`/games/${entry.id}/${slugGameName}`} className='link'>
+                  <div className='search-entry'>
+                    {/* Game cover */}
+                    {entry.cover && (
+                      <div key={entry.cover.image_id} className='search-entry-cover'>
+                        <img className='search-entry-img' src={`https://images.igdb.com/igdb/image/upload/t_1080p/${entry.cover.image_id}.jpg`} alt="" />
+                      </div>
+                    )}
+
+                    {/* Name, year, and platforms list */}
+                    <div className='search-entry-info'>
+                      <span className='search-entry-name'>{entry.name}</span>
+                      {!Number.isNaN(gameYear) && <span className='search-entry-year'>{gameYear}</span>}
+                      {entry.platforms && <span className='search-entry-platforms'>{platformsList}</span>}
                     </div>
-                  )}
-
-                  {/* Name, year, and platforms list */}
-                  <div className='search-entry-info'>
-                    <span className='search-entry-name'>{entry.name}</span>
-                    {!Number.isNaN(gameYear) && <span className='search-entry-year'>{gameYear}</span>}
-                    {entry.platforms && <span className='search-entry-platforms'>{platformsList}</span>}
                   </div>
-                </div>
-              </Link>;
+                </Link>;
 
-            // If at the end of the search results, return entry content with observation hook
-            // Otherwise, return entry content normally
-            if (searchResults.length === index + 1) {
-              return(
-                <>
-                  <div ref={lastGameElementRef}>
+              // If at the end of the search results, return entry content with observation hook
+              // Otherwise, return entry content normally
+              if (searchResults.length === index + 1) {
+                return(
+                  <>
+                    <div ref={lastGameElementRef}>
+                      {entryContent}
+                    </div>
+                  </>
+                )
+              } else {
+                return (
+                  <>
                     {entryContent}
-                  </div>
-                </>
-              )
-            } else {
-              return (
-                <>
-                  {entryContent}
-                </>
-              )
-            }
-          })}
+                  </>
+                )
+              }
+            })}
+          </div>
         </>
       )
     } else {
@@ -176,11 +178,11 @@ function SearchResults() {
       {/* Page header */}
       <Header></Header>
 
-      {/* Search results */}
-      <div className='search-entry-list'>{displayResults()}</div>
-
       {/* Loading spinner */}
-      {isLoading && <div className='loader'></div>}
+      {isLoading && <div className='loader search-results-loader'></div>}
+      
+      {/* Search results */}
+      {displayResults()}
 
       {/* Error message */}
       {notFound && <h1 className='error-message'>Error: <br></br> No results found</h1>}

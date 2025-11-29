@@ -1,6 +1,12 @@
+/* Loader styling */
+.search-results-loader {
+  margin-top: 135px;
+}
+
 /* Results list */
 .search-entry-list {
   margin-top: 115px;
+  animation: fadeIn 0.8s linear forwards;
 }
 
 /* Entry */

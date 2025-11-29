@@ -1,5 +1,5 @@
 // Import types
-import type {PopularNewReleasesResults, SearchResultsLite, SearchResultsMain, GameData, Top100Results} from '../../project-types.ts';
+import type {PopularNewReleasesResults, SearchResultsLite, SearchResultsMain, GameData, Top100Results, ComingSoonResults} from '../../project-types.ts';
 
 // Gets popular new release search results 
 export const getPopularNewReleases = async (): Promise<PopularNewReleasesResults[]>  => {
@@ -89,6 +89,22 @@ export const getPlayerCount = async (gameName: string | undefined): Promise<stri
 export const getTop100 = async (): Promise<Top100Results[]> => {
   try {
     const response = await fetch(`http://localhost:4001/top100`);
+
+    if (!response.ok) {
+        throw new Error();
+    }
+
+    const json = await response.json();
+    return json;
+  } catch (error) {
+    throw error;
+  }
+}
+
+// Gets list of the most highly anticipated games coming soon
+export const getComingSoon = async (): Promise<ComingSoonResults[]> => {
+  try {
+    const response = await fetch(`http://localhost:4001/comingSoon`);
 
     if (!response.ok) {
         throw new Error();
