@@ -10,7 +10,7 @@ import type {ListTable} from '../../project-types.ts';
 
 // Import page components and functions */
 import Header from './header/header.tsx'
-import {getLists, createEntry} from './db-utils.ts'
+import {getLists, createEntry, deleteEntry} from './db-utils.ts'
 
 function MyLists() {
   // Stores game lists
@@ -85,7 +85,7 @@ function MyLists() {
                 
                     <div className='list-info-bottom'>
                       <span className='list-count'>{lists.GameCount} Games</span>
-                      <img src="/public/bin.png" alt="" className='list-delete' onClick={() => deleteEntry()}/>
+                      <img src="/public/bin.png" alt="" className='list-delete' onClick={() => removeEntry(lists.ListName, lists.ListId)}/>
                     </div>
                   </div>
                 </div>
@@ -119,13 +119,17 @@ function MyLists() {
       return;
     }
 
-    createEntry(name);
+    await createEntry(name);
+    toggleAddList();
     storeLists();
   }
 
   // Delete list entry from database
-  const deleteEntry = async (): Promise<void> => {
-    confirm('Are you sure you want to delete this list?');
+  const removeEntry = async (name: string, id: number): Promise<void> => {
+     if(confirm('Are you sure you want to delete this list?')) {
+      await deleteEntry(name, id);
+      storeLists();
+     }
   }
 
   // Get lists on component mount

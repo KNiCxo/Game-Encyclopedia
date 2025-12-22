@@ -1,6 +1,7 @@
-// Import modules
-import mysql, {RowDataPacket} from 'mysql2/promise'
+// Import packages
+import mysql, {RowDataPacket, ResultSetHeader} from 'mysql2/promise'
 import dotenv from 'dotenv'
+import slugify from 'slugify'
 
 // Types
 import type {ListTable} from '../project-types.ts'
@@ -40,11 +41,28 @@ export class DbService {
     }
   }
   
-  // Creates new list and updates list_table
+  // Updates list_table and create new list
   async createEntry(name: string): Promise<void> {
     try {
+      // Update list_table
+      const updateQuery = `INSERT INTO list_table
+                           (ListName, GameCount, PinnedGameURL1, PinnedGameURL2, PinnedGameURL3, PinnedGameURL4)
+                           VALUES (?, 0, '', '', '', '');`;
+
+      // Execute query
+      const [result] = await pool.execute<ResultSetHeader>(updateQuery, [name]);
+
+      // Slug name and add it's id to the end
+      let sluggedName = slugify(name, {
+        lower: true,
+        replacement: '_',
+        strict: true
+      });
+
+      sluggedName = sluggedName + `_${result.insertId}`;
+
       // Ensure table name is safe
-      const tableName = mysql.escapeId(name);
+      const tableName = mysql.escapeId(sluggedName);
       
       // Creates new table
       const newTableQuery = `CREATE TABLE ${tableName} (
@@ -58,15 +76,34 @@ export class DbService {
       
       // Execute query
       await pool.execute(newTableQuery);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
-      // Update list_table
-      const updateQuery = `INSERT INTO list_table
-                           (ListName, GameCount, PinnedGameURL1, PinnedGameURL2, PinnedGameURL3, PinnedGameURL4)
-                           VALUES (?, 0, '', '', '', '');`;
+  // Deletes list and updates list_table
+  async deleteEntry(name: string, id: number): Promise<void> {
+    try {
+      // Slug name and add it's id to the end
+      let sluggedName = slugify(name, {
+        lower: true,
+        replacement: '_',
+        strict: true
+      });
+
+      sluggedName = sluggedName + `_${id}`;
+
+      // Drop table
+      const deleteQuery = `DROP TABLE ${sluggedName}`;
 
       // Execute query
-      await pool.execute(updateQuery, [name]);
-      
+      await pool.execute(deleteQuery);
+
+      // Update list_table
+      const updateQuery = 'DELETE from list_table WHERE ListId = ?'
+
+      await pool.execute (updateQuery, [id]);
+
     } catch (error) {
       console.log(error);
     }

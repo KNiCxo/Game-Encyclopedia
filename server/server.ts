@@ -111,7 +111,18 @@ app.post('/createEntry/:name', async (req: Request, res: Response) => {
     const db = DbService.getDbServiceInstance();
     await db.createEntry(req.params.name);
 
-    res.status(200);
+    res.status(200).end();
+  } catch (error) {
+    res.status(500).end();
+  }
+});
+
+app.delete('/deleteEntry/:name/:id', async (req: Request, res: Response) => {
+  try {
+    const db = DbService.getDbServiceInstance();
+    await db.deleteEntry(req.params.name, Number(req.params.id));
+
+    res.status(200).end();
   } catch (error) {
     res.status(500).end();
   }
