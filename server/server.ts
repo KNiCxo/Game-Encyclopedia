@@ -1,9 +1,9 @@
 // Import packages
-import express, { Express, Request, Response } from 'express';
-import dotenv from 'dotenv';
-import cors from 'cors';
+import express, { Express, Request, Response } from 'express'
+import dotenv from 'dotenv'
+import cors from 'cors'
 
-import type {PopularNewReleasesResults, SearchResultsLite, SearchResultsMain, GameData, Top100Results, ComingSoonResults} from '../project-types.ts';
+import type {PopularNewReleasesResults, SearchResultsLite, SearchResultsMain, GameData, Top100Results, ComingSoonResults, ListTable} from '../project-types.ts'
 
 // Import services
 // import { DbService }  from './dbService';
@@ -12,9 +12,16 @@ import * as tpaService from './tpa-service';
 // Create server instance
 const app: Express = express();
 
+// Create dbService instance
+import {DbService} from './db-service.js';
+
+// Enable dotenv
+dotenv.config();
+
 // Format server
 app.use(cors());
-dotenv.config();
+app.use(express.json());
+app.use(express.urlencoded({extended: false}));
 
 // GET request for gathering a list of popular new game releases
 app.get('/popularNewReleases', async (req: Request, res: Response) => {
@@ -86,7 +93,31 @@ app.get('/comingSoon', async (req: Request, res: Response) => {
   }
 });
 
+// GET request for gathering all list names from the database
+app.get('/getLists', async (req: Request, res: Response) => {
+  try {
+    const db = DbService.getDbServiceInstance();
+    const data: ListTable[] = await db.getLists();
+
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(500).end();
+  }
+});
+
+// POST request for creating a new list and updating list_table
+app.post('/createEntry/:name', async (req: Request, res: Response) => {
+  try {
+    const db = DbService.getDbServiceInstance();
+    await db.createEntry(req.params.name);
+
+    res.status(200);
+  } catch (error) {
+    res.status(500).end();
+  }
+});
+
 // Start server
-app.listen(4001, () => {
+app.listen(process.env.PORT, () => {
   console.log(`Now listening on port 4001`);
 });

@@ -1,0 +1,154 @@
+/* Create list button */
+.new-list-button {
+  background-color: rgb(45, 68, 100);
+  width: 90%;
+  height: 55px;
+  margin: 129px auto 0;
+  border-radius: 7px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  cursor: pointer;
+  border: none;
+  font-family: roboto-light-italic;
+  font-size: 22px;
+}
+
+.new-list-button:hover {
+  background-color: rgb(49, 72, 106);
+}
+
+/* Create list element */
+.create-list {
+  position: fixed;
+  display: none;
+  flex-direction: column;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -80%);
+  background-color: rgb(30, 41, 56);
+  width: 300px;
+  height: 120px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  border: solid 3px rgb(19, 27, 38);
+}
+
+.create-list-input {
+  border: none;
+  border-radius: 0px;
+  width: 210px;
+  height: 26px;
+  margin-bottom: 18px;
+  border-radius: 5px;
+  padding: 4px 0px 4px 10px;
+  outline: none;
+  font-family: roboto-bold;
+  font-size: 16px;
+}
+
+/* Create list buttons */
+.create-list-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 13px;
+}
+
+.create-list-add, .create-list-cancel {
+  width: 90px;
+  height: 31px;
+  font-family: roboto-bold;
+  border: 1px solid rgb(19, 27, 38);
+  border-radius: 4px;
+  background-color: rgb(45, 68, 100);
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.create-list-add:hover, .create-list-cancel:hover {
+  background-color: rgb(49, 72, 106);
+}
+
+/* List entries container */
+.list-entries {
+  margin: 15px auto 15px;
+  width: 90%;
+}
+
+/* Entry */
+.list-entry {
+  background-color: rgb(45, 68, 100);
+  border-radius: 5px;
+  color: white;
+  margin-top: 15px;
+  padding: 12px ;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+/* Pinned games container */
+.pinned-games {
+  display: flex;
+  flex-direction: row;
+  margin: 0 auto 10px;
+  width: 100%;
+  justify-content: space-evenly;
+  gap: 9px;
+}
+
+/* Pinned game */
+.pinned-game {
+  width: 68px;
+  height: 90px;
+  background-color: rgb(30, 41, 56);
+  border-radius: 7px;
+}
+
+/* Pinned game cover art */
+.pinned-game-img {
+  border-radius: 7px;
+  width: 68px;
+  height: 90px;
+}
+
+/* Info */
+.list-info {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+}
+
+/* Title */
+.list-title {
+  font-size: 20px;
+  margin-bottom: 0px;
+  font-family: roboto-bold-italic;
+}
+
+.list-title:hover {
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+/* Info bottom row */
+.list-info-bottom {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* Game count */
+.list-count {
+  font-family: roboto-light-italic;
+  font-size: 16px;
+}
+
+.list-delete {
+  width: 23px;
+  height: 23px;
+  cursor: pointer;
+}

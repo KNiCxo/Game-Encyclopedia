@@ -38,7 +38,7 @@ function Game() {
   const [playerCount, setPlayerCount] = useState<number | null>(null);
   
   // Fetches game data from server and updates variable
-  function storeGameData() {
+  function storeGameData(): void {
     // Make call to IGDB for game data
     gatherGameData(gameId)
       .then((gameDataRes: GameData[] | null) => {
@@ -57,19 +57,19 @@ function Game() {
     getPlayerCount(gameName)
       .then((playerCountRes: string) => {
         // Get tbody from Steam Charts
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(playerCountRes, 'text/html');
-        const tbody = doc.querySelector('tbody');
+        const parser: DOMParser = new DOMParser();
+        const doc: Document = parser.parseFromString(playerCountRes, 'text/html');
+        const tbody: HTMLTableSectionElement | null = doc.querySelector('tbody');
 
         // If tbody exists, find the correct game from Steam Chart's search results
         if (tbody) {
           // Start at first row
-          let rows = 0;
+          let rows: number = 0;
 
           // Iterate through table rows
           while (rows < tbody.rows.length) {
             // Slugify Steam Chart entry
-            const steamChartGame = slugify(tbody.rows[rows].cells[1].querySelector('a')?.innerHTML || '', {
+            const steamChartGame: string = slugify(tbody.rows[rows].cells[1].querySelector('a')?.innerHTML || '', {
               lower: true,
               replacement: '_',
               strict: true

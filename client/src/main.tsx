@@ -8,6 +8,7 @@ import Home from './home.tsx'
 import Top100 from './top100.tsx'
 import ComingSoon from './coming-soon.tsx'
 import MyLists from './my-lists.tsx'
+import List from './list.tsx'
 import SearchResults from './search-results.tsx'
 import Game from './game/game.tsx'
 
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
   // My Lists
   path: 'my_lists',
   element: <MyLists></MyLists>
+ },
+ {
+  path: 'list/:listName',
+  element: <List></List>
  },
  {
   // Search Results

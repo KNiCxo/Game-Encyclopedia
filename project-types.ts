@@ -139,3 +139,14 @@ export type ComingSoonResults = {
   },
   name: string
 }
+
+// Type for DB List Table
+export type ListTable = {
+  ListId: number,
+  ListName: string,
+  GameCount: number,
+  PinnedGameURL1: string,
+  PinnedGameURL2: string,
+  PinnedGameURL3: string,
+  PinnedGameURL4: string,
+}

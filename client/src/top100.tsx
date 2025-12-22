@@ -18,7 +18,7 @@ function Top100() {
   const [top100Data, setTop100Data] = useState<Top100Results[]>([]);
 
   // Displays Top 100 results
-  function displayResults():JSX.Element {
+  function displayResults(): JSX.Element {
       if (top100Data.length > 0) {
         return (
           <>
@@ -54,7 +54,7 @@ function Top100() {
 
                 return(
                   <>
-                    <Link to={`/games/${entry.id}/${slugGameName}`} className='link'>
+                    <Link to={`/games/${entry.id}/${slugGameName}`} className='link entry-odd'>
                       {/* Entry */}
                       <div className='top100-entry'>
                         {/* Entry placement */}

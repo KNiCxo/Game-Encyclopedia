@@ -13,18 +13,18 @@ type SliderProps = {
 // Video slider component for game page Youtube videos
 function VideoSlider(props: SliderProps) {
   // Tracks videos that are loaded
-  const [loadCount, setLoadCount] = useState(0);
+  const [loadCount, setLoadCount] = useState<number>(0);
 
   // Tracks position in image array
-  const [imgIndex, setImgIndex] = useState(0);
+  const [imgIndex, setImgIndex] = useState<number>(0);
 
   // Reference to left and right arrow
   const leftArrow = useRef<HTMLImageElement | null>(null);
   const rightArrow = useRef<HTMLImageElement| null>(null);
 
   // Displays next image in array
-  function showNextImg() {
-    const arrayLength = props.videos.length;
+  function showNextImg(): void {
+    const arrayLength: number = props.videos.length;
 
     // If within bounds, go to next image
     if (imgIndex < arrayLength - 1) {
@@ -41,8 +41,8 @@ function VideoSlider(props: SliderProps) {
   }
 
   // Displays previous image in array
-  function showPrevImg() {
-    const arrayLength = props.videos.length;
+  function showPrevImg(): void {
+    const arrayLength: number = props.videos.length;
 
     // If within bounds, go to previous image
     if (imgIndex > 0) {

@@ -12,8 +12,8 @@ function Summary(props: SummaryProps) {
   const [isExtended, setIsExtended] = useState<boolean>(false);
 
   // Divies summary into two parts
-  let initialSummary = props.summary?.substring(0, 200);
-  let extendedSummary = props.summary?.substring(200);
+  let initialSummary: string = props.summary?.substring(0, 200);
+  let extendedSummary: string = props.summary?.substring(200);
 
   return(
     <>

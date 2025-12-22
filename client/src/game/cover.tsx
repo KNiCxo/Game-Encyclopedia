@@ -22,12 +22,12 @@ type CoverProps = {
 // Component that contains game cover, initial release date, main devs, and publishers
 function Cover(props: CoverProps) {
   // Formatted release date for game if release date exists
-  let formattedReleaseDate:string;
+  let formattedReleaseDate: string;
 
   // If first release date exists, then set format to MM/DD/YYYY
   // Else, set to 'Unreleased'
   if (props.first_release_date) {
-    let releaseDate:Date = new Date(props.first_release_date * 1000);
+    const releaseDate: Date = new Date(props.first_release_date * 1000);
     formattedReleaseDate = format(releaseDate, 'MM/dd/yyyy');
   } else {
     formattedReleaseDate = 'Unreleased';

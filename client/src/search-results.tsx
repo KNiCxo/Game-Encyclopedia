@@ -51,7 +51,7 @@ function SearchResults() {
   const [searchResults, setSearchResults] = useState<SearchResultsMain[]>([]);
 
   // Gets search results and stores them. Also handles no results case and loading spinner state.
-  function setResults() {
+  function setResults(): void {
     // Enable loading spinner
     setIsLoading(true);
 

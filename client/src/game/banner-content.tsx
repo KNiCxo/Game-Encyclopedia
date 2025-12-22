@@ -18,13 +18,13 @@ function BannerContent(props: BannerContentProps) {
       bannerURL = `/black.png`
     } else {
       // Picks random number to decide image from screenshots array
-      const randomNum = Math.floor(Math.random() * props.gameData.screenshots.length);
+      const randomNum: number = Math.floor(Math.random() * props.gameData.screenshots.length);
       
       bannerURL = `https://images.igdb.com/igdb/image/upload/t_1080p/${props.gameData.screenshots[randomNum].image_id}.jpg`;
     }
   } else {
     // Picks random number to decide image from artworks array
-    const randomNum = Math.floor(Math.random() * props.gameData.artworks.length);
+    const randomNum: number = Math.floor(Math.random() * props.gameData.artworks.length);
 
     bannerURL = `https://images.igdb.com/igdb/image/upload/t_1080p/${props.gameData.artworks[randomNum].image_id}.jpg`;
   }

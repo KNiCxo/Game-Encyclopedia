@@ -16,7 +16,7 @@ function ReleaseDates(props: ReleaseDatesProps) {
   // Gather earliest release dates per platform
   const reducedReleaseDates = props.release_dates?.reduce<Record<string, {human: string, date: number}>>((acc, item) => {
     // Get platform name
-    const platform = item.platform.name;
+    const platform:string = item.platform.name;
 
     // If platform isn't in object, then add platform
     if (!acc[platform]) {

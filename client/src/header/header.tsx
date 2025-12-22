@@ -41,14 +41,14 @@ function Header() {
   const [notFound, setNotFound] = useState<boolean>(false);
 
   // Displays or hides dropdown menu
-  function displayDropdown() {
+  function displayDropdown(): void {
     if (!showDropdown && !showOverlay) setShowOverlay(true);
     else if (showDropdown && showOverlay) setShowOverlay(false);
     setShowDropdown(prevState => !prevState);
   }
 
   // Get search results from server and update state variable
-  function setResults(gameName: string) {
+  function setResults(gameName: string): void {
     searchGameLite(gameName).then((newResults: SearchResultsLite[]) => {
       if (newResults.length >= 0) {
         setSearchResultsLite(newResults);
