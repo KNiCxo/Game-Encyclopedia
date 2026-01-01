@@ -4,7 +4,7 @@ import dotenv from 'dotenv'
 import slugify from 'slugify'
 
 // Types
-import type {ListTable} from '../project-types.ts'
+import type {ListTable, ListData} from '../project-types.ts'
 
 // Enable dotenv
 dotenv.config();
@@ -37,27 +37,48 @@ export class DbService {
       return rows;
     } catch (error) {
       console.log(error);
-      return [];
+      throw error;
+    }
+  }
+
+  // Get game data from a specific list
+  async getListData(id: number): Promise<ListData[]> {
+    try {
+      // Get slugged name of table from list_table
+      const nameQuery = `SELECT SluggedName FROM list_table WHERE ListId = ?`;
+      const [result] = await pool.execute<[RowDataPacket]>(nameQuery, [id]);
+
+      // Combine slugged name with id to get table name
+      const tableName = result[0].SluggedName + `_${id}`;
+      
+      // Get data from list
+      const listQuery = `SELECT * FROM ${tableName}`;
+      const [rows] = await pool.execute<(ListData & RowDataPacket)[]>(listQuery);
+
+      return rows;
+    } catch (error) {
+      console.log(error);
+      throw error;
     }
   }
   
   // Updates list_table and create new list
   async createEntry(name: string): Promise<void> {
     try {
-      // Update list_table
-      const updateQuery = `INSERT INTO list_table
-                           (ListName, GameCount, PinnedGameURL1, PinnedGameURL2, PinnedGameURL3, PinnedGameURL4)
-                           VALUES (?, 0, '', '', '', '');`;
-
-      // Execute query
-      const [result] = await pool.execute<ResultSetHeader>(updateQuery, [name]);
-
       // Slug name and add it's id to the end
       let sluggedName = slugify(name, {
         lower: true,
         replacement: '_',
         strict: true
       });
+
+      // Update list_table
+      const updateQuery = `INSERT INTO list_table
+                           (ListName, GameCount, PinnedGameURL1, PinnedGameURL2, PinnedGameURL3, PinnedGameURL4, SluggedName)
+                           VALUES (?, 0, '', '', '', '', ?);`;
+
+      // Execute query
+      const [result] = await pool.execute<ResultSetHeader>(updateQuery, [name, sluggedName]);
 
       sluggedName = sluggedName + `_${result.insertId}`;
 
@@ -70,6 +91,7 @@ export class DbService {
                        GameId INT NOT NULL,
                        CoverArt VARCHAR(6),
                        GameName VARCHAR(50) NOT NULL,
+                       SluggedGameName VARCHAR(50) NOT NULL,
                        Year VARCHAR(4),
                        Platforms VARCHAR(150)
                       );`;
@@ -78,23 +100,15 @@ export class DbService {
       await pool.execute(newTableQuery);
     } catch (error) {
       console.log(error);
+      throw error;
     }
   }
 
   // Deletes list and updates list_table
   async deleteEntry(name: string, id: number): Promise<void> {
     try {
-      // Slug name and add it's id to the end
-      let sluggedName = slugify(name, {
-        lower: true,
-        replacement: '_',
-        strict: true
-      });
-
-      sluggedName = sluggedName + `_${id}`;
-
       // Drop table
-      const deleteQuery = `DROP TABLE ${sluggedName}`;
+      const deleteQuery = `DROP TABLE ${name}_${id}`;
 
       // Execute query
       await pool.execute(deleteQuery);
@@ -106,6 +120,7 @@ export class DbService {
 
     } catch (error) {
       console.log(error);
+      throw error;
     }
   }
 }

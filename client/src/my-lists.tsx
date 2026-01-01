@@ -85,7 +85,7 @@ function MyLists() {
                 
                     <div className='list-info-bottom'>
                       <span className='list-count'>{lists.GameCount} Games</span>
-                      <img src="/public/bin.png" alt="" className='list-delete' onClick={() => removeEntry(lists.ListName, lists.ListId)}/>
+                      <img src="/public/bin.png" alt="" className='list-delete' onClick={() => removeEntry(lists.SluggedName, lists.ListId)}/>
                     </div>
                   </div>
                 </div>
@@ -94,7 +94,7 @@ function MyLists() {
           })}
         </div>
       </>
-    )
+    );
   }
 
   // Toggle add list element

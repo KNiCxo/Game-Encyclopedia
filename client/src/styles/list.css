@@ -1,40 +1,47 @@
-/* Loader styling */
-.search-results-loader {
-  margin-top: 135px;
+/* Header text */
+.list-header {
+  color: white;
+  font-family: roboto-thin-italic;
+  text-align: center;
+  padding: 0 14px; 
+  margin: 300px 0 0 0;
+  font-size: 26px;
+  line-height: 37px;
 }
 
 /* Results list */
-.search-entry-list {
+.game-list-entries {
   margin-top: 115px;
   animation: fadeIn 0.8s linear forwards;
 }
 
 /* Entry */
-.search-entry {
+.game-list-entry {
   display: flex;
   flex-direction: row;
   padding: 10px 12px;
   cursor: pointer;
 }
 
-.search-entry:hover {
+.game-list-entry:hover {
   background-color: rgba(255, 255, 255, 0.146);
 }
 
+
 /* Entry game cover */
-.search-entry-cover {
+.game-list-entry-cover {
   display: flex;
   align-items: center;
 }
 
 /* Entry image */
-.search-entry-img {
+.game-list-entry-img {
   width: 93px;
   height: 125px;
 }
 
 /* Entry info */
-.search-entry-info {
+.game-list-entry-info {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -43,26 +50,26 @@
 }
 
 /* Entry name */
-.search-entry-name {
+.game-list-entry-name {
   font-family: oswald-bold;
   font-size: 18px;
   margin-bottom: 3px;
 }
 
-.search-entry-name:hover {
+.game-list-entry-name:hover {
   text-decoration: underline;
   cursor: pointer;
 }
 
 /* Entry year */
-.search-entry-year {
+.game-list-entry-year {
   font-family: roboto-light-italic;
   font-size: 17px;
   margin-bottom: 7px;
 }
 
 /* Entry platforms */
-.search-entry-platforms {
+.game-list-entry-platforms {
   font-family: roboto-light-italic;
   font-size: 14px;
 }

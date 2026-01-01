@@ -76,7 +76,9 @@
 .list-entries {
   margin: 15px auto 15px;
   width: 90%;
+  animation: fadeIn 0.8s linear forwards;
 }
+
 
 /* Entry */
 .list-entry {

@@ -1,4 +1,4 @@
-// Type for IGDB popular new releases query 
+// IGDB popular new releases query 
 export type PopularNewReleasesResults = {
   cover: {
     id: number,
@@ -8,17 +8,17 @@ export type PopularNewReleasesResults = {
   name: string
 }
 
-  // Type for IGDB simplified search results query
-  export type SearchResultsLite = {
-    cover: {
-      id: number,
-      image_id: string
-    },
+// IGDB simplified search results query
+export type SearchResultsLite = {
+  cover: {
     id: number,
-    name: string
-  }
+    image_id: string
+  },
+  id: number,
+  name: string
+}
 
-// Type for IGDB search results query
+// IGDB search results query
 export type SearchResultsMain = {
   cover: {
     id: number,
@@ -30,7 +30,7 @@ export type SearchResultsMain = {
   platforms: {id: number, name: string}[]
 }
 
-// Type for IGDB game data query
+// IGDB game data query
 export type GameData = {
   id: number,
   artworks: {
@@ -117,7 +117,7 @@ export type GameData = {
   }[]
 }
 
-// Type for IGDB Top 100
+// IGDB Top 100
 export type Top100Results = {
   id: number,
   cover: {
@@ -130,7 +130,7 @@ export type Top100Results = {
   platforms: {id: number, name: string}[]
 }
 
-// Type for IGDB Coming Soon
+// IGDB Coming Soon
 export type ComingSoonResults = {
   id: number,
   cover: {
@@ -140,7 +140,7 @@ export type ComingSoonResults = {
   name: string
 }
 
-// Type for DB List Table
+// DB List Table
 export type ListTable = {
   ListId: number,
   ListName: string,
@@ -149,4 +149,16 @@ export type ListTable = {
   PinnedGameURL2: string,
   PinnedGameURL3: string,
   PinnedGameURL4: string,
+  SluggedName: string
+}
+
+// DB List Data
+export type ListData = {
+  EntryId: number,
+  GameId: number,
+  CoverArt: string,
+  GameName: string,
+  SluggedName: string,
+  Year: string,
+  Platforms: string
 }

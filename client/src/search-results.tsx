@@ -118,8 +118,14 @@ function SearchResults() {
                   <div className='search-entry'>
                     {/* Game cover */}
                     {entry.cover && (
-                      <div key={entry.cover.image_id} className='search-entry-cover'>
+                      <div  className='search-entry-cover'>
                         <img className='search-entry-img' src={`https://images.igdb.com/igdb/image/upload/t_1080p/${entry.cover.image_id}.jpg`} alt="" />
+                      </div>
+                    )}
+
+                    {!entry.cover && (
+                      <div className='search-entry-cover'>
+                        <img className='search-entry-img' src='/public/no-cover.png' alt="" />
                       </div>
                     )}
 

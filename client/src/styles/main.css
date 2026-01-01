@@ -56,6 +56,16 @@ body {
   animation: loading 0.75s ease infinite;
 }
 
+/* Error message */
+.error-message {
+  margin: 260px auto 0;
+  padding: 0 15px;
+  text-align: center;
+  font-family: roboto-bold;
+  font-size: 40px;
+  color: white;
+}
+
 /* Styling for table player link */
 .link {
   color: white;

@@ -1,5 +1,5 @@
 // Import types
-import type {ListTable} from '../../project-types.ts';
+import type {ListTable, ListData} from '../../project-types.ts';
 
 // Gets all tables from database
 export const getLists = async (): Promise<ListTable[]>  => {
@@ -10,6 +10,18 @@ export const getLists = async (): Promise<ListTable[]>  => {
   } catch (error) {
     console.log(error);
     return [];
+  }
+}
+
+// Get data for a specific list
+export const getListData = async (listId: number): Promise<ListData[]> => {
+    try {
+    const response = await fetch(`http://localhost:4001/getListData/${listId}`);
+    const json = await response.json();
+    return (json);
+  } catch (error) {
+    console.log(error);
+    throw error;
   }
 }
 

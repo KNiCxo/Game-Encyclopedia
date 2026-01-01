@@ -96,6 +96,7 @@ function Header() {
                   <div className='search-lite-item'>
                     {/* Game Cover */}
                     {entry.cover && (<img className='search-lite-cover' src={`https://images.igdb.com/igdb/image/upload/t_1080p/${entry.cover.image_id}.jpg`} alt="" />)}
+                    {!entry.cover && (<img className='search-lite-cover' src='/public/no-cover.png' alt="" />)}
                     
                     {/* Game Name */}
                     <span className='search-lite-name'>{entry.name}</span>
