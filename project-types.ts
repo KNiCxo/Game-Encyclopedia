@@ -162,3 +162,30 @@ export type ListData = {
   Year: string,
   Platforms: string
 }
+
+// DB List Names + Ids
+export type ListNames = {
+  ListId: number,
+  ListName: string,
+  SluggedName: string,
+  GameExists: number | boolean
+}
+
+// Adding game to list
+export type AddGameEntry = {
+  listName: string,
+  listId: number,
+  gameId: number,
+  cover: string,
+  name: string,
+  year: string,
+  platforms: string,
+  sluggedName: string
+}
+
+// Adding game to list
+export type RemoveGameEntry = {
+  listName: string,
+  listId: number,
+  gameId: number,
+}

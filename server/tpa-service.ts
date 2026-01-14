@@ -11,14 +11,14 @@ export const popularNewReleases = async ():Promise<PopularNewReleasesResults> =>
   // Current date
   const currentDate = (Math.floor(Date.now() / 1000));
 
-  // 30 days from current date
-  const earliestReleaseDate = currentDate - 2592000;
+  // 45 days from current date
+  const earliestReleaseDate = currentDate - 3888000;
 
   try {
     // Run 300ms delay for increased loading spinner visibility
     await delay(300);
 
-    // Gets games with a rating count of 5 or more and released within the past 30 days
+    // Gets games with a rating count of 5 or more and released within the past 45 days
     // and returns the cover image, name, and genres
     const response = await fetch(
       "https://api.igdb.com/v4/games", { 
@@ -140,7 +140,7 @@ export const gatherGameData = async (gameId: string):Promise<GameData> => {
 export const getPlayerCount = async (gameName: string):Promise<string> => {
   try {
     const response = await fetch(`https://steamcharts.com/search/?q=${gameName}`);
-
+    
     if (!response.ok) {
       throw new Error();
     }

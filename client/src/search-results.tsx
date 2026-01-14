@@ -102,7 +102,7 @@ function SearchResults() {
 
               // If key exists then create platform list string
               if(entry.platforms) {
-                entry.platforms.map((platform, index) => {
+                entry.platforms.forEach((platform, index) => {
                   platformsList += platform.name;
 
                   // Add comma to all elements except the last

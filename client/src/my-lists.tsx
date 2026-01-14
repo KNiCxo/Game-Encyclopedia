@@ -99,12 +99,20 @@ function MyLists() {
 
   // Toggle add list element
   const toggleAddList = (): void => {
+    // Add list element
     const element = document.querySelector<HTMLElement>('.create-list');
+
+    const input = document.querySelector('.create-list-input') as HTMLInputElement | null;
     
     // If element is not null then toggle style
     if (element) {
       element.style.display = window.getComputedStyle(element).display === 'none' ? 'flex' : 'none';
-      setAddListEnabled(prev => !prev);
+      setAddListEnabled((prev) => {
+        if (prev && input) {
+          input.value = '';
+        }
+        return !prev
+      });
     }
   }
 

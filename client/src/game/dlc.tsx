@@ -1,5 +1,6 @@
 // Import packages
 import {Link} from 'react-router-dom'
+import slugify from 'slugify'
 
 // Typesetting for props
 type DLCProps = {
@@ -11,7 +12,6 @@ type DLCProps = {
     },
     name: string
   }[],
-  gameName: string | undefined
 }
 
 // Components that contains the game DLCs
@@ -27,9 +27,15 @@ function DLC(props: DLCProps) {
           <div className='dlc-entry-container'>
             {/* Iterate through entries */}
             {props.dlcs.map((entry, _) => {
+              // Slug name and add it's id to the end
+              let sluggedName = slugify(entry.name, {
+                lower: true,
+                replacement: '_',
+                strict: true
+              });
               return(
                 <>
-                  <Link to={`/games/${entry.id}/${props.gameName}`} className='link'>
+                  <Link to={`/games/${entry.id}/${sluggedName}`} className='link'>
                     {/* Entry */}
                     <div className='dlc-entry'>
                       {/* Cover */}

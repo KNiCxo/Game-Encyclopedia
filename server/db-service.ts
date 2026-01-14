@@ -4,7 +4,7 @@ import dotenv from 'dotenv'
 import slugify from 'slugify'
 
 // Types
-import type {ListTable, ListData} from '../project-types.ts'
+import type {GameData, ListTable, ListData, ListNames, AddGameEntry, RemoveGameEntry} from '../project-types.ts'
 
 // Enable dotenv
 dotenv.config();
@@ -27,12 +27,34 @@ export class DbService {
     return instance ? instance : new DbService();
   }
 
-  // Get all list names from database
+  // Get all lists and their data from database for My List page
   async getLists(): Promise<ListTable[]>{
     try {
-      const query = `SELECT * FROM list_table`;
+      const query = `SELECT * FROM list_table;`;
 
       const [rows] = await pool.execute<(ListTable & RowDataPacket)[]>(query)
+
+      return rows;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  // Get all list names from database and checks if game exists in that list already
+  async getListNames(gameId: number): Promise<ListNames[]>{
+    try {
+      // Get list names and ids
+      const listNamesQuery = `SELECT ListId, ListName, SluggedName FROM list_table;`;
+      const [rows] = await pool.execute<(ListNames & RowDataPacket)[]>(listNamesQuery);
+
+      // Check if game exists in lists
+      for (let i = 0; i < rows.length; i++) {
+        const tableName = rows[i].SluggedName + '_' + rows[i].ListId;
+        const query = `SELECT EXISTS (SELECT 1 FROM ${tableName} WHERE GameId = ${gameId}) AS id_exists;`;
+        const exists = await pool.execute<RowDataPacket[]>(query);
+        rows[i].GameExists = exists[0][0].id_exists;
+      }
 
       return rows;
     } catch (error) {
@@ -45,7 +67,7 @@ export class DbService {
   async getListData(id: number): Promise<ListData[]> {
     try {
       // Get slugged name of table from list_table
-      const nameQuery = `SELECT SluggedName FROM list_table WHERE ListId = ?`;
+      const nameQuery = `SELECT SluggedName FROM list_table WHERE ListId = ?;`;
       const [result] = await pool.execute<[RowDataPacket]>(nameQuery, [id]);
 
       // Combine slugged name with id to get table name
@@ -80,6 +102,7 @@ export class DbService {
       // Execute query
       const [result] = await pool.execute<ResultSetHeader>(updateQuery, [name, sluggedName]);
 
+      // Create slugged name
       sluggedName = sluggedName + `_${result.insertId}`;
 
       // Ensure table name is safe
@@ -91,9 +114,9 @@ export class DbService {
                        GameId INT NOT NULL,
                        CoverArt VARCHAR(6),
                        GameName VARCHAR(50) NOT NULL,
-                       SluggedGameName VARCHAR(50) NOT NULL,
                        Year VARCHAR(4),
-                       Platforms VARCHAR(150)
+                       Platforms VARCHAR(500),
+                       SluggedName VARCHAR(50) NOT NULL
                       );`;
       
       // Execute query
@@ -108,16 +131,63 @@ export class DbService {
   async deleteEntry(name: string, id: number): Promise<void> {
     try {
       // Drop table
-      const deleteQuery = `DROP TABLE ${name}_${id}`;
+      const deleteQuery = `DROP TABLE ${name}_${id};`;
 
       // Execute query
       await pool.execute(deleteQuery);
 
       // Update list_table
-      const updateQuery = 'DELETE from list_table WHERE ListId = ?'
+      const updateQuery = 'DELETE from list_table WHERE ListId = ?;';
 
+      // Execute query
       await pool.execute (updateQuery, [id]);
 
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  // Adds game to list and updates list_table
+  async addGame(gameData: AddGameEntry): Promise<void> {
+    try {
+      // Query that adds games to list
+      const newGameQuery = `INSERT INTO ${gameData.listName}
+                            (GameId, CoverArt, GameName, Year, Platforms, SluggedName)
+                            VALUES(?, ?, ?, ?, ?, ?);`;
+
+      // Execute query
+      await pool.execute(newGameQuery, [gameData.gameId, gameData.cover, gameData.name, gameData.year, gameData.platforms, gameData.sluggedName]);
+
+      // Update table's game count in list table
+      const updateQuery = `UPDATE list_table
+                           SET GameCount = GameCount + 1
+                           WHERE ListId = ${gameData.listId};`;
+      
+      // Execute query
+      await pool.execute(updateQuery);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  // Removes game from list and updates list_table
+  async removeGame(gameData: RemoveGameEntry): Promise<void> {
+    try {
+      // Drop table
+      const deleteGameQuery = `DELETE from ${gameData.listName} WHERE GameId = ?;`;
+
+      // Execute query
+      await pool.execute(deleteGameQuery, [gameData.gameId]);
+
+      // Update table's game count in list table
+      const updateQuery = `UPDATE list_table
+                           SET GameCount = GameCount - 1
+                           WHERE ListId = ${gameData.listId};`;
+
+      // Execute query
+      await pool.execute (updateQuery);
     } catch (error) {
       console.log(error);
       throw error;

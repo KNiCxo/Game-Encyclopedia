@@ -82,7 +82,7 @@ function Game() {
               break;
             }
           }
-
+          
           // Sets player count with proper Steam chart entry
           setPlayerCount(Number(tbody?.rows[rows].cells[2].innerHTML));
         }

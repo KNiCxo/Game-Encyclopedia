@@ -90,11 +90,23 @@ app.get('/comingSoon', async (req: Request, res: Response) => {
   }
 });
 
-// GET request for gathering all list names from the database
+// GET request for gathering all lists and their data from the database
 app.get('/getLists', async (req: Request, res: Response) => {
   try {
     const db = DbService.getDbServiceInstance();
     const data: Types.ListTable[] = await db.getLists();
+
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(500).end();
+  }
+});
+
+// GET request for gathering all list names from the database
+app.get('/getListNames/:gameId', async (req: Request, res: Response) => {
+  try {
+    const db = DbService.getDbServiceInstance();
+    const data: Types.ListNames[] = await db.getListNames(Number(req.params.gameId));
 
     res.status(200).json(data);
   } catch (error) {
@@ -126,10 +138,35 @@ app.post('/createEntry/:name', async (req: Request, res: Response) => {
   }
 });
 
+// POST request for adding a game to a list and updating list_table
+app.post('/addGame', async (req: Request, res: Response) => {
+  try {
+    const db = DbService.getDbServiceInstance();
+    await db.addGame(req.body);
+
+    res.status(200).end();
+  } catch (error) {
+    res.status(500).end();
+  }
+});
+
+// DELTE request for removing a list and updating list_table
 app.delete('/deleteEntry/:name/:id', async (req: Request, res: Response) => {
   try {
     const db = DbService.getDbServiceInstance();
     await db.deleteEntry(req.params.name, Number(req.params.id));
+
+    res.status(200).end();
+  } catch (error) {
+    res.status(500).end();
+  }
+});
+
+// DELTE request for removing a game from a list and updating list_table
+app.delete('/removeGame', async (req: Request, res: Response) => {
+  try {
+    const db = DbService.getDbServiceInstance();
+    await db.removeGame(req.body);
 
     res.status(200).end();
   } catch (error) {

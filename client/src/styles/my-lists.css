@@ -34,6 +34,7 @@
   align-items: center;
   border-radius: 8px;
   border: solid 3px rgb(19, 27, 38);
+  z-index: 100;
 }
 
 .create-list-input {

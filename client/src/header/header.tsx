@@ -20,10 +20,10 @@ function Header() {
   const navigate = useNavigate();
 
   // State variable for showing/hiding elements
-  const [showDropdown, setShowDropdown] = useState(false);
+  const [showDropdown, setShowDropdown] = useState<boolean>(false);
 
   // Overlay
-  const [showOverlay, setShowOverlay] = useState(false);
+  const [showOverlay, setShowOverlay] = useState<boolean>(false);
 
   // Stores search results
   const [searchResultsLite, setSearchResultsLite] = useState<SearchResultsLite[]>([]);

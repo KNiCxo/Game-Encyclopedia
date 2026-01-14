@@ -7,6 +7,7 @@ import type {GameData} from '../../../project-types.ts'
 // Import components
 import VideoSlider from './video-slider.tsx'
 import Cover from './cover.tsx'
+import AddGame from './add-game.tsx'
 import Summary from './summary.tsx'
 import AdditionalInfo from './additional-info.tsx'
 import DLC from './dlc.tsx'
@@ -35,8 +36,11 @@ function MainContent(props: MainContentProps) {
             involved_companies={props.gameData.involved_companies}>
       </Cover>
 
+      {/* Add game to list button */}
+      <AddGame gameId={props.gameData.id} gameName={props.gameName} gameData={props.gameData}></AddGame>
+
       {/* Player Count & Rating*/}
-      {typeof props.playerCount === 'number' && <div className='player-count-rating-container info-container'>
+      {typeof props.playerCount === 'number' && <div className='player-count-container info-container'>
         <span className='player-count'>Current players on Steam:&nbsp;{props.playerCount}</span>
       </div>}
       
@@ -52,7 +56,7 @@ function MainContent(props: MainContentProps) {
       </AdditionalInfo>
 
       {/* DLCs */}
-      <DLC dlcs={props.gameData.dlcs} gameName={props.gameName}></DLC>
+      <DLC dlcs={props.gameData.dlcs}></DLC>
 
       {/* Languages */}
       <Languages language_supports={props.gameData.language_supports}></Languages>
