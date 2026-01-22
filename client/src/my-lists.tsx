@@ -81,7 +81,7 @@ function MyLists() {
                   
                   {/* Title, game count, and delete button */}
                   <div className='list-info'>
-                    <Link to={`/list/${lists.ListId}`} className='link'><span className='list-title'>{lists.ListName}</span></Link>
+                    <Link to={`/list/${lists.ListId}/${lists.SluggedName}`} className='link'><span className='list-title'>{lists.ListName}</span></Link>
                 
                     <div className='list-info-bottom'>
                       <span className='list-count'>{lists.GameCount} Games</span>

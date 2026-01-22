@@ -13,37 +13,15 @@ export const getLists = async (): Promise<ListTable[]>  => {
   }
 }
 
-// Get data for a specific list
-export const getListData = async (listId: number): Promise<ListData[]> => {
-    try {
-    const response = await fetch(`http://localhost:4001/getListData/${listId}`);
+// Gets the name from a single list from database
+export const getListName = async (listId: number): Promise<string>  => {
+  try {
+    const response = await fetch(`http://localhost:4001/getListName/${listId}`);
     const json = await response.json();
     return (json);
   } catch (error) {
     console.log(error);
-    throw error;
-  }
-}
-
-// Create list entry in database
-export const createEntry = async (name: string): Promise<void> => {
-  try {
-    await fetch(`http://localhost:4001/createEntry/${name}`, {
-      method: 'POST'
-    });
-  } catch (error) {
-    console.log(error);
-  }
-}
-
-// Delete list entry from database
-export const deleteEntry = async (name: string, id: number): Promise<void> => {
-  try {
-    await fetch(`http://localhost:4001/deleteEntry/${name}/${id}`, {
-      method: 'DELETE'
-    });
-  } catch (error) {
-    console.log(error);
+    return '';
   }
 }
 
@@ -59,6 +37,49 @@ export const getListNames = async (gameId: number): Promise<ListNames[]>  => {
   }
 }
 
+// Get data for a specific list
+export const getListData = async (listId: number, listName: string | undefined): Promise<ListData[]> => {
+    try {
+    const response = await fetch(`http://localhost:4001/getListData/${listId}/${listName}`);
+    const json = await response.json();
+    return (json);
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
+
+// Get data for a specific list
+export const pinGame = async (listName: string | undefined, listId: number, entryId: number, pinState: boolean): Promise<void> => {
+    try {
+      await fetch(`http://localhost:4001/pinGame`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          listName: `${listName}_${listId}`,
+          listId: listId,
+          entryId: entryId,
+          pinState: pinState
+        })
+      });
+  } catch (error) {
+      console.log(error);
+    throw error;
+  }
+}
+
+// Create list entry in database
+export const createEntry = async (name: string): Promise<void> => {
+  try {
+    await fetch(`http://localhost:4001/createEntry/${name}`, {
+      method: 'POST'
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
 
 // Adds game to list and updates list_table
 export const addGame = async (listName: string, listId: number, gameData: GameData, gameName: string | undefined): Promise<void> => {
@@ -120,8 +141,19 @@ export const addGame = async (listName: string, listId: number, gameData: GameDa
   }
 }
 
+// Delete list entry from database
+export const deleteEntry = async (name: string, id: number): Promise<void> => {
+  try {
+    await fetch(`http://localhost:4001/deleteEntry/${name}/${id}`, {
+      method: 'DELETE'
+    });
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 // Removes game from list and updates list_table
-export const removeGame = async (listName: string, listId: number, gameId: number): Promise<void> => {
+export const removeGame = async (listName: string | undefined, listId: number, gameId: number): Promise<void> => {
   try {
     await fetch(`http://localhost:4001/removeGame`, {
       method: 'DELETE',

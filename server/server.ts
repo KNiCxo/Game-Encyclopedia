@@ -103,6 +103,18 @@ app.get('/getLists', async (req: Request, res: Response) => {
 });
 
 // GET request for gathering all list names from the database
+app.get('/getListName/:listId', async (req: Request, res: Response) => {
+  try {
+    const db = DbService.getDbServiceInstance();
+    const data = await db.getListName(Number(req.params.listId));
+    
+    res.status(200).json(data);
+  } catch (error) {
+    res.status(500).end();
+  }
+});
+
+// GET request for gathering all list names from the database
 app.get('/getListNames/:gameId', async (req: Request, res: Response) => {
   try {
     const db = DbService.getDbServiceInstance();
@@ -115,12 +127,24 @@ app.get('/getListNames/:gameId', async (req: Request, res: Response) => {
 });
 
 // GET request for gathering game data for a specific list
-app.get('/getListData/:id', async (req: Request, res: Response) => {
+app.get('/getListData/:id/:name', async (req: Request, res: Response) => {
   try {
     const db = DbService.getDbServiceInstance();
-    const data: Types.ListData[] = await db.getListData(Number(req.params.id));
+    const data: Types.ListData[] = await db.getListData(Number(req.params.id), req.params.name);
     
     res.status(200).json(data);
+  } catch (error) {
+    res.status(500).end();
+  }
+});
+
+// PUT request for updating the IsPinned and DatePinned variables for a game in a specific list
+app.put('/pinGame', async (req: Request, res: Response) => {
+  try {
+    const db = DbService.getDbServiceInstance();
+    await db.pinGame(req.body);
+
+    res.status(200).end();
   } catch (error) {
     res.status(500).end();
   }

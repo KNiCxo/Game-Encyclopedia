@@ -4,7 +4,7 @@ import dotenv from 'dotenv'
 import slugify from 'slugify'
 
 // Types
-import type {GameData, ListTable, ListData, ListNames, AddGameEntry, RemoveGameEntry} from '../project-types.ts'
+import type {GameData, ListTable, ListData, ListNames, AddGameEntry, RemoveGameEntry, PinGame} from '../project-types.ts'
 
 // Enable dotenv
 dotenv.config();
@@ -32,9 +32,35 @@ export class DbService {
     try {
       const query = `SELECT * FROM list_table;`;
 
-      const [rows] = await pool.execute<(ListTable & RowDataPacket)[]>(query)
+      const [rows] = await pool.execute<(ListTable & RowDataPacket)[]>(query);
 
+      for (const row of rows) {
+        const pinnedGamesQuery = `SELECT CoverArt FROM ${row.SluggedName}_${row.ListId}
+                                  ORDER BY IsPinned DESC,
+                                  CASE WHEN IsPinned = TRUE THEN DatePinned END ASC,
+                                  EntryId ASC LIMIT 4;`;
+
+        const [pins] = await pool.execute<RowDataPacket[]>(pinnedGamesQuery);
+        for (let i = 0; i < pins.length; i++) {
+          row[`PinnedGameURL${i+1}`] = pins[i].CoverArt ? pins[i].CoverArt : '';
+        }
+      }
+      
       return rows;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  // Get list name from database from id
+  async getListName(listId: number): Promise<string>{
+    try {
+      // Get list names and ids
+      const listNameQuery = `SELECT ListName FROM list_table WHERE ListId = ${listId};`;
+      const [rows] = await pool.execute<RowDataPacket[]>(listNameQuery);
+      
+      return rows[0].ListName;
     } catch (error) {
       console.log(error);
       throw error;
@@ -64,17 +90,13 @@ export class DbService {
   }
 
   // Get game data from a specific list
-  async getListData(id: number): Promise<ListData[]> {
-    try {
-      // Get slugged name of table from list_table
-      const nameQuery = `SELECT SluggedName FROM list_table WHERE ListId = ?;`;
-      const [result] = await pool.execute<[RowDataPacket]>(nameQuery, [id]);
-
-      // Combine slugged name with id to get table name
-      const tableName = result[0].SluggedName + `_${id}`;
-      
+  async getListData(id: number, name: string): Promise<ListData[]> {
+    try { 
       // Get data from list
-      const listQuery = `SELECT * FROM ${tableName}`;
+      const listQuery = `SELECT * FROM ${name}_${id}
+                         ORDER BY IsPinned DESC,
+                         CASE WHEN IsPinned = TRUE THEN DatePinned END ASC,
+                         EntryId ASC;`
       const [rows] = await pool.execute<(ListData & RowDataPacket)[]>(listQuery);
 
       return rows;
@@ -96,8 +118,8 @@ export class DbService {
 
       // Update list_table
       const updateQuery = `INSERT INTO list_table
-                           (ListName, GameCount, PinnedGameURL1, PinnedGameURL2, PinnedGameURL3, PinnedGameURL4, SluggedName)
-                           VALUES (?, 0, '', '', '', '', ?);`;
+                           (ListName, GameCount, SluggedName)
+                           VALUES (?, 0, ?);`;
 
       // Execute query
       const [result] = await pool.execute<ResultSetHeader>(updateQuery, [name, sluggedName]);
@@ -116,6 +138,8 @@ export class DbService {
                        GameName VARCHAR(50) NOT NULL,
                        Year VARCHAR(4),
                        Platforms VARCHAR(500),
+                       IsPinned BOOLEAN NOT NULL DEFAULT FALSE,
+                       DatePinned DATETIME,
                        SluggedName VARCHAR(50) NOT NULL
                       );`;
       
@@ -188,6 +212,22 @@ export class DbService {
 
       // Execute query
       await pool.execute (updateQuery);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  // Updates pin variable in list
+  async pinGame(gameData: PinGame): Promise<void> {
+    try {
+      // Update game entry
+      const query = `UPDATE ${gameData.listName}
+                     SET IsPinned = ?, DatePinned = NOW()
+                     WHERE EntryId = ?;`;
+
+      // Execute query
+      await pool.execute(query, [gameData.pinState, gameData.entryId]);
     } catch (error) {
       console.log(error);
       throw error;

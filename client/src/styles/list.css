@@ -1,17 +1,23 @@
 /* Header text */
-.list-header {
+.list-header, .list-error-header {
   color: white;
-  font-family: roboto-thin-italic;
+  font-family: roboto-bold-italic;
   text-align: center;
   padding: 0 14px; 
-  margin: 300px 0 0 0;
-  font-size: 26px;
+  margin: 150px 0 30px 0;
+  font-size: 34px;
   line-height: 37px;
+}
+
+/* Error header */
+.list-error-header {
+  margin: 180px 0 0 0;
+  font-size: 30px;
 }
 
 /* Results list */
 .game-list-entries {
-  margin-top: 115px;
+  margin-top: 15px;
   animation: fadeIn 0.8s linear forwards;
 }
 
@@ -72,4 +78,35 @@
 .game-list-entry-platforms {
   font-family: roboto-light-italic;
   font-size: 14px;
+}
+
+/* Edit game container */
+.edit-game-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 5px 0;
+}
+
+/* Pin div */
+.game-pin-div {
+  width: 32px;
+  height: 32px;
+  background-color: rgb(45, 68, 100);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+}
+
+/* Pin icon */
+.game-pin-icon {
+  width: 24px;
+  height: 24px;
+}
+
+/* Bin icon */
+.game-bin-icon {
+  width: 22px;
+  height: 22px;
 }

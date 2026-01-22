@@ -158,9 +158,11 @@ export type ListData = {
   GameId: number,
   CoverArt: string,
   GameName: string,
-  SluggedName: string,
   Year: string,
-  Platforms: string
+  Platforms: string,
+  IsPinned: number,
+  DatePinned: string
+  SluggedName: string,
 }
 
 // DB List Names + Ids
@@ -188,4 +190,11 @@ export type RemoveGameEntry = {
   listName: string,
   listId: number,
   gameId: number,
+}
+
+// Pinning game in list
+export type PinGame = {
+  listName: string,
+  entryId: number,
+  pinState: boolean
 }

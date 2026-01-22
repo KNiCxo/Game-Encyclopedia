@@ -98,24 +98,20 @@
   display: flex;
   flex-direction: row;
   margin: 0 auto 10px;
-  width: 100%;
-  justify-content: space-evenly;
+  justify-content: center;
   gap: 9px;
+  flex-wrap: wrap;
 }
 
 /* Pinned game */
 .pinned-game {
-  width: 68px;
-  height: 90px;
-  background-color: rgb(30, 41, 56);
-  border-radius: 7px;
+  width: 48%;
 }
 
 /* Pinned game cover art */
 .pinned-game-img {
   border-radius: 7px;
-  width: 68px;
-  height: 90px;
+  width: 100%;
 }
 
 /* Info */
@@ -127,7 +123,7 @@
 
 /* Title */
 .list-title {
-  font-size: 20px;
+  font-size: 23px;
   margin-bottom: 0px;
   font-family: roboto-bold-italic;
 }
@@ -147,7 +143,7 @@
 /* Game count */
 .list-count {
   font-family: roboto-light-italic;
-  font-size: 16px;
+  font-size: 18px;
 }
 
 .list-delete {

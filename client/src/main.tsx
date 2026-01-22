@@ -34,7 +34,7 @@ const router = createBrowserRouter([
   element: <MyLists></MyLists>
  },
  {
-  path: 'list/:listId',
+  path: 'list/:listId/:sluggedName',
   element: <List></List>
  },
  {
