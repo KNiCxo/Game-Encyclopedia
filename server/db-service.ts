@@ -4,7 +4,7 @@ import dotenv from 'dotenv'
 import slugify from 'slugify'
 
 // Types
-import type {GameData, ListTable, ListData, ListNames, AddGameEntry, RemoveGameEntry, PinGame} from '../project-types.ts'
+import type {GameData, ListTable, ListData, ListNames, AddGameEntry, RemoveGameEntry, EditName, PinGame} from '../project-types.ts'
 
 // Enable dotenv
 dotenv.config();
@@ -151,27 +151,6 @@ export class DbService {
     }
   }
 
-  // Deletes list and updates list_table
-  async deleteEntry(name: string, id: number): Promise<void> {
-    try {
-      // Drop table
-      const deleteQuery = `DROP TABLE ${name}_${id};`;
-
-      // Execute query
-      await pool.execute(deleteQuery);
-
-      // Update list_table
-      const updateQuery = 'DELETE from list_table WHERE ListId = ?;';
-
-      // Execute query
-      await pool.execute (updateQuery, [id]);
-
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  }
-
   // Adds game to list and updates list_table
   async addGame(gameData: AddGameEntry): Promise<void> {
     try {
@@ -190,6 +169,75 @@ export class DbService {
       
       // Execute query
       await pool.execute(updateQuery);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  // Updates pin variable in list
+  async updateListName(listData: EditName): Promise<void> {
+    try {
+      let sluggedListName = slugify(listData.listName, {
+        lower: true,
+        replacement: '_',
+        strict: true
+      });
+
+      let sluggedNewName = slugify(listData.newName, {
+        lower: true,
+        replacement: '_',
+        strict: true
+      });
+      
+      // Rename table
+      const renameQuery = `RENAME TABLE ${sluggedListName}_${listData.listId} TO ${sluggedNewName}_${listData.listId}`;
+
+      // Execute query
+      await pool.execute(renameQuery);
+
+       // Update list_table query
+      const updateQuery = `UPDATE list_table SET ListName = ?, SluggedName = ? WHERE ListId = ?;`;
+
+      // Execute query
+      await pool.execute(updateQuery, [listData.newName, sluggedNewName, listData.listId]);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  // Updates pin variable in list
+  async pinGame(gameData: PinGame): Promise<void> {
+    try {
+      // Update game entry
+      const query = `UPDATE ${gameData.listName}
+                     SET IsPinned = ?, DatePinned = NOW()
+                     WHERE EntryId = ?;`;
+
+      // Execute query
+      await pool.execute(query, [gameData.pinState, gameData.entryId]);
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
+  // Deletes list and updates list_table
+  async deleteEntry(name: string, id: number): Promise<void> {
+    try {
+      // Drop table
+      const deleteQuery = `DROP TABLE ${name}_${id};`;
+
+      // Execute query
+      await pool.execute(deleteQuery);
+
+      // Update list_table
+      const updateQuery = 'DELETE from list_table WHERE ListId = ?;';
+
+      // Execute query
+      await pool.execute (updateQuery, [id]);
+
     } catch (error) {
       console.log(error);
       throw error;
@@ -218,19 +266,4 @@ export class DbService {
     }
   }
 
-  // Updates pin variable in list
-  async pinGame(gameData: PinGame): Promise<void> {
-    try {
-      // Update game entry
-      const query = `UPDATE ${gameData.listName}
-                     SET IsPinned = ?, DatePinned = NOW()
-                     WHERE EntryId = ?;`;
-
-      // Execute query
-      await pool.execute(query, [gameData.pinState, gameData.entryId]);
-    } catch (error) {
-      console.log(error);
-      throw error;
-    }
-  }
 }

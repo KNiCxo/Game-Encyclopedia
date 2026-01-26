@@ -1,10 +1,14 @@
+/* List header div */
+.list-header-div {
+  margin: 150px 0 30px 0;
+  text-align: center;
+}
+
 /* Header text */
 .list-header, .list-error-header {
   color: white;
   font-family: roboto-bold-italic;
   text-align: center;
-  padding: 0 14px; 
-  margin: 150px 0 30px 0;
   font-size: 34px;
   line-height: 37px;
 }
@@ -13,6 +17,73 @@
 .list-error-header {
   margin: 180px 0 0 0;
   font-size: 30px;
+  padding: 0 14px; 
+}
+
+/* Edit name button img */
+.list-name-edit {
+  width: 32px;
+  height: 32px;
+  position: relative;
+  top: 5px;
+  left: 8px;
+  cursor: pointer;
+}
+
+/* Edit name element */
+.edit-name {
+  position: fixed;
+  display: none;
+  flex-direction: column;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -80%);
+  background-color: rgb(30, 41, 56);
+  width: 300px;
+  height: 120px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 8px;
+  border: solid 3px rgb(19, 27, 38);
+  z-index: 100;
+}
+
+/* Edit name input */
+.edit-name-input {
+  border: none;
+  border-radius: 0px;
+  width: 210px;
+  height: 26px;
+  margin-bottom: 18px;
+  border-radius: 5px;
+  padding: 4px 0px 4px 10px;
+  outline: none;
+  font-family: roboto-bold;
+  font-size: 16px;
+}
+
+/* Edit name buttons container */
+.edit-name-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 13px;
+}
+
+/* Edit name buttons */
+.edit-name-add, .edit-name-cancel {
+  width: 90px;
+  height: 31px;
+  font-family: roboto-bold;
+  border: 1px solid rgb(19, 27, 38);
+  border-radius: 4px;
+  background-color: rgb(45, 68, 100);
+  color: white;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.edit-name-add:hover, .edit-name-cancel:hover {
+  background-color: rgb(49, 72, 106);
 }
 
 /* Results list */

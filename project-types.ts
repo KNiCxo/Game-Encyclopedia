@@ -192,6 +192,13 @@ export type RemoveGameEntry = {
   gameId: number,
 }
 
+// Editing list name
+export type EditName = {
+  listName: string,
+  listId: string,
+  newName: string
+}
+
 // Pinning game in list
 export type PinGame = {
   listName: string,

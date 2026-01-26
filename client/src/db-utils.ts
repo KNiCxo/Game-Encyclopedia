@@ -49,7 +49,27 @@ export const getListData = async (listId: number, listName: string | undefined):
   }
 }
 
-// Get data for a specific list
+// Update pin state from a game in a list
+export const updateListName = async (listName: string | undefined, listId: string | undefined, newName: string): Promise<void> => {
+    try {
+      await fetch(`http://localhost:4001/updateListName`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          listName: listName,
+          listId: listId,
+          newName: newName
+        })
+      });
+  } catch (error) {
+      console.log(error);
+    throw error;
+  }
+}
+
+// Update pin state from a game in a list
 export const pinGame = async (listName: string | undefined, listId: number, entryId: number, pinState: boolean): Promise<void> => {
     try {
       await fetch(`http://localhost:4001/pinGame`, {

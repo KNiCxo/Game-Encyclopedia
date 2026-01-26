@@ -10,7 +10,7 @@ import type {ListData} from '../../project-types.ts';
 
 // Components & Functions
 import Header from './header/header.tsx'
-import {getListData, getListName, pinGame, removeGame} from './db-utils.ts'
+import {getListData, getListName, updateListName, pinGame, removeGame} from './db-utils.ts'
 
 function List() {
   // Stores list of games
@@ -30,6 +30,9 @@ function List() {
 
   // Track if results exist
   const [notFound, setNotFound] = useState<boolean>(false);
+
+  // Checks to see if edit name element is enabled
+  const [editNameEnabled, setEditNameEnabled] = useState<boolean>(false);
 
   // Makes call to server to get list name and data and stores it
   const getData = (id: number, name: string | undefined): void => {
@@ -112,6 +115,50 @@ function List() {
     }
   }
 
+  // Toggle edit name element
+  function toggleEdit(): void {
+    // Edit name element
+    const element = document.querySelector<HTMLElement>('.edit-name');
+
+    const input = document.querySelector('.edit-name-input') as HTMLInputElement | null;
+    
+    // If element is not null then toggle style
+    if (element) {
+      element.style.display = window.getComputedStyle(element).display === 'none' ? 'flex' : 'none';
+      setEditNameEnabled((prev) => {
+        if (prev && input) {
+          input.value = '';
+        }
+        return !prev
+      });
+    }
+  }
+
+  // Update list name in database
+  const updateName = async (): Promise<void> => {
+    // Input element
+    const input = document.querySelector('.edit-name-input') as HTMLInputElement | null;
+
+    // New name
+    let newName;
+
+    // If input exists and value isn't empty then set name variable to input value
+    if (input && input.value !== '') {
+      newName = input.value;
+    } else {
+      return;
+    }
+
+    // Make call to server
+    await updateListName(listName, listId, newName);
+
+    // Toggle element
+    toggleEdit();
+
+    // Update listName variable
+    setListName(newName);
+  } 
+
   // Pin game entry to list in database
   const pinEntry = async (entryId: number, pinState: boolean): Promise<void> => {
     await pinGame(sluggedName, Number(listId), entryId, !pinState);
@@ -136,10 +183,26 @@ function List() {
       {/* Header */}
       <Header></Header>
 
-      <h1 className='list-header'>{listName}</h1>
+      <div className='list-header-div'>
+        <span className='list-header'>{listName}</span>
+        <img src="/public/edit.png" alt="" className='list-name-edit' onClick={() => {if(!editNameEnabled) toggleEdit()}}/>
+      </div>
 
       {/* Error message */}
       {notFound && <h1 className='list-error-header'>Error: <br></br> Page not found</h1>}
+
+      <div className='edit-name'>
+        {/* Input field */}
+        <div className='edit-name-input-container'>
+          <input type="text" className='edit-name-input' placeholder='Edit name'/>
+        </div>
+
+        {/* Add and cancel buttons */}
+        <div className='create-list-buttons'>
+          <button className='edit-name-add' onClick={updateName}>Save</button>
+          <button className='edit-name-cancel' onClick={toggleEdit}>Cancel</button>
+        </div>
+      </div>
 
       {/* Display results */}
       {!isLoading && displayResults()}

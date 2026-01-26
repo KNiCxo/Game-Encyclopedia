@@ -139,6 +139,18 @@ app.get('/getListData/:id/:name', async (req: Request, res: Response) => {
 });
 
 // PUT request for updating the IsPinned and DatePinned variables for a game in a specific list
+app.put('/updateListName', async (req: Request, res: Response) => {
+  try {
+    const db = DbService.getDbServiceInstance();
+    await db.updateListName(req.body);
+
+    res.status(200).end();
+  } catch (error) {
+    res.status(500).end();
+  }
+});
+
+// PUT request for updating the IsPinned and DatePinned variables for a game in a specific list
 app.put('/pinGame', async (req: Request, res: Response) => {
   try {
     const db = DbService.getDbServiceInstance();

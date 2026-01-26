@@ -118,17 +118,26 @@ function MyLists() {
 
   // Create new list entry and send to database;
   const newEntry = async (): Promise<void> => {
+    // Input element
     const input = document.querySelector('.create-list-input') as HTMLInputElement | null;
+
+    // Entry name
     let name;
 
+    // If input exists and value isn't empty then set name variable to input value
     if (input && input.value !== '') {
       name = input.value;
     } else {
       return;
     }
 
+    // Make call to server
     await createEntry(name);
+
+    // Toggle element
     toggleAddList();
+
+    // Get updated list data
     storeLists();
   }
 
